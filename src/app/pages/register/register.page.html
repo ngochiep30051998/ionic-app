@@ -16,13 +16,13 @@
       <ion-item no-padding class="animated fadeInUp">
         <ion-label position="floating">
           <ion-icon name="mail" item-start></ion-icon>
-          Full Name
+          Họ tên
         </ion-label>
         <ion-input color="secondary" type="text" formControlName="fullName"></ion-input>
       </ion-item>
       <p ion-text class="text08" *ngIf="onRegisterForm.get('fullName').touched && onRegisterForm.get('fullName').hasError('required')">
         <ion-text color="warning">
-          This field is required
+          Trường bắt buộc
         </ion-text>
       </p>
 
@@ -35,20 +35,20 @@
       </ion-item>
       <p ion-text class="text08" *ngIf="onRegisterForm.get('email').touched && onRegisterForm.get('email').hasError('required')">
         <ion-text color="warning">
-          This field is required
+          Trường bắt buộc
         </ion-text>
       </p>
 
       <ion-item no-padding class="animated fadeInUp">
         <ion-label position="floating">
           <ion-icon name="lock" item-start></ion-icon>
-          Password
+          Mật khẩu
         </ion-label>
         <ion-input color="secondary" type="password" formControlName="password"></ion-input>
       </ion-item>
       <p ion-text color="warning" class="text08" *ngIf="onRegisterForm.get('password').touched && onRegisterForm.get('password').hasError('required')">
         <ion-text color="warning">
-          This field is required
+          Trường bắt buộc
         </ion-text>
       </p>
     </form>
@@ -57,12 +57,12 @@
       <ion-button icon-left size="medium" expand="full" shape="round" color="dark" (click)="signUp()" [disabled]="!onRegisterForm.valid"
         tappable>
         <ion-icon name="log-in"></ion-icon>
-        Sign Up
+        Đăng ký
       </ion-button>
 
       <p text-center>
         <ion-text color="light">
-          Or Sign Up with:
+          Hoặc đăng ký với:
         </ion-text>
       </p>
 
@@ -92,7 +92,7 @@
     <div text-center margin-top>
       <span (click)="goToLogin()" tappable>
         <ion-text color="light">
-          <strong>I have an account!</strong>
+          <strong>Tôi đã có tài khoản!</strong>
         </ion-text>
       </span>
     </div>

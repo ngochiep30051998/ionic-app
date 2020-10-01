@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, MenuController, ToastController, AlertController, LoadingController } from '@ionic/angular';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ export class LoginPage implements OnInit {
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthService
   ) { }
 
   ionViewWillEnter() {
@@ -89,4 +91,36 @@ export class LoginPage implements OnInit {
     this.navCtrl.navigateRoot('/home-results');
   }
 
+  async loginWithEmail() {
+    try {
+      const loader = await this.loadingCtrl.create({ duration: 3000 });
+      loader.present();
+      const res = await this.authService.loginWithEmail(this.onLoginForm.value.email, this.onLoginForm.value.password);
+      console.log(res);
+      loader.dismiss();
+      // loader.dismiss();
+      this.navCtrl.navigateRoot('/home-results');
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async loginWithGoogle() {
+    const loader = await this.loadingCtrl.create({ duration: 3000 });
+
+    try {
+      // const loader = await this.loadingCtrl.create();
+      loader.present();
+      const res = await this.authService.loginWithGoogle();
+      console.log(res);
+      loader.dismiss();
+
+      // loader.dismiss();
+      this.navCtrl.navigateRoot('/home-results');
+    } catch (e) {
+      console.log(e);
+    } finally {
+      loader.dismiss();
+    }
+  }
 }

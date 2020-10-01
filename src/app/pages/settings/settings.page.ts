@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-settings',
@@ -18,7 +19,10 @@ export class SettingsPage implements OnInit {
   paymentMethods: any = ['Paypal', 'Credit Card'];
   currencies: any = ['USD', 'BRL', 'EUR'];
 
-  constructor(public navCtrl: NavController) { }
+  constructor(
+    public navCtrl: NavController,
+    private authService: AuthService
+    ) { }
 
   ngOnInit() {
   }
@@ -28,7 +32,7 @@ export class SettingsPage implements OnInit {
   }
 
   logout() {
-    this.navCtrl.navigateRoot('/');
+    this.authService.logout();
   }
 
 }

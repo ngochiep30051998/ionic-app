@@ -7,7 +7,7 @@
       <div class="logo"></div>
       <h4 no-margin>
         <ion-text color="light" class="fw700">
-          Ionic 4 Start Theme
+          Đồ ăn nhanh
         </ion-text>
       </h4>
     </div>
@@ -23,39 +23,39 @@
       </ion-item>
       <p ion-text class="text08" *ngIf="onLoginForm.get('email').touched && onLoginForm.get('email').hasError('required')">
         <ion-text color="warning">
-          Required Field
+          Trường bắt buộc
         </ion-text>
       </p>
 
       <ion-item no-padding class="animated fadeInUp">
         <ion-label position="floating">
           <ion-icon name="lock" item-start></ion-icon>
-          Password
+          Mật khẩu
         </ion-label>
         <ion-input color="secondary" type="password" formControlName="password"></ion-input>
       </ion-item>
       <p ion-text color="warning" class="text08" *ngIf="onLoginForm.get('password').touched && onLoginForm.get('password').hasError('required')">
         <ion-text color="warning">
-          Required Field
+          Trường bắt buộc
         </ion-text>
         </p>
     </form>
 
     <p text-right tappable (click)="forgotPass()" class="paz">
       <ion-text color="light">
-        <strong>Forgot Pass?</strong>
+        <strong>Quên mật khẩu?</strong>
       </ion-text>
     </p>
 
     <div>
-      <ion-button icon-left size="medium" expand="full" shape="round" color="dark" (click)="goToHome()" [disabled]="!onLoginForm.valid" tappable>
+      <ion-button icon-left size="medium" expand="full" shape="round" color="dark" (click)="loginWithEmail()" [disabled]="!onLoginForm.valid" tappable>
         <ion-icon name="log-in"></ion-icon>
-        Signin
+        Đăng nhập
       </ion-button>
 
       <p text-center>
         <ion-text color="light">
-          Or Signin with:
+          hoặc đăng nhập với:
         </ion-text>
       </p>
 
@@ -72,7 +72,7 @@
             </ion-button>
           </ion-col>
           <ion-col size="4">
-            <ion-button shape="round" expand="full" color="secondary">
+            <ion-button shape="round" expand="full" color="secondary" (click)="loginWithGoogle()">
               <ion-icon slot="icon-only" name="logo-googleplus"></ion-icon>
             </ion-button>
           </ion-col>
@@ -85,7 +85,7 @@
     <div text-center margin-top>
       <span (click)="goToRegister()" class="paz" tappable>
         <ion-text color="light">
-          New here? <strong>Sign Up</strong>
+          Người mới? <strong>Đăng ký</strong>
         </ion-text>
       </span>
     </div>

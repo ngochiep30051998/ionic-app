@@ -12,7 +12,9 @@ export class SearchFilterPage implements OnInit {
     upper: 500,
     lower: 10
   };
-
+  organizeby;
+  dishtype;
+  dishnationality;
   constructor(private modalCtrl: ModalController) { }
 
   ngOnInit() {

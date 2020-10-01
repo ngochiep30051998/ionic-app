@@ -96,7 +96,7 @@ export class HomeResultsPage {
     return await modal.present();
   }
 
-  async notifications(ev: any) {
+  public async notifications(ev: any) {
     const popover = await this.popoverCtrl.create({
       component: NotificationsComponent,
       event: ev,

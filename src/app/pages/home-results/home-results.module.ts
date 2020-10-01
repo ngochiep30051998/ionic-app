@@ -23,6 +23,7 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [HomeResultsPage, PopmenuComponent]
+  declarations: [HomeResultsPage, PopmenuComponent],
+  entryComponents:[PopmenuComponent]
 })
 export class HomeResultsPageModule {}

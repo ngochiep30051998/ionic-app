@@ -18,7 +18,13 @@ import { SearchFilterPageModule } from './pages/modal/search-filter/search-filte
 // Components
 import { NotificationsComponent } from './components/notifications/notifications.component';
 
+// firebase
+import * as firebase from 'firebase';
+import { environment } from 'src/environments/environment';
 
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
+
+firebase.initializeApp(environment.firebaseConfig);
 @NgModule({
   declarations: [AppComponent, NotificationsComponent],
   imports: [
@@ -34,6 +40,7 @@ import { NotificationsComponent } from './components/notifications/notifications
   providers: [
     StatusBar,
     SplashScreen,
+    GooglePlus,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

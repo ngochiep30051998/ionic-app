@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, MenuController, LoadingController } from '@ionic/angular';
-
+import * as firebase from 'firebase';
+import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -14,7 +15,8 @@ export class RegisterPage implements OnInit {
     public navCtrl: NavController,
     public menuCtrl: MenuController,
     public loadingCtrl: LoadingController,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthService
   ) { }
 
   ionViewWillEnter() {
@@ -36,14 +38,23 @@ export class RegisterPage implements OnInit {
   }
 
   async signUp() {
-    const loader = await this.loadingCtrl.create({
-      duration: 2000
-    });
-
-    loader.present();
-    loader.onWillDismiss().then(() => {
-      this.navCtrl.navigateRoot('/home-results');
-    });
+    try {
+      const loader = await this.loadingCtrl.create({
+        duration: 2000
+      });
+      const params = {
+        email: this.onRegisterForm.value.email,
+        password: this.onRegisterForm.value.password
+      };
+      const res = await this.authService.register(this.onRegisterForm.value.email, this.onRegisterForm.value.password);
+      console.log(res);
+      loader.present();
+      loader.onWillDismiss().then(() => {
+        this.navCtrl.navigateRoot('/home-results');
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   // // //
