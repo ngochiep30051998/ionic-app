@@ -106,10 +106,9 @@ export class LoginPage implements OnInit {
   }
 
   async loginWithGoogle() {
-    const loader = await this.loadingCtrl.create({ duration: 3000 });
-
     try {
       // const loader = await this.loadingCtrl.create();
+      const loader = await this.loadingCtrl.create({ duration: 3000 });
       loader.present();
       const res = await this.authService.loginWithGoogle();
       console.log(res);
@@ -120,7 +119,6 @@ export class LoginPage implements OnInit {
     } catch (e) {
       console.log(e);
     } finally {
-      loader.dismiss();
     }
   }
 }

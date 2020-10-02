@@ -21,11 +21,15 @@ export class AuthService {
     return firebase.auth().signInWithEmailAndPassword(email, password);
   }
 
-  loginWithGoogle(){
+  loginWithGoogle() {
     return this.googlePlus.login({});
   }
   async logout() {
     await firebase.auth().signOut();
     this.navCtrl.navigateRoot('/');
+  }
+
+  getCurrentUser() {
+    return firebase.auth().currentUser;
   }
 }
