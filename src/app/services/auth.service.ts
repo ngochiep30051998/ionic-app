@@ -7,6 +7,8 @@ import { IGoogleUser, IUser } from '../interfaces/user.interface';
 import { Storage } from '@ionic/storage';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { errorStatus } from '../constants/errors-status';
+import { HelperService } from './helper.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -16,7 +18,8 @@ export class AuthService {
   constructor(
     public navCtrl: NavController,
     private googlePlus: GooglePlus,
-    private storage: Storage
+    private storage: Storage,
+    public helperService: HelperService
   ) { }
 
   register(email, password) {
@@ -61,5 +64,19 @@ export class AuthService {
 
   getUserInfo() {
     return this.user$.asObservable();
+  }
+  handleErrors(e) {
+    if (e && e.code) {
+      const title = 'Đăng nhập thất bại';
+      switch (e.code) {
+        case errorStatus.wrongPassword:
+          this.helperService.showAlert(title, `Mật khẩu không hợp lệ hoặc người dùng không có mật khẩu,
+           thử lại với phương thức đăng nhập khác`);
+          break;
+        case errorStatus.userNotFound:
+          this.helperService.showAlert(title, 'Không tìm thấy tài khoản, có thể tài khoản của bạn đã bị xoá.');
+          break;
+      }
+    }
   }
 }

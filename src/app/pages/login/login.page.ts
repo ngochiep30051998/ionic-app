@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NavController, MenuController, ToastController, AlertController, LoadingController } from '@ionic/angular';
+import { errorStatus } from 'src/app/constants/errors-status';
 import { IGoogleUser, IUser } from 'src/app/interfaces/user.interface';
 import { AuthService } from 'src/app/services/auth.service';
+import { HelperService } from 'src/app/services/helper.service';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +23,8 @@ export class LoginPage implements OnInit {
     public loadingCtrl: LoadingController,
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private helperService: HelperService
   ) { }
 
   ionViewWillEnter() {
@@ -42,8 +45,8 @@ export class LoginPage implements OnInit {
 
   async forgotPass() {
     const alert = await this.alertCtrl.create({
-      header: 'Forgot Password?',
-      message: 'Enter you email address to send a reset link password.',
+      header: 'Quên mật khẩu?',
+      message: 'Nhập địa chỉ email để nhận đường dẫn tạo mật khẩu mới.',
       inputs: [
         {
           name: 'email',
@@ -53,30 +56,30 @@ export class LoginPage implements OnInit {
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Huỷ',
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
             console.log('Confirm Cancel');
           }
         }, {
-          text: 'Confirm',
+          text: 'Xác nhận',
           handler: async () => {
-            const loader = await this.loadingCtrl.create({
-              duration: 2000
-            });
-
-            loader.present();
-            loader.onWillDismiss().then(async l => {
+            try {
+              const loader = this.helperService.showLoading();
+              const l = (await loader).onWillDismiss();
               const toast = await this.toastCtrl.create({
                 showCloseButton: true,
-                message: 'Email was sended successfully.',
+                message: 'Email đã được gửi.',
                 duration: 3000,
                 position: 'bottom'
               });
-
               toast.present();
-            });
+            } catch (e) {
+              console.log(e);
+            } finally {
+              this.helperService.hideLoading();
+            }
           }
         }
       ]
@@ -96,8 +99,7 @@ export class LoginPage implements OnInit {
 
   async loginWithEmail() {
     try {
-      const loader = await this.loadingCtrl.create({ duration: 3000 });
-      loader.present();
+      this.helperService.showLoading();
       const res = await this.authService.loginWithEmail(this.onLoginForm.value.email, this.onLoginForm.value.password);
       console.log(res);
       const user: IUser = {
@@ -109,19 +111,21 @@ export class LoginPage implements OnInit {
         uid: res.user.uid
       };
       this.authService.updateUser(user);
-      loader.dismiss();
       // loader.dismiss();
       this.navCtrl.navigateRoot('/home-results');
     } catch (e) {
       console.log(e);
+      this.helperService.hideLoading();
+      this.authService.handleErrors(e);
+    } finally {
+      this.helperService.hideLoading();
     }
   }
 
   async loginWithGoogle() {
     try {
       // const loader = await this.loadingCtrl.create();
-      const loader = await this.loadingCtrl.create({ duration: 3000 });
-      loader.present();
+      this.helperService.showLoading();
       const res = await this.authService.loginWithGoogle();
       const user: IUser = {
         email: this.onLoginForm.value.email,
@@ -133,13 +137,13 @@ export class LoginPage implements OnInit {
       };
       this.authService.updateUser(user);
       console.log(res);
-      loader.dismiss();
-
       // loader.dismiss();
       this.navCtrl.navigateRoot('/home-results');
     } catch (e) {
-      console.log(e);
+      this.helperService.hideLoading();
+      this.authService.handleErrors(e);
     } finally {
+      this.helperService.hideLoading();
     }
   }
 }
