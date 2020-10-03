@@ -47,9 +47,9 @@ export class AppComponent implements OnInit, OnDestroy {
         icon: 'cog'
       },
       {
-        title: 'Register',
-        url: '/register',
-        direct: 'forward',
+        title: 'Đăng nhập',
+        url: '/login',
+        direct: 'root',
         icon: 'contact'
       }
     ];

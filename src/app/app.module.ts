@@ -16,7 +16,6 @@ import { ImagePageModule } from './pages/modal/image/image.module';
 import { SearchFilterPageModule } from './pages/modal/search-filter/search-filter.module';
 
 // Components
-import { NotificationsComponent } from './components/notifications/notifications.component';
 
 // firebase
 import * as firebase from 'firebase';
@@ -24,10 +23,15 @@ import { environment } from 'src/environments/environment';
 
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { IonicStorageModule } from '@ionic/storage';
+import { ProductListComponent } from './components/product-list/product-list.component';
+import { ComponentsModule } from './components/components.module';
 
 firebase.initializeApp(environment.firebaseConfig);
 @NgModule({
-  declarations: [AppComponent, NotificationsComponent],
+  declarations: [
+    AppComponent,
+
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -36,16 +40,20 @@ firebase.initializeApp(environment.firebaseConfig);
     AppRoutingModule,
     HttpClientModule,
     ImagePageModule,
-    SearchFilterPageModule
+    SearchFilterPageModule,
+    ComponentsModule
   ],
-  entryComponents: [NotificationsComponent],
+  entryComponents: [],
   providers: [
     StatusBar,
     SplashScreen,
     GooglePlus,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    {
+      provide: RouteReuseStrategy,
+      useClass: IonicRouteStrategy
+    }
   ],
   bootstrap: [AppComponent]
 })
 
-export class AppModule {}
+export class AppModule { }

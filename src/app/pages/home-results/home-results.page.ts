@@ -1,17 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   NavController,
   AlertController,
   MenuController,
   ToastController,
   PopoverController,
-  ModalController } from '@ionic/angular';
+  ModalController, IonSlides
+} from '@ionic/angular';
 
 // Modals
 import { SearchFilterPage } from '../../pages/modal/search-filter/search-filter.page';
 import { ImagePage } from './../modal/image/image.page';
 // Call notifications test by Popover and Custom Component.
 import { NotificationsComponent } from './../../components/notifications/notifications.component';
+import { ICalendar } from 'src/app/interfaces/commont.interface';
 
 @Component({
   selector: 'app-home-results',
@@ -19,10 +21,37 @@ import { NotificationsComponent } from './../../components/notifications/notific
   styleUrls: ['./home-results.page.scss']
 })
 export class HomeResultsPage {
-  searchKey = '';
-  yourLocation = '123 Test Street';
-  themeCover = 'assets/img/ionic4-Start-Theme-cover.jpg';
+  @ViewChild('Slides') slides: IonSlides;
 
+  public searchKey = '';
+  public yourLocation = '123 Test Street';
+  public calender: ICalendar[] = [
+    {
+      id: 'thu2',
+      title: 'Thứ 2'
+    },
+    {
+      id: 'thu3',
+      title: 'Thứ 3'
+    },
+    {
+      id: 'thu4',
+      title: 'Thứ 4'
+    },
+    {
+      id: 'thu5',
+      title: 'Thứ 5'
+    },
+    {
+      id: 'thu6',
+      title: 'Thứ 6'
+    },
+  ];
+  public segment = 'thu2';
+  public slideOpts = {
+    effect: 'flip',
+    zoom: false
+  };
   constructor(
     public navCtrl: NavController,
     public menuCtrl: MenuController,
@@ -81,7 +110,7 @@ export class HomeResultsPage {
     changeLocation.present();
   }
 
-  async searchFilter () {
+  async searchFilter() {
     const modal = await this.modalCtrl.create({
       component: SearchFilterPage
     });
@@ -106,4 +135,17 @@ export class HomeResultsPage {
     return await popover.present();
   }
 
+  update(i) {
+    this.slides.slideTo(i).then((res) => console.log('responseSlideTo', res));
+  }
+
+  seg(event) {
+    this.segment = event.detail.value;
+  }
+  preventDefault(e) {
+    e.preventDefault();
+  }
+  async change() {
+    console.log('change')
+  }
 }

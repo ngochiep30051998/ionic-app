@@ -1,22 +1,22 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
 
 const routes: Routes = [
   {
-    path: '',
-    canActivate: [LoginGuard],
+    path: 'login',
+
     loadChildren: './pages/login/login.module#LoginPageModule'
   },
   {
     path: 'register',
-    canActivate: [LoginGuard],
+
     loadChildren: './pages/register/register.module#RegisterPageModule'
   },
   {
     path: 'about',
-    canActivate: [AuthGuard],
+
     loadChildren: './pages/about/about.module#AboutPageModule'
   },
   {
@@ -25,18 +25,23 @@ const routes: Routes = [
   },
   {
     path: 'edit-profile',
-    canActivate: [AuthGuard],
+
     loadChildren: './pages/edit-profile/edit-profile.module#EditProfilePageModule'
   },
   {
     path: 'home-results',
-    canActivate: [AuthGuard],
+
     loadChildren: './pages/home-results/home-results.module#HomeResultsPageModule'
   },
+  {
+    path: '**',
+    pathMatch: 'full',
+    redirectTo: 'home-results'
+  }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes,{preloadingStrategy: PreloadAllModules})],
   exports: [RouterModule]
 })
 

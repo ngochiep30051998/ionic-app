@@ -4,9 +4,9 @@
       <ion-menu-button color="secondary"></ion-menu-button>
     </ion-buttons>
     <ion-title>
-        <ion-text color="light">
-          <ion-text color="light" class="fw700">FastFood</ion-text>
-        </ion-text>
+      <ion-text color="light">
+        <ion-text color="light" class="fw700">FastFood</ion-text>
+      </ion-text>
     </ion-title>
     <ion-buttons slot="end">
       <ion-button size="small" shape="round" color="medium" (click)="notifications($event)">
@@ -15,6 +15,8 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+
+
   <ion-toolbar color="dark">
     <ion-searchbar [(ngModel)]="searchKey"></ion-searchbar>
     <ion-buttons slot="end">
@@ -23,38 +25,41 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+
+  <ion-toolbar color="primary" class="segmenttoolbarSection">
+    <ion-segment mode="md" scrollable="true" id="dag" class="segSection" (ionChange)="seg($event)">
+      <ion-segment-button *ngFor="let item of calender;let i = index" (ionSelect)="update(i)"  class="ion-no-padding"
+        class="my-btn" [value]="item.id" [ngClass]="{'btn-active':segment == item.id}">
+        <ion-text class="text ion-padding-horizontal">{{item.title}}</ion-text>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
 </ion-header>
 
 <ion-content>
-  <ion-card no-margin class="no-radius">
-    <ion-item lines="none" color="medium">
-      <ion-label>
-        <h2 no-margin class="fw500 no-margin">
-          <ion-text color="dark">Alert / Toast test</ion-text>
-        </h2>
 
-        <p class="text-11x no-margin">
-          <ion-text  color="primary">{{yourLocation}}</ion-text>
-        </p>
-      </ion-label>
-      <ion-button shape="round" fill="outline" size="small" color="primary" (click)="alertLocation()">
-        Location
-        <ion-icon name="locate"></ion-icon>
-      </ion-button>
-    </ion-item>
-  </ion-card>
+  <ion-slides pager="false" [options]="slideOpts" (ionSlideDidChange)="change()" (click)="preventDefault($event)"
+    #Slides>
+    <ion-slide *ngFor="let item of calender;let i = index">
+      <ion-row>
 
-  <ion-card class="bg-white">
-    <ion-img [src]="themeCover"></ion-img>
-    <ion-button expand="full" color="dark" (click)="presentImage(themeCover)" no-margin>
-      Modal 1: Modal Image
-    </ion-button>
-  </ion-card>
+        <ion-col size="12">
+          <app-product-list [title]="'Đồ ăn sáng'"></app-product-list>
+        </ion-col>
 
-  <ion-button margin shape="round" expand="full" color="secondary" (click)="searchFilter()">
-    Modal 2: Search Filter
-  </ion-button>
-  
+        <ion-col size="12">
+          <app-product-list [title]="'Đồ ăn trưa'"></app-product-list>
+        </ion-col>
+
+        <ion-col size="12">
+          <app-product-list [title]="'Đồ uống'"></app-product-list>
+        </ion-col>
+
+      </ion-row>
+    </ion-slide>
+
+  </ion-slides>
+
   <popmenu></popmenu>
 </ion-content>
-  

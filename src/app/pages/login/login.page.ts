@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NavController, MenuController, ToastController, AlertController, LoadingController } from '@ionic/angular';
+import { NavController, MenuController, ToastController, AlertController, LoadingController, PopoverController } from '@ionic/angular';
+import { NotificationsComponent } from 'src/app/components/notifications/notifications.component';
 import { errorStatus } from 'src/app/constants/errors-status';
 import { IGoogleUser, IUser } from 'src/app/interfaces/user.interface';
 import { AuthService } from 'src/app/services/auth.service';
@@ -24,11 +25,13 @@ export class LoginPage implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private helperService: HelperService
+    private helperService: HelperService,
+    public popoverCtrl: PopoverController,
+
   ) { }
 
   ionViewWillEnter() {
-    this.menuCtrl.enable(false);
+    this.menuCtrl.enable(true);
   }
 
   ngOnInit() {
@@ -99,7 +102,7 @@ export class LoginPage implements OnInit {
 
   async loginWithEmail() {
     try {
-      this.helperService.showLoading();
+      await this.helperService.showLoading();
       const res = await this.authService.loginWithEmail(this.onLoginForm.value.email, this.onLoginForm.value.password);
       console.log(res);
       const user: IUser = {
@@ -125,7 +128,7 @@ export class LoginPage implements OnInit {
   async loginWithGoogle() {
     try {
       // const loader = await this.loadingCtrl.create();
-      this.helperService.showLoading();
+      await this.helperService.showLoading();
       const res = await this.authService.loginWithGoogle();
       const user: IUser = {
         email: this.onLoginForm.value.email,
@@ -145,5 +148,15 @@ export class LoginPage implements OnInit {
     } finally {
       this.helperService.hideLoading();
     }
+  }
+  
+  public async notifications(ev: any) {
+    const popover = await this.popoverCtrl.create({
+      component: NotificationsComponent,
+      event: ev,
+      animated: true,
+      showBackdrop: true
+    });
+    return await popover.present();
   }
 }

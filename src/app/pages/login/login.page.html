@@ -1,12 +1,31 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button color="secondary"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      <ion-text color="light">
+        <ion-text color="light" class="fw700">FastFood</ion-text>
+      </ion-text>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button size="small" shape="round" color="medium" (click)="notifications($event)">
+        <ion-icon name="notifications"></ion-icon>
+        <ion-badge color="dark" slot="end">2</ion-badge>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
 
-<ion-content padding class="animated fadeIn login auth-page">
+</ion-header>
+
+<ion-content  class="animated fadeIn login auth-page ion-padding">
   <div class="theme-bg"></div>
   <div class="auth-content">
 
     <!-- Logo -->
-    <div padding-horizontal text-center class="animated fadeInDown">
+    <div class="animated fadeInDown ion-padding-horizontal ion-text-center ">
       <div class="logo"></div>
-      <h4 no-margin>
+      <h4 >
         <ion-text color="light" class="fw700">
           FastFood
         </ion-text>
@@ -15,7 +34,7 @@
 
     <!-- Login form -->
     <form [formGroup]="onLoginForm" class="list-form">
-      <ion-item no-padding class="animated fadeInUp">
+      <ion-item class="animated fadeInUp ion-no-padding">
         <ion-label position="floating">
           <ion-icon name="mail" item-start></ion-icon>
           Email
@@ -28,7 +47,7 @@
         </ion-text>
       </p>
 
-      <ion-item no-padding class="animated fadeInUp">
+      <ion-item class="animated fadeInUp ion-no-padding">
         <ion-label position="floating">
           <ion-icon name="lock" item-start></ion-icon>
           Mật khẩu
@@ -42,7 +61,7 @@
         </p>
     </form>
 
-    <p text-right tappable (click)="forgotPass()" class="paz">
+    <p  tappable (click)="forgotPass()" class="paz ion-text-right">
       <ion-text color="light">
         <strong>Quên mật khẩu?</strong>
       </ion-text>
@@ -54,7 +73,7 @@
         Đăng nhập
       </ion-button>
 
-      <p text-center>
+      <p class="ion-text-center">
         <ion-text color="light">
           hoặc đăng nhập với:
         </ion-text>
@@ -83,7 +102,7 @@
     </div>
 
     <!-- Other links -->
-    <div text-center margin-top>
+    <div class="ion-text-center ion-margin-top" >
       <span (click)="goToRegister()" class="paz" tappable>
         <ion-text color="light">
           Người mới? <strong>Đăng ký</strong>

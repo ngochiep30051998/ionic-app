@@ -5,6 +5,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { LoginPage } from './login.page';
+import { ComponentsModule } from 'src/app/components/components.module';
+import { NotificationsComponent } from 'src/app/components/notifications/notifications.component';
 
 const routes: Routes = [
   {
@@ -19,8 +21,10 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
+    ComponentsModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [LoginPage]
+  declarations: [LoginPage],
+  entryComponents: [NotificationsComponent]
 })
-export class LoginPageModule {}
+export class LoginPageModule { }
