@@ -47,7 +47,7 @@ export class RegisterPage implements OnInit {
         password: this.onRegisterForm.value.password
       };
       const res = await this.authService.register(this.onRegisterForm.value.email, this.onRegisterForm.value.password);
-      const currentUser = this.authService.getCurrentUser();
+      const currentUser = this.authService.getCurrentFirebaseUser();
       const update = await currentUser.updateProfile({
         displayName: this.onRegisterForm.value.fullName,
       });

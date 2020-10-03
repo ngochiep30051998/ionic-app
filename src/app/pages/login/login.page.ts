@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NavController, MenuController, ToastController, AlertController, LoadingController } from '@ionic/angular';
+import { IGoogleUser, IUser } from 'src/app/interfaces/user.interface';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -18,7 +20,8 @@ export class LoginPage implements OnInit {
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ionViewWillEnter() {
@@ -84,7 +87,7 @@ export class LoginPage implements OnInit {
 
   // // //
   goToRegister() {
-    this.navCtrl.navigateRoot('/register');
+    this.router.navigate(['/register']);
   }
 
   goToHome() {
@@ -97,6 +100,15 @@ export class LoginPage implements OnInit {
       loader.present();
       const res = await this.authService.loginWithEmail(this.onLoginForm.value.email, this.onLoginForm.value.password);
       console.log(res);
+      const user: IUser = {
+        email: this.onLoginForm.value.email,
+        displayName: res.user.displayName,
+        phoneNumber: res.user.phoneNumber,
+        photoURL: res.user.photoURL,
+        providerId: res.user.providerId,
+        uid: res.user.uid
+      };
+      this.authService.updateUser(user);
       loader.dismiss();
       // loader.dismiss();
       this.navCtrl.navigateRoot('/home-results');
@@ -111,6 +123,15 @@ export class LoginPage implements OnInit {
       const loader = await this.loadingCtrl.create({ duration: 3000 });
       loader.present();
       const res = await this.authService.loginWithGoogle();
+      const user: IUser = {
+        email: this.onLoginForm.value.email,
+        displayName: res.user.displayName,
+        phoneNumber: res.user.phoneNumber,
+        photoURL: res.user.photoURL,
+        providerId: res.user.providerId,
+        uid: res.user.uid,
+      };
+      this.authService.updateUser(user);
       console.log(res);
       loader.dismiss();
 

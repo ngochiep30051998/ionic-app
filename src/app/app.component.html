@@ -6,28 +6,28 @@
 
           <ion-item margin-bottom>
             <ion-avatar slot="start" class="user-avatar">
-              <img src="assets/img/avatar.jpeg">
+              <img [src]="user?.photoURL || 'assets/img/user.jpeg'">
             </ion-avatar>
             <ion-label>
               <ion-text color="medium">
-                <h1><strong>João Firmino</strong></h1>
+                <h1><strong>{{user?.displayName}}</strong></h1>
               </ion-text>
               <ion-text color="secondary">
                 <h3>
-                  São Paulo, Brazil
+                 {{user?.email}}
                 </h3>
               </ion-text>
               <ion-menu-toggle class="mto" auto-hide="false">
                 <a class="text08" tappable (click)="goToEditProgile()">
                   <ion-text color="medium">
                     <ion-icon name="contact"></ion-icon>
-                    <strong>edit profile</strong>
+                    <strong>Sửa thông tin</strong>
                   </ion-text>
                 </a> <ion-text color="secondary"> | </ion-text> 
                 <a class="text08" tappable (click)="logout()">
                   <ion-text color="medium">
                     <ion-icon name="log-out"></ion-icon>
-                    <strong>logout</strong>
+                    <strong>Thoát</strong>
                   </ion-text>
                 </a>
               </ion-menu-toggle>
@@ -52,6 +52,8 @@
             </ion-item>
           </ion-menu-toggle>
         </ion-list>
+
+        
       </ion-content>
     </ion-menu>
     <ion-router-outlet main></ion-router-outlet>

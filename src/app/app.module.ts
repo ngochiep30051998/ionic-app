@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -23,6 +23,7 @@ import * as firebase from 'firebase';
 import { environment } from 'src/environments/environment';
 
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { IonicStorageModule } from '@ionic/storage';
 
 firebase.initializeApp(environment.firebaseConfig);
 @NgModule({
@@ -31,6 +32,7 @@ firebase.initializeApp(environment.firebaseConfig);
     BrowserModule,
     BrowserAnimationsModule,
     IonicModule.forRoot(),
+    IonicStorageModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
     ImagePageModule,
