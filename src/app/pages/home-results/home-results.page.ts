@@ -146,7 +146,6 @@ export class HomeResultsPage {
     e.preventDefault();
   }
   async change(e) {
-    console.log('change')
     const index = await this.slides.getActiveIndex();
     this.segment = this.calender[index].id;
     this.drag(index);

@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, MenuController, LoadingController } from '@ionic/angular';
 import * as firebase from 'firebase';
+import { IUser } from 'src/app/interfaces/user.interface';
 import { AuthService } from 'src/app/services/auth.service';
+import { FirebaseService } from 'src/app/services/firebase.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -16,7 +18,8 @@ export class RegisterPage implements OnInit {
     public menuCtrl: MenuController,
     public loadingCtrl: LoadingController,
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    public firebaseService: FirebaseService
   ) { }
 
   ionViewWillEnter() {
@@ -51,6 +54,15 @@ export class RegisterPage implements OnInit {
       const update = await currentUser.updateProfile({
         displayName: this.onRegisterForm.value.fullName,
       });
+      const newUser: IUser = {
+        email: currentUser.email,
+        displayName: this.onRegisterForm.value.fullName,
+        photoURL: currentUser.photoURL,
+        phoneNumber: currentUser.phoneNumber,
+        uid: currentUser.uid,
+        providerId: currentUser.providerId
+      };
+      this.firebaseService.insertRef('/users', newUser);
       console.log(res);
       loader.present();
       loader.onWillDismiss().then(() => {
@@ -58,11 +70,12 @@ export class RegisterPage implements OnInit {
       });
     } catch (e) {
       console.log(e);
+      this.authService.handleErrors(e);
     }
   }
 
   // // //
   goToLogin() {
-    this.navCtrl.navigateRoot('/');
+    this.navCtrl.navigateRoot('/login');
   }
 }

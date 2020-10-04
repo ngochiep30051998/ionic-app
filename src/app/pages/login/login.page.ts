@@ -6,6 +6,7 @@ import { NotificationsComponent } from 'src/app/components/notifications/notific
 import { errorStatus } from 'src/app/constants/errors-status';
 import { IGoogleUser, IUser } from 'src/app/interfaces/user.interface';
 import { AuthService } from 'src/app/services/auth.service';
+import { FirebaseService } from 'src/app/services/firebase.service';
 import { HelperService } from 'src/app/services/helper.service';
 
 @Component({
@@ -27,7 +28,7 @@ export class LoginPage implements OnInit {
     private router: Router,
     private helperService: HelperService,
     public popoverCtrl: PopoverController,
-
+    public firebaseService: FirebaseService
   ) { }
 
   ionViewWillEnter() {
@@ -115,6 +116,9 @@ export class LoginPage implements OnInit {
       };
       this.authService.updateUser(user);
       // loader.dismiss();
+      if (res.additionalUserInfo.isNewUser) {
+        this.firebaseService.insertRef('/users', user);
+      }
       this.navCtrl.navigateRoot('/home-results');
     } catch (e) {
       console.log(e);
@@ -149,7 +153,7 @@ export class LoginPage implements OnInit {
       this.helperService.hideLoading();
     }
   }
-  
+
   public async notifications(ev: any) {
     const popover = await this.popoverCtrl.create({
       component: NotificationsComponent,

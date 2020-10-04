@@ -67,14 +67,18 @@ export class AuthService {
   }
   handleErrors(e) {
     if (e && e.code) {
-      const title = 'Đăng nhập thất bại';
+      let title = 'Đăng nhập thất bại';
       switch (e.code) {
         case errorStatus.wrongPassword:
           this.helperService.showAlert(title, `Mật khẩu không hợp lệ hoặc người dùng không có mật khẩu,
-           thử lại với phương thức đăng nhập khác`);
+           thử lại với phương thức đăng nhập khác.`);
           break;
         case errorStatus.userNotFound:
           this.helperService.showAlert(title, 'Không tìm thấy tài khoản, có thể tài khoản của bạn đã bị xoá.');
+          break;
+        case errorStatus.existedEmail:
+          title = 'Đăng ký thất bại'
+          this.helperService.showAlert(title, 'Email đã được sử dụng.');
           break;
       }
     }
