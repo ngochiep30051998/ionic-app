@@ -44,13 +44,13 @@ export class AuthService {
     }
   }
   async logout() {
-    localStorage.clear();
     await firebase.auth().signOut();
+    this.updateUser(null);
     this.navCtrl.navigateRoot('/');
   }
 
   getCurrentUser(): IUser {
-    return JSON.parse(localStorage.getItem('user'));
+    return firebase.auth().currentUser;
   }
 
   getCurrentFirebaseUser(): firebase.User {
@@ -58,7 +58,6 @@ export class AuthService {
   }
 
   updateUser(user: IUser) {
-    localStorage.setItem('user', JSON.stringify(user));
     this.user$.next(user);
   }
 

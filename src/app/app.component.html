@@ -18,18 +18,29 @@
                 </h3>
               </ion-text>
               <ion-menu-toggle class="mto" auto-hide="false">
-                <a class="text08" tappable (click)="goToEditProgile()">
+                <a class="text08" tappable (click)="goToEditProgile()" *ngIf="user">
                   <ion-text color="medium">
                     <ion-icon name="contact"></ion-icon>
-                    <strong>Sửa thông tin</strong>
+                    <strong >Sửa thông tin</strong>
                   </ion-text>
-                </a> <ion-text color="secondary"> | </ion-text> 
-                <a class="text08" tappable (click)="logout()">
+                </a> <ion-text color="secondary" *ngIf="user"> | </ion-text> 
+
+
+
+                <a class="text08" *ngIf="user" tappable (click)="logout()">
                   <ion-text color="medium">
                     <ion-icon name="log-out"></ion-icon>
                     <strong>Thoát</strong>
                   </ion-text>
                 </a>
+
+                <a class="text08" tappable (click)="gotoLogin()" *ngIf="!user">
+                  <ion-text color="medium">
+                    <ion-icon name="contact"></ion-icon>
+                    <strong *ngIf="!user" >Đăng nhập</strong>
+                  </ion-text>
+                </a>
+                
               </ion-menu-toggle>
             </ion-label>
           </ion-item>

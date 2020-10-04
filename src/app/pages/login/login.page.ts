@@ -107,7 +107,7 @@ export class LoginPage implements OnInit {
       const res = await this.authService.loginWithEmail(this.onLoginForm.value.email, this.onLoginForm.value.password);
       console.log(res);
       const user: IUser = {
-        email: this.onLoginForm.value.email,
+        email: res.user.email,
         displayName: res.user.displayName,
         phoneNumber: res.user.phoneNumber,
         photoURL: res.user.photoURL,
@@ -135,7 +135,7 @@ export class LoginPage implements OnInit {
       await this.helperService.showLoading();
       const res = await this.authService.loginWithGoogle();
       const user: IUser = {
-        email: this.onLoginForm.value.email,
+        email: res.user.email,
         displayName: res.user.displayName,
         phoneNumber: res.user.phoneNumber,
         photoURL: res.user.photoURL,
@@ -143,9 +143,12 @@ export class LoginPage implements OnInit {
         uid: res.user.uid,
       };
       this.authService.updateUser(user);
+      if (res.additionalUserInfo.isNewUser) {
+        this.firebaseService.insertRef('/users', user);
+      }
       console.log(res);
       // loader.dismiss();
-      this.navCtrl.navigateRoot('/home-results');
+      this.router.navigateByUrl('/home-results');
     } catch (e) {
       this.helperService.hideLoading();
       this.authService.handleErrors(e);

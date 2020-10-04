@@ -8,6 +8,7 @@ import { Pages } from './interfaces/pages';
 import { AuthService } from './services/auth.service';
 import { IGoogleUser, IUser } from './interfaces/user.interface';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     public navCtrl: NavController,
-    private authService: AuthService
+    private authService: AuthService,
+    public router: Router
   ) {
     this.appPages = [
       {
@@ -45,12 +47,6 @@ export class AppComponent implements OnInit, OnDestroy {
         url: '/settings',
         direct: 'forward',
         icon: 'cog'
-      },
-      {
-        title: 'Đăng nhập',
-        url: '/login',
-        direct: 'root',
-        icon: 'contact'
       }
     ];
 
@@ -74,6 +70,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   goToEditProgile() {
     this.navCtrl.navigateForward('edit-profile');
+  }
+
+  gotoLogin() {
+    this.navCtrl.navigateRoot('/login');
   }
 
   logout() {

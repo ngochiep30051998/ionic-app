@@ -5,6 +5,7 @@ import * as firebase from 'firebase';
 import { IUser } from 'src/app/interfaces/user.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { HelperService } from 'src/app/services/helper.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -19,7 +20,8 @@ export class RegisterPage implements OnInit {
     public loadingCtrl: LoadingController,
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    public firebaseService: FirebaseService
+    public firebaseService: FirebaseService,
+    public helperService: HelperService
   ) { }
 
   ionViewWillEnter() {
@@ -42,9 +44,7 @@ export class RegisterPage implements OnInit {
 
   async signUp() {
     try {
-      const loader = await this.loadingCtrl.create({
-        duration: 2000
-      });
+      this.helperService.showLoading();
       const params = {
         email: this.onRegisterForm.value.email,
         password: this.onRegisterForm.value.password
@@ -63,13 +63,12 @@ export class RegisterPage implements OnInit {
         providerId: currentUser.providerId
       };
       this.firebaseService.insertRef('/users', newUser);
+      this.helperService.hideLoading();
+      this.navCtrl.navigateRoot('/home-results');
       console.log(res);
-      loader.present();
-      loader.onWillDismiss().then(() => {
-        this.navCtrl.navigateRoot('/home-results');
-      });
     } catch (e) {
       console.log(e);
+      this.helperService.hideLoading();
       this.authService.handleErrors(e);
     }
   }
