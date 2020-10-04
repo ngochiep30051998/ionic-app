@@ -24,6 +24,7 @@ export class HelperService {
   hideLoading() {
     if (this.loader) {
       this.loader.dismiss();
+      this.loader = null;
     }
   }
 
@@ -43,4 +44,7 @@ export class HelperService {
     return await alert.present();
   }
 
+  initMenu() {
+
+  }
 }

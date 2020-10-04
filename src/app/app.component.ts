@@ -32,20 +32,17 @@ export class AppComponent implements OnInit, OnDestroy {
       {
         title: 'Home',
         url: '/home-results',
-        direct: 'root',
         icon: 'home'
       },
       {
         title: 'About',
         url: '/about',
-        direct: 'forward',
         icon: 'information-circle-outline'
       },
 
       {
         title: 'App Settings',
         url: '/settings',
-        direct: 'forward',
         icon: 'cog'
       }
     ];
@@ -69,17 +66,20 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   goToEditProgile() {
-    this.navCtrl.navigateForward('edit-profile');
+    this.router.navigateByUrl('/edit-profile');
   }
 
   gotoLogin() {
-    this.navCtrl.navigateRoot('/login');
+    this.router.navigateByUrl('/login');
   }
 
   logout() {
     this.authService.logout();
   }
 
+  gotoPage(page) {
+    this.router.navigate([page])
+  }
   ngOnDestroy(): void {
     if (this.userSub$) {
       this.userSub$.unsubscribe();

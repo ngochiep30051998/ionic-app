@@ -76,7 +76,8 @@ export class LoginPage implements OnInit {
                 showCloseButton: true,
                 message: 'Email đã được gửi.',
                 duration: 3000,
-                position: 'bottom'
+                position: 'bottom',
+                closeButtonText: 'Đóng',
               });
               toast.present();
             } catch (e) {
@@ -119,7 +120,7 @@ export class LoginPage implements OnInit {
       if (res.additionalUserInfo.isNewUser) {
         this.firebaseService.insertRef('/users', user);
       }
-      this.navCtrl.navigateRoot('/home-results');
+      this.router.navigateByUrl('/home-results');
     } catch (e) {
       console.log(e);
       this.helperService.hideLoading();

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavController, MenuController, LoadingController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { NavController, MenuController, LoadingController, ToastController } from '@ionic/angular';
 import * as firebase from 'firebase';
 import { IUser } from 'src/app/interfaces/user.interface';
 import { AuthService } from 'src/app/services/auth.service';
@@ -21,7 +22,10 @@ export class RegisterPage implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     public firebaseService: FirebaseService,
-    public helperService: HelperService
+    public helperService: HelperService,
+    public router: Router,
+    public toastCtrl: ToastController,
+
   ) { }
 
   ionViewWillEnter() {
@@ -45,13 +49,9 @@ export class RegisterPage implements OnInit {
   async signUp() {
     try {
       this.helperService.showLoading();
-      const params = {
-        email: this.onRegisterForm.value.email,
-        password: this.onRegisterForm.value.password
-      };
       const res = await this.authService.register(this.onRegisterForm.value.email, this.onRegisterForm.value.password);
       const currentUser = this.authService.getCurrentFirebaseUser();
-      const update = await currentUser.updateProfile({
+      await currentUser.updateProfile({
         displayName: this.onRegisterForm.value.fullName,
       });
       const newUser: IUser = {
@@ -63,16 +63,52 @@ export class RegisterPage implements OnInit {
         providerId: currentUser.providerId
       };
       this.firebaseService.insertRef('/users', newUser);
-      this.helperService.hideLoading();
-      this.navCtrl.navigateRoot('/home-results');
+      const toast = await this.toastCtrl.create({
+        showCloseButton: true,
+        closeButtonText: 'Đóng',
+        message: 'Đăng ký thành công.',
+        duration: 3000,
+        position: 'bottom'
+      });
+      toast.present();
+      await this.loginWithEmail(this.onRegisterForm.value.email, this.onRegisterForm.value.password);
       console.log(res);
     } catch (e) {
       console.log(e);
       this.helperService.hideLoading();
       this.authService.handleErrors(e);
+    } finally {
+      this.helperService.hideLoading();
     }
   }
 
+  async loginWithEmail(email: string, password: string) {
+    try {
+      await this.helperService.showLoading();
+      const res = await this.authService.loginWithEmail(email, password);
+      console.log(res);
+      const user: IUser = {
+        email: res.user.email,
+        displayName: res.user.displayName,
+        phoneNumber: res.user.phoneNumber,
+        photoURL: res.user.photoURL,
+        providerId: res.user.providerId,
+        uid: res.user.uid
+      };
+      this.authService.updateUser(user);
+      // loader.dismiss();
+      if (res.additionalUserInfo.isNewUser) {
+        this.firebaseService.insertRef('/users', user);
+      }
+      this.router.navigateByUrl('/home-results');
+    } catch (e) {
+      console.log(e);
+      this.helperService.hideLoading();
+      this.authService.handleErrors(e);
+    } finally {
+      this.helperService.hideLoading();
+    }
+  }
   // // //
   goToLogin() {
     this.navCtrl.navigateRoot('/login');
