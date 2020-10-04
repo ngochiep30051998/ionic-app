@@ -29,7 +29,7 @@
   <ion-toolbar color="primary" class="segmenttoolbarSection">
     <ion-segment mode="md" scrollable="true" id="dag" class="segSection" (ionChange)="seg($event)">
       <ion-segment-button *ngFor="let item of calender;let i = index" (ionSelect)="update(i)"  class="ion-no-padding"
-        class="my-btn" [value]="item.id" [ngClass]="{'btn-active':segment == item.id}">
+        class="my-btn" [value]="item.id" [ngClass]="{'btn-active':segment == item.id}" [attr.id]="'seg_' + i">
         <ion-text class="text ion-padding-horizontal">{{item.title}}</ion-text>
       </ion-segment-button>
     </ion-segment>
@@ -39,9 +39,9 @@
 
 <ion-content>
 
-  <ion-slides pager="false" [options]="slideOpts" (ionSlideDidChange)="change()" (click)="preventDefault($event)"
+  <ion-slides pager="false" [options]="slideOpts" (ionSlideDidChange)="change($event)" (click)="preventDefault($event)"
     #Slides>
-    <ion-slide *ngFor="let item of calender;let i = index">
+    <ion-slide *ngFor="let item of calender;let i = index" >
       <ion-row>
 
         <ion-col size="12">

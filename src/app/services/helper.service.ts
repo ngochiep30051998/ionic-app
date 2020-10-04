@@ -13,9 +13,9 @@ export class HelperService {
     public toastCtrl: ToastController
   ) { }
 
-  async showLoading(time?) {
+  async showLoading(message?, time?) {
     if (!this.loader) {
-      this.loader = await this.loadingCtrl.create({ duration: time || 10000 });
+      this.loader = await this.loadingCtrl.create({ duration: time || 10000, message });
       this.loader.present();
       return this.loader;
     }

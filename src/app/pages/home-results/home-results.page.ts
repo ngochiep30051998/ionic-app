@@ -145,7 +145,21 @@ export class HomeResultsPage {
   preventDefault(e) {
     e.preventDefault();
   }
-  async change() {
+  async change(e) {
     console.log('change')
+    const index = await this.slides.getActiveIndex();
+    this.segment = this.calender[index].id;
+    this.drag(index);
+  }
+
+  drag(i) {
+    let distanceToScroll = 0;
+    for (const index in this.calender) {
+      // tslint:disable-next-line: radix
+      if (parseInt(index) < i) {
+        distanceToScroll = distanceToScroll + document.getElementById('seg_' + index).offsetWidth + 24;
+      }
+    }
+    document.getElementById('dag').scrollLeft = distanceToScroll;
   }
 }
