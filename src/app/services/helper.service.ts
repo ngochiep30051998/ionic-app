@@ -1,5 +1,7 @@
+import { formatDate } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
+import { ICalendar } from '../interfaces/commont.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +46,29 @@ export class HelperService {
     return await alert.present();
   }
 
-  initMenu() {
-
+  getNameOfDate(date) {
+    const days = ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+    return days[date.getDay()];
   }
+
+  initDate(): ICalendar[] {
+    const currentDate = new Date();
+    const crr = formatDate(new Date('10/02/2020'), 'MM/dd/yyyy', 'en');
+
+    const first = currentDate.getDate() - currentDate.getDay();
+    const firstday = new Date(currentDate.setDate(first));
+    const arr: ICalendar[] = [];
+    for (let i = 0; i < 7; i++) {
+      const date = formatDate(firstday.setDate(firstday.getDate() - 1), 'MM/dd/yyyy', 'en');
+      const menu: ICalendar = {
+        id: date,
+        title: this.getNameOfDate(new Date(date)),
+        isCurrent: crr === date
+      };
+      arr.unshift(menu);
+    }
+    console.log(arr);
+    return arr;
+  }
+
 }

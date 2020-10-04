@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ViewChild } from '@angular/core';
 import {
   NavController,
   AlertController,
@@ -14,6 +14,7 @@ import { ImagePage } from './../modal/image/image.page';
 // Call notifications test by Popover and Custom Component.
 import { NotificationsComponent } from './../../components/notifications/notifications.component';
 import { ICalendar } from 'src/app/interfaces/commont.interface';
+import { HelperService } from 'src/app/services/helper.service';
 
 @Component({
   selector: 'app-home-results',
@@ -25,48 +26,37 @@ export class HomeResultsPage {
 
   public searchKey = '';
   public yourLocation = '123 Test Street';
-  public calender: ICalendar[] = [
-    {
-      id: 'thu2',
-      title: 'Thứ 2'
-    },
-    {
-      id: 'thu3',
-      title: 'Thứ 3'
-    },
-    {
-      id: 'thu4',
-      title: 'Thứ 4'
-    },
-    {
-      id: 'thu5',
-      title: 'Thứ 5'
-    },
-    {
-      id: 'thu6',
-      title: 'Thứ 6'
-    },
-  ];
-  public segment = 'thu2';
+  public calender: ICalendar[] = [];
+  public segment = '';
   public slideOpts = {
     effect: 'flip',
     zoom: false
   };
+  public segmentIndex = 0;
   constructor(
     public navCtrl: NavController,
     public menuCtrl: MenuController,
     public popoverCtrl: PopoverController,
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    public helperService: HelperService
   ) {
-
+    this.calender = this.helperService.initDate().slice(1, 6);
+    const index = this.calender.findIndex(x => x.isCurrent);
+    if (index > -1) {
+      this.segmentIndex = index;
+      this.segment = this.calender[index].id;
+    } else {
+      this.segment = this.calender[0].id;
+    }
   }
 
   ionViewWillEnter() {
     this.menuCtrl.enable(true);
-  }
+    this.drag(this.segmentIndex);
 
+  }
   settings() {
     this.navCtrl.navigateForward('settings');
   }

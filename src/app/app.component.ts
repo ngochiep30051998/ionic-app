@@ -9,6 +9,7 @@ import { AuthService } from './services/auth.service';
 import { IGoogleUser, IUser } from './interfaces/user.interface';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { HelperService } from './services/helper.service';
 
 @Component({
   selector: 'app-root',
@@ -26,28 +27,30 @@ export class AppComponent implements OnInit, OnDestroy {
     private statusBar: StatusBar,
     public navCtrl: NavController,
     private authService: AuthService,
-    public router: Router
+    public router: Router,
+    public helperService: HelperService
   ) {
     this.appPages = [
       {
-        title: 'Home',
+        title: 'Trang chủ',
         url: '/home-results',
         icon: 'home'
       },
       {
-        title: 'About',
+        title: 'Giới thiệu',
         url: '/about',
         icon: 'information-circle-outline'
       },
 
       {
-        title: 'App Settings',
+        title: 'Cài đặt',
         url: '/settings',
         icon: 'cog'
       }
     ];
 
     this.initializeApp();
+    this.helperService.initDate();
     this.user = this.authService.getCurrentUser();
     this.userSub$ = this.authService.getUserInfo().subscribe((res: IUser) => {
       this.user = res;
