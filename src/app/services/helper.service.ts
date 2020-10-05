@@ -53,7 +53,7 @@ export class HelperService {
 
   initDate(): ICalendar[] {
     const currentDate = new Date();
-    const crr = formatDate(new Date('10/02/2020'), 'MM/dd/yyyy', 'en');
+    const crr = formatDate(new Date(), 'MM/dd/yyyy', 'en');
 
     const first = currentDate.getDate() - currentDate.getDay();
     const firstday = new Date(currentDate.setDate(first));
