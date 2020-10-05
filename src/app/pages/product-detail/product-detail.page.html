@@ -1,0 +1,102 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <ion-text color="light">
+        <ion-text color="light" class="fw700">Thông tin sản phẩm</ion-text>
+      </ion-text>
+    </ion-title>
+
+  </ion-toolbar>
+
+
+
+</ion-header>
+<ion-content class="ion-padding">
+
+<div>
+  <ion-row class="ion-padding-0">
+    <ion-col class="padding-0">
+      <ion-slides pager="true" [options]="slideOpts">
+        <ion-slide>
+          <img class="image" [src]="'https://images.foody.vn/res/g2/16640/prof/s280x175/foody-mobile-che1-jpg-611-636016076623676160.jpg'" >
+          <div class="product-image-overlay"></div>
+        </ion-slide>
+
+        <ion-slide>
+          <img class="image" [src]="'https://images.foody.vn/res/g20/193679/prof/s280x175/foody-mobile-co-lien-jpg-126-636046074318289765.jpg'" >
+          <div class="product-image-overlay"></div>
+        </ion-slide>
+
+        <ion-slide>
+          <img class="image" [src]="'https://images.foody.vn/res/g5/42603/prof/s280x175/foody-mobile-x1-jpg-628-635766348368431052.jpg'" >
+          <div class="product-image-overlay"></div>
+        </ion-slide>
+
+      </ion-slides>
+      <ion-badge class="badge">
+        <ion-icon name="images"></ion-icon>10
+      </ion-badge>
+
+    </ion-col>
+  </ion-row>
+  <div class="ion-padding">
+
+    <ion-row lines="none" class="row">
+      <ion-text class="name">{{'product.name'}}</ion-text>
+    </ion-row>
+    <ion-row>
+      <ion-icon name="star" color="mytheme" *ngFor="let i of [1,2,3]"></ion-icon>
+      <ion-icon name="star-outline" color="mytheme" *ngFor="let i of [1,2,3,4,5]"></ion-icon>
+      <h6 class="ion-no-margin ion-padding-start rate" >({{'product.store_rating'}} store ratings)</h6>
+    </ion-row>
+    
+   
+
+    <div class="sep"></div>
+    <div>
+      <ion-text><span class="ion-float-left ion-no-margin"><strong>Sold By</strong></span></ion-text><br>
+      <ion-row>
+        <ion-col size="2">
+          <ion-avatar class="avatar"><img [src]="'assets/img/user.jpeg'"></ion-avatar>
+        </ion-col>
+        <ion-col>
+          <ion-text><span class="ion-float-left ion-no-margin">{{'product.sold_by'}}</span></ion-text><br>
+          <ion-text>
+            <h6 class="ion-float-left ion-no-margin">{{'product.store_rating'}} ratings</h6>
+          </ion-text><br>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div class="sep"></div>
+    <div class="ion-padding">
+      <ion-row class="ion-justify-content-center hover-buttons">
+        <ion-icon size="small" name="logo-instagram" class="ion-float-right fab" ></ion-icon>
+        <ion-icon size="small" name="share" class="ion-float-right fab" ></ion-icon>
+        <ion-icon *ngIf="!liked" size="small" name="heart-empty" class="ion-float-right fab" (click)="like()"></ion-icon>
+        <ion-icon *ngIf="liked" size="small" name="heart" class="ion-float-right red fab" (click)="like()"></ion-icon>
+      </ion-row>
+    </div>
+  </div>
+</div>
+</ion-content>
+
+<ion-footer class="footer ion-align-items-center" >
+  <ion-row class="ion-align-items-center">
+    <ion-col class="ion-padding">
+      <ion-text >
+        <h6 class="ion-no-margin cut">{{'100000' |number}}{{'VNĐ'}}</h6>
+      </ion-text>
+
+      <ion-text >
+        <h3  class="ion-no-margin foot-highlight">{{'20000' |number}}{{'VNĐ'}}</h3>
+      </ion-text>
+    </ion-col>
+    <ion-col size="4">
+      <ion-button class="ion-float-right white foot-btn ion-no-margin" color="orange"  expand="block"><strong>Mua</strong></ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

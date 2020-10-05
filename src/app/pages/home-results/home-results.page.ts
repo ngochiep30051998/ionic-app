@@ -15,6 +15,7 @@ import { ImagePage } from './../modal/image/image.page';
 import { NotificationsComponent } from './../../components/notifications/notifications.component';
 import { ICalendar } from 'src/app/interfaces/commont.interface';
 import { HelperService } from 'src/app/services/helper.service';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-home-results',
@@ -36,11 +37,11 @@ export class HomeResultsPage {
   constructor(
     public navCtrl: NavController,
     public menuCtrl: MenuController,
-    public popoverCtrl: PopoverController,
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,
-    public helperService: HelperService
+    public helperService: HelperService,
+    private api: ApiService
   ) {
     this.calender = this.helperService.initDate().slice(1, 6);
     const index = this.calender.findIndex(x => x.isCurrent);
@@ -115,15 +116,7 @@ export class HomeResultsPage {
     return await modal.present();
   }
 
-  public async notifications(ev: any) {
-    const popover = await this.popoverCtrl.create({
-      component: NotificationsComponent,
-      event: ev,
-      animated: true,
-      showBackdrop: true
-    });
-    return await popover.present();
-  }
+
 
   update(i) {
     this.slides.slideTo(i).then((res) => console.log('responseSlideTo', res));
@@ -150,5 +143,14 @@ export class HomeResultsPage {
       }
     }
     document.getElementById('dag').scrollLeft = distanceToScroll;
+  }
+
+  async getData() {
+    try {
+      const res = await this.api.crawlData();
+      console.log(res);
+    } catch (e) {
+      console.log(e);
+    }
   }
 }

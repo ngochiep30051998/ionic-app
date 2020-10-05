@@ -19,6 +19,9 @@ import { IonicModule } from '@ionic/angular';
     NotificationsComponent,
     ProductListComponent,
     PopmenuComponent
+  ],
+  entryComponents: [
+    NotificationsComponent
   ]
 })
 export class ComponentsModule { }

@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 
 import { HomeResultsPage } from './home-results.page';
 import { ComponentsModule } from 'src/app/components/components.module';
-import { NotificationsComponent } from 'src/app/components/notifications/notifications.component';
 
 const routes: Routes = [
   {
@@ -26,6 +25,5 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [HomeResultsPage],
-  entryComponents: [NotificationsComponent]
 })
 export class HomeResultsPageModule { }
