@@ -34,6 +34,7 @@ const routes: Routes = [
     loadChildren: './pages/home-results/home-results.module#HomeResultsPageModule'
   },
   { path: 'product-detail', loadChildren: './pages/product-detail/product-detail.module#ProductDetailPageModule' },
+  { path: 'cart', loadChildren: './pages/cart/cart.module#CartPageModule' },
   {
     path: '**',
     pathMatch: 'full',

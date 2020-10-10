@@ -1,0 +1,107 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <ion-text color="light">
+        <ion-text color="light" class="fw700">Giỏ hàng</ion-text>
+      </ion-text>
+    </ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding-top" color="light">
+  <div class="mid" *ngIf="!show">
+    <ion-row size="12" class="ion-justify-content-center" disabled="true">
+      <button class="circle">
+        <ion-icon name="cart" size="large"></ion-icon>
+      </button>
+    </ion-row>
+    <ion-row size="12" class="ion-justify-content-center" disabled="true">
+      <ion-text><strong>Your cart is empty</strong></ion-text>
+    </ion-row>
+    <ion-row size="12" class="ion-justify-content-center" disabled="true">
+      <ion-button fill="clear" color="primary" >Browse Products</ion-button>
+    </ion-row>
+  </div>
+  <div *ngIf="show">
+    <ion-row class="ion-margin-horizontal ion-margin-bottom">
+      <ion-text><strong class="text">Items in Cart</strong></ion-text>
+    </ion-row>
+    <ion-list #slidingList>
+      <ion-item-sliding class="ion-no-padding card ion-no-margin" >
+        <ion-item lines="none">
+          <ion-row>
+            <ion-col size="3" class="ion-text-center">
+              <img [src]="'https://images.foody.vn/res/g64/635171/s400x400/foody-banh-mi-huong-lan-944-637288064610273528.jpeg'" alt="1111">
+              <ion-text color="danger" class="small" >Remove</ion-text>
+            </ion-col>
+            <ion-col size="6">
+              <h3 class="ion-no-margin item-name">name</h3>
+              <h5 class="ion-no-margin item-def">size</h5>
+              <h5 class="ion-no-margin item-def">shipping: </h5>
+              <h5 class="ion-no-margin item-def">Dec 31 - Jan 17</h5>
+            </ion-col>
+            <ion-col size="3" class="ion-float-right">
+              <ion-row class="ion-text-end ion-justify-content-end">
+                <h3  class="item-name ion-text-end ion-no-margin">$11</h3>
+                <h3 class="ion-no-margin item-name ion-text-end" ><span class="cut">$12</span></h3>
+              </ion-row>
+              <ion-row class="ion-justify-content-end">
+                <ion-select placeholder="-" interface="popover" [interfaceOptions]="customAlertOptions"
+                  class="select">
+                  <ion-select-option *ngFor="let q of [1,2,3,4]" [(value)]="q" class="ion-text-center">{{q}}</ion-select-option>
+                </ion-select>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option color="danger" >
+            <ion-icon name="trash" size="large"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+
+    <ion-row class="ion-margin">
+      <ion-text><strong class="text">Order Summary</strong></ion-text>
+    </ion-row>
+    <ion-item lines="none" class="card ion-no-margin">
+      <ion-row class="full">
+        <ion-col size="9">
+          <ion-input placeholder="Enter Promo Code" class="input"></ion-input>
+        </ion-col>
+        <ion-col class="ion-align-self-center" size="3">
+          <ion-button fill="outline" expand="block" ><span class="small">Apply</span></ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+    <div lines="none" class="card ion-no-margin ion-padding-bottom" >
+
+      <ion-row class="full ion-padding-horizontal" >
+        <ion-col size="9">
+          <ion-text>Shipping</ion-text>
+        </ion-col>
+        <ion-col size="3" class="ion-text-end">
+          <ion-text>$15</ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row class="full ion-padding-horizontal" >
+        <ion-col size="9">
+          <ion-text>Item Total</ion-text>
+        </ion-col>
+        <ion-col size="3" class="ion-text-end">
+          <ion-text>$11</ion-text>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+</ion-content>
+<ion-footer *ngIf="show">
+  <ion-toolbar color="success">
+    <ion-title>Checkout</ion-title>
+  </ion-toolbar>
+</ion-footer>

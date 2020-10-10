@@ -16,6 +16,7 @@ import { NotificationsComponent } from './../../components/notifications/notific
 import { ICalendar } from 'src/app/interfaces/commont.interface';
 import { HelperService } from 'src/app/services/helper.service';
 import { ApiService } from 'src/app/services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-results',
@@ -41,7 +42,8 @@ export class HomeResultsPage {
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,
     public helperService: HelperService,
-    private api: ApiService
+    private api: ApiService,
+    private router: Router
   ) {
     this.calender = this.helperService.initDate().slice(1, 6);
     const index = this.calender.findIndex(x => x.isCurrent);
@@ -152,5 +154,8 @@ export class HomeResultsPage {
     } catch (e) {
       console.log(e);
     }
+  }
+  gotoPage(page) {
+    this.router.navigate([page]);
   }
 }
