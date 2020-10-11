@@ -118,7 +118,7 @@ export class LoginPage implements OnInit {
       this.authService.updateUser(user);
       // loader.dismiss();
       if (res.additionalUserInfo.isNewUser) {
-        this.firebaseService.insertRef('/users', user);
+        this.firebaseService.insertRefWithId('/users', res.user.uid, user);
       }
       this.router.navigateByUrl('/home-results');
     } catch (e) {
@@ -145,7 +145,8 @@ export class LoginPage implements OnInit {
       };
       this.authService.updateUser(user);
       if (res.additionalUserInfo.isNewUser) {
-        this.firebaseService.insertRef('/users', user);
+        this.firebaseService.insertRefWithId('/users', res.user.uid, user);
+
       }
       console.log(res);
       // loader.dismiss();

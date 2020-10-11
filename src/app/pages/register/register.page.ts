@@ -62,7 +62,8 @@ export class RegisterPage implements OnInit {
         uid: currentUser.uid,
         providerId: currentUser.providerId
       };
-      this.firebaseService.insertRef('/users', newUser);
+      // this.firebaseService.insertRef('/users', newUser);
+      this.firebaseService.insertRefWithId('/users', res.user.uid, newUser);
       const toast = await this.toastCtrl.create({
         showCloseButton: true,
         closeButtonText: 'Đóng',

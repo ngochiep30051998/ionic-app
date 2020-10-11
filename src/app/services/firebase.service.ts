@@ -10,4 +10,8 @@ export class FirebaseService {
   public insertRef(ref: string, value: any) {
     return firebase.database().ref(ref).push(value);
   }
+
+  public insertRefWithId(ref: string, id: string, value: any) {
+    return firebase.database().ref(`${ref}/${id}`).set(value);
+  }
 }
