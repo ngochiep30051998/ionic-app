@@ -5,4 +5,5 @@ export interface IMenu {
     lunch?: IProduct[];
     drinks?: IProduct[];
     id?: string;
+    key?: string;
 }

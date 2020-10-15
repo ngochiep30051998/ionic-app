@@ -40,6 +40,7 @@ export class HomeResultsPage {
   };
   public segmentIndex = 0;
   public menu: IMenu;
+  public menus: IMenu[] = [];
   public menuSub$: Subscription;
   constructor(
     public navCtrl: NavController,
@@ -60,7 +61,9 @@ export class HomeResultsPage {
     } else {
       this.segment = this.calender[0].id;
     }
+    // this.getListMenu();
     this.getMenu(this.segment);
+
   }
 
   ionViewWillEnter() {
@@ -103,7 +106,7 @@ export class HomeResultsPage {
   async change(e) {
     const index = await this.slides.getActiveIndex();
     this.segment = this.calender[index].id;
-    this.getMenu(this.segment)
+    this.getMenu(this.segment);
     this.drag(index);
 
   }
@@ -119,22 +122,29 @@ export class HomeResultsPage {
     document.getElementById('dag').scrollLeft = distanceToScroll;
   }
 
-  async getData() {
-    try {
-      const res = await this.api.crawlData();
-      console.log(res);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
   getMenu(date) {
+    this.helperService.showLoading();
+    this.menu = {};
     const id = moment(date).format('DD-MM-YYYY');
     this.menuSub$ = this.firebaseService.getMenuById(id).subscribe((res) => {
       console.log(res);
       this.menu = res;
+      this.helperService.hideLoading();
+
+    }, err => {
+      this.helperService.hideLoading();
     });
   }
+  // getListMenu() {
+  //   const start = moment(this.calender[0].id).format('DD-MM-YYYY');
+  //   const end = moment(this.calender[this.calender.length - 1].id).format('DD-MM-YYYY');
+  //   this.firebaseService.getListMenu(start, end).subscribe((res: any) => {
+  //     this.menus = res;
+
+  //     this.menu = this.menus.find(x => x.key === moment(this.segment).format('DD-MM-YYYY'));
+  //   });
+
+  // }
   gotoPage(page) {
     this.router.navigate([page]);
   }

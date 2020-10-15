@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { HomeResultsPage } from './home-results.page';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { PipesModule } from 'src/app/pipes/pipes.module';
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     IonicModule,
     ComponentsModule,
+    PipesModule,
     RouterModule.forChild(routes)
   ],
   declarations: [HomeResultsPage],

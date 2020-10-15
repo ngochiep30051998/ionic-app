@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/database';
+import { AngularFireDatabase, QueryFn } from '@angular/fire/database';
 import { map } from 'rxjs/operators';
 import { HelperService } from './helper.service';
 // import * as firebase from 'firebase';
@@ -10,7 +10,7 @@ export class FirebaseService {
 
   constructor(
     private db: AngularFireDatabase,
-    private helperService: HelperService
+    private helperService: HelperService,
   ) { }
 
   public insertRef(ref: string, value: any) {
@@ -23,19 +23,15 @@ export class FirebaseService {
 
   getMenuById(id) {
     return this.db.object(`/menus/${id}`).snapshotChanges().pipe(
-      map(snap => {
-        const ob = this.helperService.snap2Object(snap);
-        for (const key in ob) {
-          if (ob.hasOwnProperty(key) && key !== 'key') {
-            ob[key] = this.helperService.object2ArrMerge(ob[key])
-            ob[key] = ob[key].map(p => {
-              p.photos = this.helperService.object2Arr(p.photos);
-              return p;
-            });
-          }
-        }
-        return ob;
-      })
+      map(snap => this.helperService.convertMenu(snap))
+    );
+  }
+
+  getListMenu(start, end) {
+    return this.db.list('/menus', ref => ref.orderByKey().startAt(start).endAt(end)).snapshotChanges().pipe(
+      map(
+        x => x.map(snap => this.helperService.convertMenu(snap))
+      )
     );
   }
 }

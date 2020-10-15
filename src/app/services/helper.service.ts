@@ -90,5 +90,18 @@ export class HelperService {
     }
   }
 
+  convertMenu(snap: SnapshotAction<any>) {
+    const ob = this.snap2Object(snap);
+    for (const key in ob) {
+      if (ob.hasOwnProperty(key) && key !== 'key') {
+        ob[key] = this.object2ArrMerge(ob[key]);
+        ob[key] = ob[key].map(p => {
+          p.photos = this.object2Arr(p.photos);
+          return p;
+        });
+      }
+    }
+    return ob;
+  }
 
 }

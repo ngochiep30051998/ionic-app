@@ -1,7 +1,10 @@
+import { IMenu } from "./menu.interfaces";
+
 export interface ICalendar {
     id: string;
     title: string;
     isCurrent?: boolean;
+    menu?: IMenu;
 }
 
 export interface IResponseData {
