@@ -50,7 +50,7 @@ export class RegisterPage implements OnInit {
     try {
       this.helperService.showLoading();
       const res = await this.authService.register(this.onRegisterForm.value.email, this.onRegisterForm.value.password);
-      const currentUser = this.authService.getCurrentFirebaseUser();
+      const currentUser = await this.authService.getCurrentUser();
       await currentUser.updateProfile({
         displayName: this.onRegisterForm.value.fullName,
       });
@@ -60,10 +60,11 @@ export class RegisterPage implements OnInit {
         photoURL: currentUser.photoURL,
         phoneNumber: currentUser.phoneNumber,
         uid: currentUser.uid,
-        providerId: currentUser.providerId
+        providerId: currentUser.providerId,
+        // isAdmin: true
       };
       // this.firebaseService.insertRef('/users', newUser);
-      this.firebaseService.insertRefWithId('/users', res.user.uid, newUser);
+      const register = await this.firebaseService.insertRefWithId('/userInfo', res.user.uid, newUser);
       const toast = await this.toastCtrl.create({
         showCloseButton: true,
         closeButtonText: 'Đóng',

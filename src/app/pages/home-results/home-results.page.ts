@@ -17,6 +17,10 @@ import { ICalendar } from 'src/app/interfaces/commont.interface';
 import { HelperService } from 'src/app/services/helper.service';
 import { ApiService } from 'src/app/services/api.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { IMenu } from 'src/app/interfaces/menu.interfaces';
+import { FirebaseService } from 'src/app/services/firebase.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-home-results',
@@ -35,6 +39,8 @@ export class HomeResultsPage {
     zoom: false
   };
   public segmentIndex = 0;
+  public menu: IMenu;
+  public menuSub$: Subscription;
   constructor(
     public navCtrl: NavController,
     public menuCtrl: MenuController,
@@ -43,9 +49,10 @@ export class HomeResultsPage {
     public toastCtrl: ToastController,
     public helperService: HelperService,
     private api: ApiService,
-    private router: Router
+    private router: Router,
+    private firebaseService: FirebaseService
   ) {
-    this.calender = this.helperService.initDate().slice(1, 6);
+    this.calender = this.helperService.initDate();
     const index = this.calender.findIndex(x => x.isCurrent);
     if (index > -1) {
       this.segmentIndex = index;
@@ -53,6 +60,7 @@ export class HomeResultsPage {
     } else {
       this.segment = this.calender[0].id;
     }
+    this.getMenu(this.segment);
   }
 
   ionViewWillEnter() {
@@ -64,44 +72,6 @@ export class HomeResultsPage {
     this.navCtrl.navigateForward('settings');
   }
 
-  async alertLocation() {
-    const changeLocation = await this.alertCtrl.create({
-      header: 'Change Location',
-      message: 'Type your Address.',
-      inputs: [
-        {
-          name: 'location',
-          placeholder: 'Enter your new Location',
-          type: 'text'
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: data => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Change',
-          handler: async (data) => {
-            console.log('Change clicked', data);
-            this.yourLocation = data.location;
-            const toast = await this.toastCtrl.create({
-              message: 'Location was change successfully',
-              duration: 3000,
-              position: 'top',
-              closeButtonText: 'OK',
-              showCloseButton: true
-            });
-
-            toast.present();
-          }
-        }
-      ]
-    });
-    changeLocation.present();
-  }
 
   async searchFilter() {
     const modal = await this.modalCtrl.create({
@@ -133,7 +103,9 @@ export class HomeResultsPage {
   async change(e) {
     const index = await this.slides.getActiveIndex();
     this.segment = this.calender[index].id;
+    this.getMenu(this.segment)
     this.drag(index);
+
   }
 
   drag(i) {
@@ -154,6 +126,14 @@ export class HomeResultsPage {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  getMenu(date) {
+    const id = moment(date).format('DD-MM-YYYY');
+    this.menuSub$ = this.firebaseService.getMenuById(id).subscribe((res) => {
+      console.log(res);
+      this.menu = res;
+    });
   }
   gotoPage(page) {
     this.router.navigate([page]);

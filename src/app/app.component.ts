@@ -50,8 +50,7 @@ export class AppComponent implements OnInit, OnDestroy {
     ];
 
     this.initializeApp();
-    this.helperService.initDate();
-    this.user = this.authService.getCurrentUser();
+    // this.user = this.authService.getCurrentUser();
     this.userSub$ = this.authService.getUserInfo().subscribe((res: IUser) => {
       this.user = res;
       console.log(this.user)

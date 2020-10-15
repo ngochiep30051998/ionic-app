@@ -20,13 +20,17 @@ import { SearchFilterPageModule } from './pages/modal/search-filter/search-filte
 // firebase
 import * as firebase from 'firebase';
 import { environment } from 'src/environments/environment';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireAuthGuard } from '@angular/fire/auth-guard';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
 
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { ComponentsModule } from './components/components.module';
 
-firebase.initializeApp(environment.firebaseConfig);
+// firebase.initializeApp(environment.firebaseConfig);
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +45,10 @@ firebase.initializeApp(environment.firebaseConfig);
     HttpClientModule,
     ImagePageModule,
     SearchFilterPageModule,
-    ComponentsModule
+    ComponentsModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule,
   ],
   entryComponents: [],
   providers: [

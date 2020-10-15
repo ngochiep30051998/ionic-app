@@ -4,6 +4,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { ProductListComponent } from './product-list/product-list.component';
 import { PopmenuComponent } from './popmenu/popmenu.component';
 import { IonicModule } from '@ionic/angular';
+import { PipesModule } from '../pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { IonicModule } from '@ionic/angular';
   imports: [
     CommonModule,
     IonicModule,
+    PipesModule
   ],
   exports: [
     NotificationsComponent,
