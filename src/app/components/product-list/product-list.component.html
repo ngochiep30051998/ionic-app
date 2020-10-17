@@ -1,6 +1,8 @@
-<h5 *ngIf="title">{{title}}</h5>
 
 <ion-grid >
+  <ion-row class="flex-center">
+    <h5 *ngIf="title">{{title}}</h5>
+  </ion-row>
   <ion-row>
     <ion-col size="6" (click)="gotoDetail(product)" *ngFor="let product of products;trackBy: trackByFn" class="fade-in">
       <ion-card class="card ion-no-margin">
