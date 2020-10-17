@@ -33,7 +33,10 @@ const routes: Routes = [
 
     loadChildren: './pages/home-results/home-results.module#HomeResultsPageModule'
   },
-  { path: 'product-detail', loadChildren: './pages/product-detail/product-detail.module#ProductDetailPageModule' },
+  {
+    path: 'product-detail/:menuId/:meal/:id',
+    loadChildren: './pages/product-detail/product-detail.module#ProductDetailPageModule'
+  },
   { path: 'cart', loadChildren: './pages/cart/cart.module#CartPageModule' },
   {
     path: '**',
@@ -43,7 +46,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes,{preloadingStrategy: PreloadAllModules})],
+  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
   exports: [RouterModule]
 })
 

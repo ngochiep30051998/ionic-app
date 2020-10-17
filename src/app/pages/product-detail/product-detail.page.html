@@ -13,87 +13,86 @@
 </ion-header>
 <ion-content class="ion-padding">
 
-<div>
-  <ion-row class="ion-padding-0">
-    <ion-col class="padding-0">
-      <ion-slides pager="true" [options]="slideOpts">
-        <ion-slide>
-          <img class="image" [src]="'https://images.foody.vn/res/g64/635171/s400x400/foody-banh-mi-huong-lan-944-637288064610273528.jpeg'" >
-          <div class="product-image-overlay"></div>
-        </ion-slide>
+  <div>
+    <ion-row class="ion-padding-0">
+      <ion-col class="padding-0">
+        <ion-slides pager="true" [options]="slideOpts" (ionSlideDidChange)="slideChange($event)" #Slides>
+          <ion-slide *ngFor="let photo of product?.photos">
+            <img class="image" [src]="photo?.value || 'assets/img/defaults/default-product.jpg'">
+            <div class="product-image-overlay"></div>
+          </ion-slide>
 
-        <ion-slide>
-          <img class="image" [src]="'https://images.foody.vn/res/g64/635171/s400x400/foody-banh-mi-huong-lan-699-637288064560985879.jpeg'" >
-          <div class="product-image-overlay"></div>
-        </ion-slide>
+        </ion-slides>
+        <ion-badge class="badge">
+          <ion-icon name="images"></ion-icon>{{photoIndex+1}}/{{product?.photos?.length}}
+        </ion-badge>
 
-        <ion-slide>
-          <img class="image" [src]="'https://images.foody.vn/res/g64/635171/s400x400/foody-banh-mi-huong-lan-894-637288064560517091.jpeg'" >
-          <div class="product-image-overlay"></div>
-        </ion-slide>
-
-      </ion-slides>
-      <ion-badge class="badge">
-        <ion-icon name="images"></ion-icon>10
-      </ion-badge>
-
-    </ion-col>
-  </ion-row>
-  <div class="ion-padding">
-
-    <ion-row lines="none" class="row">
-      <ion-text class="name">{{'product.name'}}</ion-text>
+      </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-icon name="star" color="mytheme" *ngFor="let i of [1,2,3]"></ion-icon>
-      <ion-icon name="star-outline" color="mytheme" *ngFor="let i of [1,2,3,4,5]"></ion-icon>
-      <h6 class="ion-no-margin ion-padding-start rate" >({{'product.store_rating'}} store ratings)</h6>
-    </ion-row>
-    
-   
-
-    <div class="sep"></div>
-    <div>
-      <ion-text><span class="ion-float-left ion-no-margin"><strong>Sold By</strong></span></ion-text><br>
-      <ion-row>
-        <ion-col size="2">
-          <ion-avatar class="avatar"><img [src]="'assets/img/user.jpeg'"></ion-avatar>
-        </ion-col>
-        <ion-col>
-          <ion-text><span class="ion-float-left ion-no-margin">{{'product.sold_by'}}</span></ion-text><br>
-          <ion-text>
-            <h6 class="ion-float-left ion-no-margin">{{'product.store_rating'}} ratings</h6>
-          </ion-text><br>
-        </ion-col>
-      </ion-row>
-    </div>
-
-    <div class="sep"></div>
     <div class="ion-padding">
-      <ion-row class="ion-justify-content-center hover-buttons">
-        <ion-icon size="small" name="logo-instagram" class="ion-float-right fab" ></ion-icon>
-        <ion-icon size="small" name="share" class="ion-float-right fab" ></ion-icon>
-        <ion-icon *ngIf="!liked" size="small" name="heart-empty" class="ion-float-right fab" (click)="like()"></ion-icon>
-        <ion-icon *ngIf="liked" size="small" name="heart" class="ion-float-right red fab" (click)="like()"></ion-icon>
+
+      <ion-row lines="none" class="row">
+        <ion-text class="name">{{product?.name}}</ion-text>
       </ion-row>
+      <!-- <ion-row>
+        <ion-icon name="star" color="mytheme" *ngFor="let i of [1,2,3]"></ion-icon>
+        <ion-icon name="star-outline" color="mytheme" *ngFor="let i of [1,2,3,4,5]"></ion-icon>
+        <h6 class="ion-no-margin ion-padding-start rate">({{'product.store_rating'}} store ratings)</h6>
+      </ion-row> -->
+
+
+
+      <div class="sep"></div>
+      <div>
+        <ion-row>
+          <ion-col size="12">
+            <ion-text>
+              <span class="ion-float-left ion-no-margin">{{product?.detail}}</span>
+            </ion-text>
+
+          </ion-col>
+          <ion-col size="12">
+            <ion-text>
+              <span class="ion-float-left ion-no-margin">Số lượng còn lại: {{product?.amount || 0}}
+                {{product?.unit || 'suất'}}</span>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <div class="sep"></div>
+      <div class="ion-padding">
+        <ion-row class="ion-justify-content-center hover-buttons">
+          <ion-icon size="small" name="logo-instagram" class="ion-float-right fab"></ion-icon>
+          <ion-icon size="small" name="share" class="ion-float-right fab"></ion-icon>
+          <ion-icon *ngIf="!liked" size="small" name="heart-empty" class="ion-float-right fab" (click)="like()">
+          </ion-icon>
+          <ion-icon *ngIf="liked" size="small" name="heart" class="ion-float-right red fab" (click)="like()"></ion-icon>
+        </ion-row>
+      </div>
     </div>
   </div>
-</div>
 </ion-content>
 
-<ion-footer class="footer ion-align-items-center" >
+<ion-footer class="footer ion-align-items-center">
   <ion-row class="ion-align-items-center">
-    <ion-col class="ion-padding">
-      <ion-text >
-        <h6 class="ion-no-margin cut">{{'100000' |number}}{{'VNĐ'}}</h6>
+    <ion-col class="ion-padding" *ngIf="product?.promotionPrice">
+      <ion-text>
+        <h6 class="ion-no-margin cut">{{product?.price |number}}{{'VNĐ'}}</h6>
       </ion-text>
 
-      <ion-text >
-        <h3  class="ion-no-margin foot-highlight">{{'20000' |number}}{{'VNĐ'}}</h3>
+      <ion-text>
+        <h3 class="ion-no-margin foot-highlight">{{product?.promotionPrice |number}}{{'VNĐ'}}</h3>
+      </ion-text>
+    </ion-col>
+    <ion-col class="ion-padding" *ngIf="!product?.promotionPrice">
+      <ion-text>
+        <h3 class="ion-no-margin foot-highlight">{{product?.price |number}}{{'VNĐ'}}</h3>
       </ion-text>
     </ion-col>
     <ion-col size="4">
-      <ion-button class="ion-float-right white foot-btn ion-no-margin" color="orange"  expand="block"><strong>Mua</strong></ion-button>
+      <ion-button class="ion-float-right white foot-btn ion-no-margin" color="orange" expand="block">
+        <strong>Mua</strong></ion-button>
     </ion-col>
   </ion-row>
 </ion-footer>

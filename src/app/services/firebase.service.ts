@@ -34,4 +34,17 @@ export class FirebaseService {
       )
     );
   }
+
+  getProductById(menuId, meal, prodId) {
+    return this.db.object(`menus/${menuId}/${meal}/${prodId}`).snapshotChanges().pipe(
+      map(
+        snap => {
+          console.log(snap.payload.val())
+          const product = this.helperService.snap2Object(snap);
+          product.photos = this.helperService.object2Arr(product.photos);
+          return product;
+        }
+      )
+    );
+  }
 }

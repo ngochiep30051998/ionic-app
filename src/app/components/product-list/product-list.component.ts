@@ -10,6 +10,8 @@ import { IProduct } from 'src/app/interfaces/products.interface';
 export class ProductListComponent implements OnInit {
   @Input() title: string;
   @Input() products: IProduct[] = [];
+  @Input() menuId: string;
+  @Input() meal: string;
   constructor(
     private router: Router,
   ) { }
@@ -17,8 +19,8 @@ export class ProductListComponent implements OnInit {
   ngOnInit() {
   }
 
-  gotoDetail(product?) {
-    this.router.navigate(['/product-detail']);
+  gotoDetail(product: IProduct) {
+    this.router.navigate(['/product-detail', this.menuId, this.meal, product.key]);
   }
   trackByFn(index, item) {
     return item.key;
