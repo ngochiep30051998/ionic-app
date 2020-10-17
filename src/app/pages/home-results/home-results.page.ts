@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, OnChanges, ViewChild } from '@angular/core';
 import {
   NavController,
   AlertController,
@@ -27,7 +27,7 @@ import * as moment from 'moment';
   templateUrl: './home-results.page.html',
   styleUrls: ['./home-results.page.scss']
 })
-export class HomeResultsPage {
+export class HomeResultsPage implements OnChanges {
   @ViewChild('Slides') slides: IonSlides;
 
   public searchKey = '';
@@ -94,20 +94,31 @@ export class HomeResultsPage {
 
 
   update(i) {
-    this.slides.slideTo(i).then((res) => console.log('responseSlideTo', res));
+    this.segment = this.calender[i].id;
+    // this.menu = this.menus.find(x => x.key === moment(this.segment).format('DD-MM-YYYY'));
+    this.getMenu(this.segment)
+    this.drag(i);
   }
 
   seg(event) {
-    this.segment = event.detail.value;
+    // this.segment = event.detail.value;
   }
   preventDefault(e) {
     e.preventDefault();
   }
   async change(e) {
-    const index = await this.slides.getActiveIndex();
-    this.segment = this.calender[index].id;
-    this.getMenu(this.segment);
-    this.drag(index);
+    try {
+      // await this.helperService.showLoading();
+      const index = await this.slides.getActiveIndex();
+
+      // console.log(this.menus)
+      // this.getMenu(this.segment);
+      // await this.helperService.hideLoading();
+
+      this.drag(index);
+    } catch (e) {
+      console.log(e);
+    }
 
   }
 
@@ -123,9 +134,11 @@ export class HomeResultsPage {
   }
 
   getMenu(date) {
-    this.helperService.showLoading();
-    this.menu = {};
+    if (this.menuSub$) {
+      this.menuSub$.unsubscribe();
+    }
     const id = moment(date).format('DD-MM-YYYY');
+    this.helperService.showLoading();
     this.menuSub$ = this.firebaseService.getMenuById(id).subscribe((res) => {
       console.log(res);
       this.menu = res;
@@ -133,19 +146,27 @@ export class HomeResultsPage {
 
     }, err => {
       this.helperService.hideLoading();
+    }, () => {
+      this.helperService.hideLoading();
     });
   }
-  // getListMenu() {
-  //   const start = moment(this.calender[0].id).format('DD-MM-YYYY');
-  //   const end = moment(this.calender[this.calender.length - 1].id).format('DD-MM-YYYY');
-  //   this.firebaseService.getListMenu(start, end).subscribe((res: any) => {
-  //     this.menus = res;
 
-  //     this.menu = this.menus.find(x => x.key === moment(this.segment).format('DD-MM-YYYY'));
-  //   });
+  getListMenu() {
+    const start = moment(this.calender[0].id).format('DD-MM-YYYY');
+    const end = moment(this.calender[this.calender.length - 1].id).format('DD-MM-YYYY');
+    this.menuSub$ = this.firebaseService.getListMenu(start, end).subscribe((res: any) => {
+      this.menus = res;
+      console.log(this.menus)
+    });
 
-  // }
+  }
   gotoPage(page) {
     this.router.navigate([page]);
+  }
+
+  ngOnChanges(): void {
+    if (this.menuSub$) {
+      this.menuSub$.unsubscribe();
+    }
   }
 }

@@ -20,4 +20,8 @@ export class ProductListComponent implements OnInit {
   gotoDetail(product?) {
     this.router.navigate(['/product-detail']);
   }
+  trackByFn(index, item) {
+    return item.key;
+  }
 }
+

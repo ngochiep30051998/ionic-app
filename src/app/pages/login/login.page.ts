@@ -70,8 +70,7 @@ export class LoginPage implements OnInit {
           text: 'Xác nhận',
           handler: async () => {
             try {
-              const loader = this.helperService.showLoading();
-              const l = (await loader).onWillDismiss();
+              await this.helperService.showLoading();
               const toast = await this.toastCtrl.create({
                 showCloseButton: true,
                 message: 'Email đã được gửi.',

@@ -4,6 +4,7 @@ import { SnapshotAction } from '@angular/fire/database';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { ICalendar } from '../interfaces/commont.interface';
 import * as _ from 'lodash';
+import { FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -20,14 +21,13 @@ export class HelperService {
   async showLoading(message?, time?) {
     if (!this.loader) {
       this.loader = await this.loadingCtrl.create({ duration: time || 10000, message });
-      this.loader.present();
-      return this.loader;
+      return this.loader.present();
     }
   }
 
-  hideLoading() {
+  async hideLoading() {
     if (this.loader) {
-      this.loader.dismiss();
+      await this.loader.dismiss();
       this.loader = null;
     }
   }
@@ -103,5 +103,24 @@ export class HelperService {
     }
     return ob;
   }
+
+  MustMatch(controlName: string, matchingControlName: string) {
+    return (formGroup: FormGroup) => {
+        const control = formGroup.controls[controlName];
+        const matchingControl = formGroup.controls[matchingControlName];
+
+        if (matchingControl.errors && !matchingControl.errors.mustMatch) {
+            // return if another validator has already found an error on the matchingControl
+            return;
+        }
+
+        // set error on matchingControl if validation fails
+        if (control.value !== matchingControl.value) {
+            matchingControl.setErrors({ mustMatch: true });
+        } else {
+            matchingControl.setErrors(null);
+        }
+    }
+}
 
 }

@@ -27,7 +27,7 @@
 
   <ion-toolbar color="primary" class="segmenttoolbarSection">
     <ion-segment mode="md" scrollable="true" id="dag" class="segSection" (ionChange)="seg($event)">
-      <ion-segment-button *ngFor="let item of calender;let i = index" (ionSelect)="update(i)"  class="ion-no-padding"
+      <ion-segment-button *ngFor="let item of calender;let i = index" (ionSelect)="update(i)" class="ion-no-padding"
         class="my-btn" [value]="item.id" [ngClass]="{'btn-active':segment == item.id}" [attr.id]="'seg_' + i">
         <ion-text class="text ion-padding-horizontal">{{item.title}}</ion-text>
       </ion-segment-button>
@@ -38,27 +38,28 @@
 
 <ion-content>
 
-  <ion-slides pager="false" [options]="slideOpts" (ionSlideDidChange)="change($event)" (click)="preventDefault($event)"
+  <ion-row >
+
+    <ion-col size="12" *ngIf="menu?.breakfast">
+      <app-product-list [title]="'Đồ ăn sáng'" [products]="menu?.breakfast"></app-product-list>
+    </ion-col>
+
+    <ion-col size="12" *ngIf="menu?.lunch">
+      <app-product-list [title]="'Đồ ăn trưa'" [products]="menu?.lunch"></app-product-list>
+    </ion-col>
+
+    <ion-col size="12" *ngIf="menu?.drinks">
+      <app-product-list [title]="'Đồ uống'" [products]="menu?.drinks"></app-product-list>
+    </ion-col>
+
+  </ion-row>
+  <!-- <ion-slides pager="false" [options]="slideOpts" (ionSlideDidChange)="change($event)" (click)="preventDefault($event)"
     #Slides>
     <ion-slide *ngFor="let item of calender;let i = index" >
-      <ion-row>
-
-        <ion-col size="12" *ngIf="menu?.breakfast">
-          <app-product-list [title]="'Đồ ăn sáng'" [products]="menu?.breakfast"></app-product-list>
-        </ion-col>
-
-        <ion-col size="12" *ngIf="menu?.lunch">
-          <app-product-list [title]="'Đồ ăn trưa'" [products]="menu?.lunch"></app-product-list>
-        </ion-col>
-
-        <ion-col size="12" *ngIf="menu?.drinks">
-          <app-product-list [title]="'Đồ uống'" [products]="menu?.drinks"></app-product-list>
-        </ion-col>
-
-      </ion-row>
+    
     </ion-slide>
 
-  </ion-slides>
+  </ion-slides> -->
 
 </ion-content>
 

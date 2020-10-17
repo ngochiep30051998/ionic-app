@@ -1,21 +1,23 @@
 <h5 *ngIf="title">{{title}}</h5>
 
-<ion-grid>
+<ion-grid >
   <ion-row>
-    <ion-col size="6" (click)="gotoDetail(product)" *ngFor="let product of products">
+    <ion-col size="6" (click)="gotoDetail(product)" *ngFor="let product of products;trackBy: trackByFn" class="fade-in">
       <ion-card class="card ion-no-margin">
         <ion-badge class="badge" *ngIf="product?.promotionPrice">
          - {{'' | percentage : product?.price : product?.promotionPrice}}%
         </ion-badge>
-        <img [src]="product?.displayImage || 'assets/img/defaults/default-product.jpg'" [alt]="'image'">
+        <img [src]="product?.displayImage || 'assets/img/defaults/default-product.jpg'">
         <ion-card-content>
           <ion-card-title>
             <ion-row>
               <ion-col class="ion-text-left parent">
-                <h6 class="ion-text-left subtitle block-ellipsis">{{product?.name}}</h6>
+                <p class="ion-text-left subtitle block-ellipsis">{{product?.name}}</p>
+              </ion-col>
+              <ion-col class="ion-text-left parent">
+                <p class="ion-text-left amount">Còn lại: {{product?.amount || 0}} {{product?.unit || 'suất'}}</p>
               </ion-col>
             </ion-row>
-
             <ion-row>
               <ion-col class="ion-no-padding">
                 <ion-text class="ion-text-left" *ngIf="product?.promotionPrice">

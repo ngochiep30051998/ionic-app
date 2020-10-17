@@ -12,6 +12,7 @@ export interface IProduct {
     promotionPrice?: string;
     detail?: string;
     amount?: number;
+    unit?: string;
 }
 
 export interface IDiglogData {
