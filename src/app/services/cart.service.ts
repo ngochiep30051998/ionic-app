@@ -1,0 +1,91 @@
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { Cart, ICart } from '../interfaces/cart.interfaces';
+import { IProduct } from '../interfaces/products.interface';
+import { Storage } from '@ionic/storage';
+import { FirebaseService } from './firebase.service';
+import * as moment from 'moment';
+import { ToastController } from '@ionic/angular';
+@Injectable({
+  providedIn: 'root'
+})
+export class CartService {
+
+  private cart$: BehaviorSubject<ICart> = new BehaviorSubject(null);
+  private cart: ICart;
+
+  constructor(
+    private storage: Storage,
+    private firebaseService: FirebaseService,
+    public toastCtrl: ToastController,
+
+  ) {
+    this.cart = JSON.parse(localStorage.getItem('cart')) ? JSON.parse(localStorage.getItem('cart')) : new Cart([], '', '', '', '');
+  }
+
+  async addToCart(product: IProduct, amount: number) {
+    try {
+      if (!product.amount) {
+        const toast = await this.toastCtrl.create({
+          showCloseButton: true,
+          closeButtonText: 'Đóng',
+          message: 'Sản phẩm đã hết, vui lòng chọn sản phẩm khác.',
+          duration: 3000,
+          position: 'bottom'
+        });
+        return await toast.present();
+      }
+      const index = this.cart.products.findIndex(x => x.key === product.key);
+      if (index === -1) {
+        // product.createdAt = moment(this.firebaseService.getTime()).format('YYYY-MM-DD HH:mm:ss');
+        product.createdAt = moment().format('DD-MM-YYYY HH:mm:ss');
+        // product.amount = amount;
+        this.cart.products.push({ ...product, amount });
+      } else {
+        if (this.cart.products[index].amount + amount > product.amount) {
+          const toast = await this.toastCtrl.create({
+            showCloseButton: true,
+            closeButtonText: 'Đóng',
+            message: 'Sản phẩm trong rỏ hàng đã lớn hơn sản phẩm còn lại, vui lòng chọn thêm sản phẩm khác.',
+            duration: 3000,
+            position: 'bottom'
+          });
+          return await toast.present();
+        }
+        this.cart.products[index].updatedAt = moment().format('DD-MM-YYYY HH:mm:ss');
+        this.cart.products[index].amount += amount;
+      }
+      const cart = new Cart(this.cart.products, '', '', '', '');
+      localStorage.setItem('cart', JSON.stringify(cart));
+      this.cart$.next(cart);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  getCart() {
+    return this.cart$.asObservable();
+  }
+
+  getCartFromStorage() {
+    return JSON.parse(localStorage.getItem('cart'));
+  }
+
+  remove(product: IProduct, amount?: number) {
+    const index = this.cart.products.findIndex(x => x.key === product.key);
+    if (index > -1) {
+      if (amount) {
+        this.cart.products[index].amount -= amount;
+      } else {
+        this.cart.products[index].amount--;
+      }
+      if (this.cart.products[index].amount === 0) {
+        this.cart.products.splice(index, 1);
+      }
+      this.cart.products[index].updatedAt = moment().format('DD-MM-YYYY HH:mm:ss');
+    }
+    const cart = new Cart(this.cart.products, '', '', '', '');
+    localStorage.setItem('cart', JSON.stringify(cart));
+    this.cart$.next(cart);
+  }
+}

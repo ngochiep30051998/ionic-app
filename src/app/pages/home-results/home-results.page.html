@@ -11,7 +11,7 @@
     <ion-buttons slot="end" (click)="gotoPage('/cart')">
       <ion-button size="small" shape="round" color="medium">
         <ion-icon name="cart"></ion-icon>
-        <ion-badge color="dark" slot="end">2</ion-badge>
+        <ion-badge color="dark" slot="end">{{cart?.totalItem}}</ion-badge>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>

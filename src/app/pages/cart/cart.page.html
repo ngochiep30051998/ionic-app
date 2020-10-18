@@ -28,7 +28,7 @@
   </div>
   <div *ngIf="show">
     <ion-row class="ion-margin-horizontal ion-margin-bottom">
-      <ion-text><strong class="text">Items in Cart</strong></ion-text>
+      <ion-text><strong class="text">Danh sách sản phẩm</strong></ion-text>
     </ion-row>
     <ion-list #slidingList>
       <ion-item-sliding class="ion-no-padding card ion-no-margin" >
@@ -67,7 +67,7 @@
     </ion-list>
 
     <ion-row class="ion-margin">
-      <ion-text><strong class="text">Order Summary</strong></ion-text>
+      <ion-text><strong class="text">Nội dung</strong></ion-text>
     </ion-row>
     <ion-item lines="none" class="card ion-no-margin">
       <ion-row class="full">
@@ -79,25 +79,51 @@
         </ion-col>
       </ion-row>
     </ion-item>
+
     <div lines="none" class="card ion-no-margin ion-padding-bottom" >
 
       <ion-row class="full ion-padding-horizontal" >
         <ion-col size="9">
-          <ion-text>Shipping</ion-text>
+          <ion-text>Tổng số lượng: </ion-text>
         </ion-col>
         <ion-col size="3" class="ion-text-end">
-          <ion-text>$15</ion-text>
+          <ion-text>10</ion-text>
         </ion-col>
       </ion-row>
+
       <ion-row class="full ion-padding-horizontal" >
         <ion-col size="9">
-          <ion-text>Item Total</ion-text>
+          <ion-text>Tổng thanh toán: </ion-text>
         </ion-col>
         <ion-col size="3" class="ion-text-end">
-          <ion-text>$11</ion-text>
+          <ion-text>{{'100000' |number}}</ion-text>
         </ion-col>
       </ion-row>
     </div>
+
+    <div lines="none" class="card ion-no-margin ion-padding-bottom" >
+
+      <ion-row class="full ion-padding-horizontal" >
+        <ion-col size="8">
+          <ion-text>Vị trí: </ion-text>
+        </ion-col>
+        <ion-col size="4" class="ion-text-end">
+          <ion-select [interfaceOptions]="floorOptions" class="select">
+          <ion-select-option *ngFor="let floor of floors" [(value)]="floor" class="ion-text-center">{{floor}}</ion-select-option>
+        </ion-select>
+        </ion-col>
+      </ion-row>
+      <ion-row class="full ion-padding-horizontal" >
+        <!-- <ion-col size="3">
+          <ion-text>Ghi chú: </ion-text>
+        </ion-col> -->
+        <ion-col size="12">
+          <ion-textarea class="input" placeholder="Ghi chú"></ion-textarea>
+        </ion-col>
+      </ion-row>
+    </div>
+
+
   </div>
 </ion-content>
 <ion-footer *ngIf="show">

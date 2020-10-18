@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, QueryFn } from '@angular/fire/database';
+import { AngularFireDatabase } from '@angular/fire/database';
 import { map } from 'rxjs/operators';
 import { HelperService } from './helper.service';
-// import * as firebase from 'firebase';
+
+import * as firebase from 'firebase';
 @Injectable({
   providedIn: 'root'
 })
@@ -46,5 +47,9 @@ export class FirebaseService {
         }
       )
     );
+  }
+
+  getTime() {
+    return firebase.database.ServerValue.TIMESTAMP;
   }
 }

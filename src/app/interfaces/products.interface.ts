@@ -1,4 +1,4 @@
-import { IPhoto } from './commont.interface';
+import { IPhoto } from './common.interfaces';
 
 export interface IProduct {
     catId?: string;
@@ -9,10 +9,12 @@ export interface IProduct {
     name?: string;
     photos?: IPhoto[];
     price?: number;
-    promotionPrice?: string;
+    promotionPrice?: number;
     detail?: string;
     amount?: number;
     unit?: string;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
 export interface IDiglogData {

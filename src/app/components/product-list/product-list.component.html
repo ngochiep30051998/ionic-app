@@ -34,6 +34,11 @@
               </ion-col>
             </ion-row>
 
+            <ion-row class="ion-justify-content-center" *ngIf="menuId === curentDate">
+              <ion-text color="medium" (click)="$event.stopPropagation(); addToCart(product)">
+                <ion-icon name="add-circle" color="success"></ion-icon>
+              </ion-text>
+            </ion-row>
           </ion-card-title>
         </ion-card-content>
       </ion-card>

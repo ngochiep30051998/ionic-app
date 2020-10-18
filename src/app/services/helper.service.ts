@@ -2,9 +2,10 @@ import { formatDate } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { SnapshotAction } from '@angular/fire/database';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
-import { ICalendar } from '../interfaces/commont.interface';
+import { ICalendar } from '../interfaces/common.interfaces';
 import * as _ from 'lodash';
 import { FormGroup } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -54,8 +55,16 @@ export class HelperService {
   }
 
   initDate(): ICalendar[] {
-    const currentDate = new Date('10/14/2020');
-    const crr = formatDate(new Date(), 'MM/dd/yyyy', 'en');
+    let currentDate, crr;
+
+    if (environment.curentDate) {
+      currentDate = new Date(environment.curentDate);
+      crr = formatDate(new Date(environment.curentDate), 'MM/dd/yyyy', 'en')
+    } else {
+      currentDate = new Date();
+      crr = formatDate(new Date(), 'MM/dd/yyyy', 'en');
+    }
+    // const currentDate = new Date();
 
     const first = currentDate.getDate() - currentDate.getDay();
     const firstday = new Date(currentDate.setDate(first));
@@ -106,21 +115,21 @@ export class HelperService {
 
   MustMatch(controlName: string, matchingControlName: string) {
     return (formGroup: FormGroup) => {
-        const control = formGroup.controls[controlName];
-        const matchingControl = formGroup.controls[matchingControlName];
+      const control = formGroup.controls[controlName];
+      const matchingControl = formGroup.controls[matchingControlName];
 
-        if (matchingControl.errors && !matchingControl.errors.mustMatch) {
-            // return if another validator has already found an error on the matchingControl
-            return;
-        }
+      if (matchingControl.errors && !matchingControl.errors.mustMatch) {
+        // return if another validator has already found an error on the matchingControl
+        return;
+      }
 
-        // set error on matchingControl if validation fails
-        if (control.value !== matchingControl.value) {
-            matchingControl.setErrors({ mustMatch: true });
-        } else {
-            matchingControl.setErrors(null);
-        }
+      // set error on matchingControl if validation fails
+      if (control.value !== matchingControl.value) {
+        matchingControl.setErrors({ mustMatch: true });
+      } else {
+        matchingControl.setErrors(null);
+      }
     }
-}
+  }
 
 }

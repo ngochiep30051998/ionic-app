@@ -13,7 +13,7 @@ import { SearchFilterPage } from '../../pages/modal/search-filter/search-filter.
 import { ImagePage } from './../modal/image/image.page';
 // Call notifications test by Popover and Custom Component.
 import { NotificationsComponent } from './../../components/notifications/notifications.component';
-import { ICalendar } from 'src/app/interfaces/commont.interface';
+import { ICalendar } from 'src/app/interfaces/common.interfaces';
 import { HelperService } from 'src/app/services/helper.service';
 import { ApiService } from 'src/app/services/api.service';
 import { Router } from '@angular/router';
@@ -21,6 +21,8 @@ import { Subscription } from 'rxjs';
 import { IMenu } from 'src/app/interfaces/menu.interfaces';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import * as moment from 'moment';
+import { CartService } from 'src/app/services/cart.service';
+import { Cart, ICart } from 'src/app/interfaces/cart.interfaces';
 
 @Component({
   selector: 'app-home-results',
@@ -42,6 +44,8 @@ export class HomeResultsPage implements OnChanges {
   public menu: IMenu;
   public menus: IMenu[] = [];
   public menuSub$: Subscription;
+  public cartSub$: Subscription;
+  public cart: ICart;
   constructor(
     public navCtrl: NavController,
     public menuCtrl: MenuController,
@@ -51,7 +55,8 @@ export class HomeResultsPage implements OnChanges {
     public helperService: HelperService,
     private api: ApiService,
     private router: Router,
-    private firebaseService: FirebaseService
+    private firebaseService: FirebaseService,
+    private cartService: CartService
   ) {
     this.calender = this.helperService.initDate();
     const index = this.calender.findIndex(x => x.isCurrent);
@@ -63,7 +68,14 @@ export class HomeResultsPage implements OnChanges {
     }
     // this.getListMenu();
     this.getMenu(this.segment);
-
+    this.cart = this.cartService.getCartFromStorage();
+    console.log(this.cart)
+    this.cartSub$ = this.cartService.getCart().subscribe((res: ICart) => {
+      if (res) {
+        this.cart = new Cart(res.products);
+        console.log(this.cart);
+      }
+    });
   }
 
   ionViewWillEnter() {
