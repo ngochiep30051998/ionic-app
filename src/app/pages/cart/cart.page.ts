@@ -8,6 +8,7 @@ import { HelperService } from 'src/app/services/helper.service';
 import * as moment from 'moment';
 import { environment } from 'src/environments/environment';
 import { IProduct } from 'src/app/interfaces/products.interface';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-cart',
@@ -34,7 +35,8 @@ export class CartPage implements OnInit, OnDestroy {
   constructor(
     private firebaseService: FirebaseService,
     private cartService: CartService,
-    public helperService: HelperService
+    public helperService: HelperService,
+    public navCtrl: NavController,
   ) {
     this.cart = this.cartService.getCartFromStorage();
     this.cart$ = this.cartService.getCart().subscribe((res: ICart) => {
@@ -79,6 +81,13 @@ export class CartPage implements OnInit, OnDestroy {
     const currentProduct: IProduct = this.menu[product.meal].find(x => x.key === product.key);
     const amount = event.target.value ? Number(event.target.value) : 0;
     this.cartService.update(product, amount, currentProduct);
+  }
+
+  removeProduct(product: IProduct) {
+    this.cartService.remove(product, product.amount);
+  }
+  goBack() {
+    this.navCtrl.back();
   }
   ngOnDestroy(): void {
     if (this.cart$) {

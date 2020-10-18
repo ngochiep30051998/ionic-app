@@ -104,7 +104,7 @@ export class CartService {
     return JSON.parse(localStorage.getItem('cart'));
   }
 
-  remove(product: IProduct, amount?: number) {
+  async remove(product: IProduct, amount?: number) {
     const index = this.cart.products.findIndex(x => x.key === product.key);
     if (index > -1) {
       if (amount) {
@@ -114,8 +114,17 @@ export class CartService {
       }
       if (this.cart.products[index].amount === 0) {
         this.cart.products.splice(index, 1);
+        const toast = await this.toastCtrl.create({
+          showCloseButton: true,
+          closeButtonText: 'Đóng',
+          message: `Sản phẩm đã được xoá khỏi rỏ hàng.`,
+          duration: 3000,
+          position: 'bottom'
+        });
+        await toast.present();
+      } else {
+        this.cart.products[index].updatedAt = moment().format('DD-MM-YYYY HH:mm:ss');
       }
-      this.cart.products[index].updatedAt = moment().format('DD-MM-YYYY HH:mm:ss');
     }
     const cart = new Cart(this.cart.products, '', '', '', '');
     localStorage.setItem('cart', JSON.stringify(cart));

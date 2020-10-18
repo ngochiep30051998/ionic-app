@@ -12,21 +12,21 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding-top" color="light">
-  <div class="mid" *ngIf="!show">
+<ion-content class="ion-padding-top" color="light" >
+  <div class="mid" *ngIf="!cart?.products || cart?.products?.length === 0">
     <ion-row size="12" class="ion-justify-content-center" disabled="true">
       <button class="circle">
         <ion-icon name="cart" size="large"></ion-icon>
       </button>
     </ion-row>
     <ion-row size="12" class="ion-justify-content-center" disabled="true">
-      <ion-text><strong>Your cart is empty</strong></ion-text>
+      <ion-text><strong>Không có sản phẩm nào trong giỏ hàng</strong></ion-text>
     </ion-row>
     <ion-row size="12" class="ion-justify-content-center" disabled="true">
-      <ion-button fill="clear" color="primary" >Browse Products</ion-button>
+      <ion-button fill="clear" color="primary" (click)="goBack()">Quay lại trang chủ</ion-button>
     </ion-row>
   </div>
-  <div *ngIf="show">
+  <div *ngIf="cart?.products && cart?.products?.length >0">
     <ion-row class="ion-margin-horizontal ion-margin-bottom">
       <ion-text><strong class="text">Danh sách sản phẩm</strong></ion-text>
     </ion-row>
@@ -36,7 +36,7 @@
           <ion-row>
             <ion-col size="3" class="ion-text-center">
               <img [src]="product?.displayImage || 'assets/img/defaults/default-product.jpg'">
-              <ion-icon name="trash" size="small" color="danger"></ion-icon>
+              <ion-icon name="trash" size="small" color="danger" (click)="removeProduct(product)"></ion-icon>
             </ion-col>
             <ion-col size="6">
               <h3 class="ion-no-margin item-name">{{product?.name}}</h3>
@@ -65,7 +65,7 @@
           </ion-row>
         </ion-item>
         <ion-item-options side="end">
-          <ion-item-option color="danger" >
+          <ion-item-option color="danger" (click)="removeProduct(product)">
             <ion-icon name="trash" size="large"></ion-icon>
           </ion-item-option>
         </ion-item-options>
@@ -132,7 +132,7 @@
 
   </div>
 </ion-content>
-<ion-footer *ngIf="show">
+<ion-footer *ngIf="cart?.products && cart?.products?.length >0">
   <ion-toolbar color="success">
     <ion-title>Checkout</ion-title>
   </ion-toolbar>
