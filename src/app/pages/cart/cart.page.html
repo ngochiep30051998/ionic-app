@@ -45,8 +45,8 @@
             </ion-col>
             <ion-col size="3" class="ion-float-right">
               <ion-row class="ion-text-end ion-justify-content-end" *ngIf="product?.promotionPrice">
-                <h3  class="item-name ion-text-end ion-no-margin">{{product?.price}}</h3>
-                <h3 class="ion-no-margin item-name ion-text-end" ><span class="cut">{{product?.promotionPrice}}</span></h3>
+                <h3  class="item-name ion-text-end ion-no-margin">{{product?.price |number}}</h3>
+                <h3 class="ion-no-margin item-name ion-text-end" ><span class="cut">{{product?.promotionPrice |number}}</span></h3>
               </ion-row>
               <ion-row class="ion-text-end ion-justify-content-end" *ngIf="!product?.promotionPrice">
                 <h3 class="ion-no-margin item-name ion-text-end" ><span class="cut">{{product?.price}}</span></h3>
@@ -78,10 +78,10 @@
     <ion-item lines="none" class="card ion-no-margin">
       <ion-row class="full">
         <ion-col size="9">
-          <ion-input placeholder="Enter Promo Code" class="input"></ion-input>
+          <ion-input placeholder="Mã giảm giá" class="input"></ion-input>
         </ion-col>
         <ion-col class="ion-align-self-center" size="3">
-          <ion-button fill="outline" expand="block" ><span class="small">Apply</span></ion-button>
+          <ion-button fill="outline" expand="block" ><span class="small">Áp dụng</span></ion-button>
         </ion-col>
       </ion-row>
     </ion-item>
