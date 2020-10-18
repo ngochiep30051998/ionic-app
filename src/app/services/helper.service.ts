@@ -6,6 +6,8 @@ import { ICalendar } from '../interfaces/common.interfaces';
 import * as _ from 'lodash';
 import { FormGroup } from '@angular/forms';
 import { environment } from 'src/environments/environment';
+import { IProduct } from '../interfaces/products.interface';
+import { IMenu } from '../interfaces/menu.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -132,4 +134,15 @@ export class HelperService {
     }
   }
 
+  counter(product: IProduct, menu: IMenu) {
+    let arr = [];
+
+    if (menu) {
+      const p: IProduct = menu[product.meal].find(x => x.key === product.key);
+      if (p) {
+        arr = Array.from({ length: p.amount }, (_, i) => i + 1);
+      }
+    }
+    return arr;
+  }
 }

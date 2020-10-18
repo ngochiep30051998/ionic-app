@@ -15,6 +15,7 @@ export interface IProduct {
     unit?: string;
     createdAt?: string;
     updatedAt?: string;
+    meal?: string;
 }
 
 export interface IDiglogData {

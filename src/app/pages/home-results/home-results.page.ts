@@ -69,7 +69,6 @@ export class HomeResultsPage implements OnChanges {
     // this.getListMenu();
     this.getMenu(this.segment);
     this.cart = this.cartService.getCartFromStorage();
-    console.log(this.cart)
     this.cartSub$ = this.cartService.getCart().subscribe((res: ICart) => {
       if (res) {
         this.cart = new Cart(res.products);
@@ -179,6 +178,9 @@ export class HomeResultsPage implements OnChanges {
   ngOnChanges(): void {
     if (this.menuSub$) {
       this.menuSub$.unsubscribe();
+    }
+    if (this.cartSub$) {
+      this.cartSub$.unsubscribe();
     }
   }
 }

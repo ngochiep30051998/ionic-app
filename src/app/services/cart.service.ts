@@ -63,6 +63,39 @@ export class CartService {
     }
   }
 
+  async update(product: IProduct, amount: number, currentProduct: IProduct) {
+    try {
+      if (!currentProduct) {
+        const toast = await this.toastCtrl.create({
+          showCloseButton: true,
+          closeButtonText: 'Đóng',
+          message: 'Sản phẩm đã hết hoặc không được bán trong ngày hôm nay.',
+          duration: 3000,
+          position: 'bottom'
+        });
+        return await toast.present();
+      }
+      if (amount > currentProduct.amount) {
+        const toast = await this.toastCtrl.create({
+          showCloseButton: true,
+          closeButtonText: 'Đóng',
+          message: `Sản phẩm ${product.name} trong rỏ hàng đã lớn hơn sản phẩm còn lại, vui lòng chọn thêm sản phẩm khác.`,
+          duration: 3000,
+          position: 'bottom'
+        });
+        return await toast.present();
+      } else {
+        const index = this.cart.products.findIndex(x => x.key === product.key);
+        this.cart.products[index].amount = amount;
+        const cart = new Cart(this.cart.products, '', '', '', '');
+        localStorage.setItem('cart', JSON.stringify(cart));
+        this.cart$.next(cart);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   getCart() {
     return this.cart$.asObservable();
   }

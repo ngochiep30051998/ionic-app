@@ -31,29 +31,35 @@
       <ion-text><strong class="text">Danh sách sản phẩm</strong></ion-text>
     </ion-row>
     <ion-list #slidingList>
-      <ion-item-sliding class="ion-no-padding card ion-no-margin" >
+      <ion-item-sliding class="ion-no-padding card ion-no-margin" *ngFor="let product of cart?.products">
         <ion-item lines="none">
           <ion-row>
             <ion-col size="3" class="ion-text-center">
-              <img [src]="'https://images.foody.vn/res/g64/635171/s400x400/foody-banh-mi-huong-lan-944-637288064610273528.jpeg'" alt="1111">
-              <ion-text color="danger" class="small" >Remove</ion-text>
+              <img [src]="product?.displayImage || 'assets/img/defaults/default-product.jpg'">
+              <ion-icon name="trash" size="small" color="danger"></ion-icon>
             </ion-col>
             <ion-col size="6">
-              <h3 class="ion-no-margin item-name">name</h3>
-              <h5 class="ion-no-margin item-def">size</h5>
-              <h5 class="ion-no-margin item-def">shipping: </h5>
-              <h5 class="ion-no-margin item-def">Dec 31 - Jan 17</h5>
+              <h3 class="ion-no-margin item-name">{{product?.name}}</h3>
+              <h5 class="ion-no-margin item-def">{{product?.catName}}</h5>
+              <h5 class="ion-no-margin item-def">{{product?.updatedAt || product?.createdAt}}</h5>
             </ion-col>
             <ion-col size="3" class="ion-float-right">
-              <ion-row class="ion-text-end ion-justify-content-end">
-                <h3  class="item-name ion-text-end ion-no-margin">$11</h3>
-                <h3 class="ion-no-margin item-name ion-text-end" ><span class="cut">$12</span></h3>
+              <ion-row class="ion-text-end ion-justify-content-end" *ngIf="product?.promotionPrice">
+                <h3  class="item-name ion-text-end ion-no-margin">{{product?.price}}</h3>
+                <h3 class="ion-no-margin item-name ion-text-end" ><span class="cut">{{product?.promotionPrice}}</span></h3>
+              </ion-row>
+              <ion-row class="ion-text-end ion-justify-content-end" *ngIf="!product?.promotionPrice">
+                <h3 class="ion-no-margin item-name ion-text-end" ><span class="cut">{{product?.price}}</span></h3>
               </ion-row>
               <ion-row class="ion-justify-content-end">
-                <ion-select placeholder="-" interface="popover" [interfaceOptions]="customAlertOptions"
-                  class="select">
-                  <ion-select-option *ngFor="let q of [1,2,3,4]" [(value)]="q" class="ion-text-center">{{q}}</ion-select-option>
-                </ion-select>
+                <!-- <ion-select  [interfaceOptions]="amountOptions" [(ngModel)]="product.amount" [compareWith]="compareFn"
+                class="select popover-amount" interface="popover" >
+                  <ion-select-option *ngFor="let q of helperService.counter(product,menu);" 
+                  [(value)]="q" class="ion-text-center" >{{q}}</ion-select-option>
+                </ion-select> -->
+                <ion-input appNumberOnly inputmode="numeric" 
+                type="number" class="input" 
+                [value]="product.amount" (input)="changeAmount($event,product)"></ion-input>
               </ion-row>
             </ion-col>
           </ion-row>
@@ -87,7 +93,7 @@
           <ion-text>Tổng số lượng: </ion-text>
         </ion-col>
         <ion-col size="3" class="ion-text-end">
-          <ion-text>10</ion-text>
+          <ion-text>{{cart?.totalItem |number}}</ion-text>
         </ion-col>
       </ion-row>
 
@@ -96,7 +102,7 @@
           <ion-text>Tổng thanh toán: </ion-text>
         </ion-col>
         <ion-col size="3" class="ion-text-end">
-          <ion-text>{{'100000' |number}}</ion-text>
+          <ion-text>{{cart?.totalPrice |number}}</ion-text>
         </ion-col>
       </ion-row>
     </div>
@@ -108,8 +114,8 @@
           <ion-text>Vị trí: </ion-text>
         </ion-col>
         <ion-col size="4" class="ion-text-end">
-          <ion-select [interfaceOptions]="floorOptions" class="select">
-          <ion-select-option *ngFor="let floor of floors" [(value)]="floor" class="ion-text-center">{{floor}}</ion-select-option>
+          <ion-select [interfaceOptions]="floorOptions" class="select" [value]="'Tầng 1'" >
+          <ion-select-option *ngFor="let floor of floors" [value]="floor" class="ion-text-center">{{floor}}</ion-select-option>
         </ion-select>
         </ion-col>
       </ion-row>
