@@ -45,11 +45,11 @@
             </ion-col>
             <ion-col size="3" class="ion-float-right">
               <ion-row class="ion-text-end ion-justify-content-end" *ngIf="product?.promotionPrice">
-                <h3  class="item-name ion-text-end ion-no-margin">{{product?.price |number}}</h3>
-                <h3 class="ion-no-margin item-name ion-text-end" ><span class="cut">{{product?.promotionPrice |number}}</span></h3>
+                <h3  class="item-name ion-text-end ion-no-margin">{{product?.price |number}} vnđ</h3>
+                <h3 class="ion-no-margin item-name ion-text-end" ><span class="cut">{{product?.promotionPrice |number}} vnđ</span></h3>
               </ion-row>
               <ion-row class="ion-text-end ion-justify-content-end" *ngIf="!product?.promotionPrice">
-                <h3 class="ion-no-margin item-name ion-text-end" ><span class="cut">{{product?.price}}</span></h3>
+                <h3 class="ion-no-margin item-name ion-text-end" ><span class="cut">{{product?.price}} vnđ</span></h3>
               </ion-row>
               <ion-row class="ion-justify-content-end">
                 <!-- <ion-select  [interfaceOptions]="amountOptions" [(ngModel)]="product.amount" [compareWith]="compareFn"
