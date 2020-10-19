@@ -45,22 +45,21 @@
             </ion-col>
             <ion-col size="3" class="ion-float-right">
               <ion-row class="ion-text-end ion-justify-content-end" *ngIf="product?.promotionPrice">
-                <h3  class="item-name ion-text-end ion-no-margin">{{product?.price |number}} vnđ</h3>
-                <h3 class="ion-no-margin item-name ion-text-end" ><span class="cut">{{product?.promotionPrice |number}} vnđ</span></h3>
+                <h4  class="item-name ion-text-end ion-no-margin">{{product?.price |number}} vnđ</h4>
+                <h4 class="ion-no-margin item-name ion-text-end" ><span class="cut">{{product?.promotionPrice |number}} vnđ</span></h4>
               </ion-row>
               <ion-row class="ion-text-end ion-justify-content-end" *ngIf="!product?.promotionPrice">
-                <h3 class="ion-no-margin item-name ion-text-end" ><span class="cut">{{product?.price}} vnđ</span></h3>
+                <h4 class="ion-no-margin item-name ion-text-end" ><span>{{product?.price |number}} vnđ</span></h4>
               </ion-row>
               <ion-row class="ion-justify-content-end">
-                <!-- <ion-select  [interfaceOptions]="amountOptions" [(ngModel)]="product.amount" [compareWith]="compareFn"
-                class="select popover-amount" interface="popover" >
-                  <ion-select-option *ngFor="let q of helperService.counter(product,menu);" 
-                  [(value)]="q" class="ion-text-center" >{{q}}</ion-select-option>
-                </ion-select> -->
                 <ion-input appNumberOnly inputmode="numeric" 
-                type="number" class="input" 
+                type="number" class="input ion-text-center" 
                 [value]="product.amount" (input)="changeAmount($event,product)"></ion-input>
               </ion-row>
+            </ion-col>
+
+            <ion-col size="12" class="ion-text-center" appError [productId]="product?.id" [errors]="errors">
+              <!-- <p class="error-text" >Sản phẩm quá số lượng cho phép</p> -->
             </ion-col>
           </ion-row>
         </ion-item>
@@ -73,9 +72,9 @@
     </ion-list>
 
     <ion-row class="ion-margin">
-      <ion-text><strong class="text">Nội dung</strong></ion-text>
+      <ion-text><strong>NỘI DUNG</strong></ion-text>
     </ion-row>
-    <ion-item lines="none" class="card ion-no-margin">
+    <!-- <ion-item lines="none" class="card ion-no-margin">
       <ion-row class="full">
         <ion-col size="9">
           <ion-input placeholder="Mã giảm giá" class="input"></ion-input>
@@ -84,7 +83,7 @@
           <ion-button fill="outline" expand="block" ><span class="small">Áp dụng</span></ion-button>
         </ion-col>
       </ion-row>
-    </ion-item>
+    </ion-item> -->
 
     <div lines="none" class="card ion-no-margin ion-padding-bottom" >
 
@@ -109,31 +108,55 @@
 
     <div lines="none" class="card ion-no-margin ion-padding-bottom" >
 
-      <ion-row class="full ion-padding-horizontal" >
-        <ion-col size="8">
-          <ion-text>Vị trí: </ion-text>
-        </ion-col>
-        <ion-col size="4" class="ion-text-end">
-          <ion-select [interfaceOptions]="floorOptions" class="select" [value]="'Tầng 1'" >
-          <ion-select-option *ngFor="let floor of floors" [value]="floor" class="ion-text-center">{{floor}}</ion-select-option>
-        </ion-select>
-        </ion-col>
-      </ion-row>
-      <ion-row class="full ion-padding-horizontal" >
-        <!-- <ion-col size="3">
-          <ion-text>Ghi chú: </ion-text>
-        </ion-col> -->
-        <ion-col size="12">
-          <ion-textarea class="input" placeholder="Ghi chú"></ion-textarea>
-        </ion-col>
-      </ion-row>
+      <form [formGroup]="form">
+        <ion-row class="full ion-padding-horizontal" >
+          <ion-col size="8">
+            <ion-text>Vị trí: </ion-text>
+          </ion-col>
+          <ion-col size="4" class="ion-text-end ">
+            <ion-select [interfaceOptions]="floorOptions" class="select ion-text-center" [value]="'Tầng 1'" formControlName="floor">
+            <ion-select-option *ngFor="let floor of floors" [value]="floor" class="ion-text-center">{{floor}}</ion-select-option>
+          </ion-select>
+          </ion-col>
+        </ion-row>
+        <ion-row class="full ion-padding-horizontal" >
+          <ion-col size="12">
+            <ion-textarea class="input" placeholder="Ghi chú" formControlName="notes"></ion-textarea>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="full ion-padding-horizontal" >
+          <ion-col size="12">
+            <ion-list>
+              <ion-radio-group formControlName="transType">
+                <ion-list-header>
+                  <ion-label>
+                    Hình thức thanh toán
+                  </ion-label>
+                </ion-list-header>
+            
+                <ion-item>
+                  <ion-label>Tiền mặt</ion-label>
+                  <ion-radio value="1"></ion-radio>
+                </ion-item>
+            
+                <ion-item>
+                  <ion-label>Thẻ tín dụng</ion-label>
+                  <ion-radio value="2"></ion-radio>
+                </ion-item>
+          
+              </ion-radio-group>
+            </ion-list>
+          </ion-col>
+        </ion-row>
+      </form>
     </div>
 
 
   </div>
 </ion-content>
 <ion-footer *ngIf="cart?.products && cart?.products?.length >0">
-  <ion-toolbar color="success">
+  <ion-toolbar color="success" (click)="submit()">
     <ion-title>Thanh toán</ion-title>
   </ion-toolbar>
 </ion-footer>

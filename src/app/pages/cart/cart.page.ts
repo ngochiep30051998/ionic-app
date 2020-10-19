@@ -9,6 +9,10 @@ import * as moment from 'moment';
 import { environment } from 'src/environments/environment';
 import { IProduct } from 'src/app/interfaces/products.interface';
 import { NavController } from '@ionic/angular';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { IUser } from 'src/app/interfaces/user.interface';
+import { AuthService } from 'src/app/services/auth.service';
+import { IError } from 'src/app/interfaces/errors.interfaces';
 
 @Component({
   selector: 'app-cart',
@@ -27,23 +31,48 @@ export class CartPage implements OnInit, OnDestroy {
     translucent: true
   };
   public floors = ['Tầng 1', 'Tầng 2', 'Tầng 3', 'Tầng 4', 'Tầng 5', 'Tầng 6', 'Tầng 7', 'Tầng 8'];
-  compareWith: any;
   public cart: ICart;
   public cart$: Subscription;
   public menu: IMenu;
   public menuSub$: Subscription;
+  public user: IUser;
+  public userSub$: Subscription;
+
+  public errors: IError[] = [];
+  public errorSub$: Subscription;
+
+  public form: FormGroup;
   constructor(
     private firebaseService: FirebaseService,
     private cartService: CartService,
     public helperService: HelperService,
     public navCtrl: NavController,
+    private fb: FormBuilder,
+    private authService: AuthService,
   ) {
+    this.form = this.fb.group({
+      floor: ['Tầng 1'],
+      notes: [''],
+      transType: ['1']
+    });
     this.cart = this.cartService.getCartFromStorage();
     this.cart$ = this.cartService.getCart().subscribe((res: ICart) => {
       if (res) {
         this.cart = new Cart(res.products);
       }
     });
+
+    this.userSub$ = this.authService.getUserInfo().subscribe((res: IUser) => {
+      this.user = res;
+    });
+
+    this.errorSub$ = this.cartService.getError().subscribe((res: IError[]) => {
+      if (res) {
+        this.errors = [...res];
+        console.log(this.errors);
+      }
+    });
+
     this.getMenu();
   }
 
@@ -73,10 +102,6 @@ export class CartPage implements OnInit, OnDestroy {
     });
   }
 
-  compareFn(q: number, q1: number): boolean {
-    return q === q1;
-  }
-
   changeAmount(event, product: IProduct) {
     const currentProduct: IProduct = this.menu[product.meal].find(x => x.key === product.key);
     const amount = event.target.value ? Number(event.target.value) : 0;
@@ -89,9 +114,21 @@ export class CartPage implements OnInit, OnDestroy {
   goBack() {
     this.navCtrl.back();
   }
+
+  submit() {
+    if (this.errors.length > 0) {
+      return;
+    }
+    const bill = new Cart(this.cart.products, '', this.form.value.notes, this.form.value.floor, this.form.value.transType, this.user);
+    console.log(bill);
+  }
+
   ngOnDestroy(): void {
     if (this.cart$) {
       this.cart$.unsubscribe();
+    }
+    if(this.errorSub$){
+      this.errorSub$.unsubscribe();
     }
   }
 }

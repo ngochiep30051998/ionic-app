@@ -6,6 +6,7 @@ import { Storage } from '@ionic/storage';
 import { FirebaseService } from './firebase.service';
 import * as moment from 'moment';
 import { ToastController } from '@ionic/angular';
+import { IError } from '../interfaces/errors.interfaces';
 @Injectable({
   providedIn: 'root'
 })
@@ -13,6 +14,9 @@ export class CartService {
 
   private cart$: BehaviorSubject<ICart> = new BehaviorSubject(null);
   private cart: ICart;
+
+  private error$: Subject<IError[]> = new Subject();
+  private errors: IError[] = [];
 
   constructor(
     private storage: Storage,
@@ -42,8 +46,9 @@ export class CartService {
         // product.amount = amount;
         this.cart.products.push({ ...product, amount });
       } else {
+        let toast;
         if (this.cart.products[index].amount + amount > product.amount) {
-          const toast = await this.toastCtrl.create({
+          toast = await this.toastCtrl.create({
             showCloseButton: true,
             closeButtonText: 'Đóng',
             message: 'Sản phẩm trong rỏ hàng đã lớn hơn sản phẩm còn lại, vui lòng chọn thêm sản phẩm khác.',
@@ -54,6 +59,14 @@ export class CartService {
         }
         this.cart.products[index].updatedAt = moment().format('DD-MM-YYYY HH:mm:ss');
         this.cart.products[index].amount += amount;
+        toast = await this.toastCtrl.create({
+          showCloseButton: true,
+          closeButtonText: 'Đóng',
+          message: `Đã thêm ${product.name} vào rỏ hàng.`,
+          duration: 3000,
+          position: 'bottom'
+        });
+        await toast.present();
       }
       const cart = new Cart(this.cart.products, '', '', '', '');
       localStorage.setItem('cart', JSON.stringify(cart));
@@ -83,8 +96,11 @@ export class CartService {
           duration: 3000,
           position: 'bottom'
         });
+
+        this.setError({ id: product.id, message: 'Sản phẩm quá số lượng cho phép' });
         return await toast.present();
       } else {
+        this.removeError(product.id);
         const index = this.cart.products.findIndex(x => x.key === product.key);
         this.cart.products[index].amount = amount;
         const cart = new Cart(this.cart.products, '', '', '', '');
@@ -129,5 +145,28 @@ export class CartService {
     const cart = new Cart(this.cart.products, '', '', '', '');
     localStorage.setItem('cart', JSON.stringify(cart));
     this.cart$.next(cart);
+  }
+
+  getError() {
+    return this.error$.asObservable();
+  }
+  setError(e: IError) {
+    const index = this.errors.findIndex(x => x.id === e.id);
+    if (index > -1) {
+      this.errors[index] = e;
+    } else {
+      this.errors.push(e);
+    }
+    this.error$.next(this.errors);
+  }
+
+  removeError(id) {
+    if (this.errors && this.errors.length > 0) {
+      const index = this.errors.findIndex(x => x.id === id);
+      if (index > -1) {
+        this.errors.splice(index, 1);
+        this.error$.next(this.errors);
+      }
+    }
   }
 }

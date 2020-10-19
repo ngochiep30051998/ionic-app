@@ -57,4 +57,14 @@ export class FirebaseService {
     return moment(firebase.database.ServerValue.TIMESTAMP).format()
     // return this.db.
   }
+
+  getUserInfo(uId) {
+    return new Promise((resolve, reject) => {
+      return this.db.object(`userInfo/${uId}`).valueChanges().subscribe(res => {
+        resolve(res);
+      }, err => {
+        reject(err);
+      });
+    });
+  }
 }

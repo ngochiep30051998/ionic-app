@@ -58,8 +58,8 @@ export class AuthService {
         resolve(res);
       }, err => {
         reject(err);
-      })
-    })
+      });
+    });
   }
   // getCurrentFirebaseUser(): firebase.User {
   //   return firebase.auth().currentUser;

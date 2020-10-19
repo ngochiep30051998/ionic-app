@@ -24,4 +24,7 @@ export interface IGoogleUser {
 
 export interface IUser extends IGoogleUser, firebase.UserInfo {
     isAdmin?: boolean;
+    floor?: string;
+    cardNumber?: string;
+    transType?: string;
 }
