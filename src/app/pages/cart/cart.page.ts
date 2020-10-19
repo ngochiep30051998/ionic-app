@@ -164,7 +164,7 @@ export class CartPage implements OnInit, OnDestroy {
       });
       toast.present();
       this.cartService.clearCart();
-      this.navCtrl.back();
+      this.navCtrl.navigateRoot('/home-results');
 
     } catch (e) {
       console.log(e);
