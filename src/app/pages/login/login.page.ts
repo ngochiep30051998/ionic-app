@@ -16,7 +16,7 @@ import { HelperService } from 'src/app/services/helper.service';
 })
 export class LoginPage implements OnInit {
   public onLoginForm: FormGroup;
-
+  public isCheckout: boolean;
   constructor(
     public navCtrl: NavController,
     public menuCtrl: MenuController,
@@ -29,10 +29,15 @@ export class LoginPage implements OnInit {
     private helperService: HelperService,
     public popoverCtrl: PopoverController,
     public firebaseService: FirebaseService
-  ) { }
+  ) {
+    if (this.router.getCurrentNavigation().extras.state) {
+      this.isCheckout = this.router.getCurrentNavigation().extras.state.checkout;
+    }
+  }
 
   ionViewWillEnter() {
     this.menuCtrl.enable(true);
+
   }
 
   ngOnInit() {
@@ -131,7 +136,11 @@ export class LoginPage implements OnInit {
         color: 'success'
       });
       toast.present();
-      this.router.navigateByUrl('/home-results');
+      if (this.isCheckout) {
+        this.navCtrl.back();
+      } else {
+        this.router.navigateByUrl('/home-results');
+      }
     } catch (e) {
       console.log(e);
       this.helperService.hideLoading();
@@ -172,7 +181,11 @@ export class LoginPage implements OnInit {
         color: 'success'
       });
       toast.present();
-      this.router.navigateByUrl('/home-results');
+      if (this.isCheckout) {
+        this.navCtrl.back();
+      } else {
+        this.router.navigateByUrl('/home-results');
+      }
     } catch (e) {
       this.helperService.hideLoading();
       this.authService.handleErrors(e);

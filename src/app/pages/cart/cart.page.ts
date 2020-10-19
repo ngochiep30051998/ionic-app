@@ -8,11 +8,12 @@ import { HelperService } from 'src/app/services/helper.service';
 import * as moment from 'moment';
 import { environment } from 'src/environments/environment';
 import { IProduct } from 'src/app/interfaces/products.interface';
-import { NavController, ToastController } from '@ionic/angular';
+import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IUser } from 'src/app/interfaces/user.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { IError } from 'src/app/interfaces/errors.interfaces';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -50,6 +51,8 @@ export class CartPage implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private authService: AuthService,
     public toastCtrl: ToastController,
+    private router: Router,
+    public alertCtrl: AlertController,
   ) {
     this.form = this.fb.group({
       floor: ['Tầng 1'],
@@ -120,6 +123,27 @@ export class CartPage implements OnInit, OnDestroy {
     try {
       if (this.errors.length > 0) {
         return;
+      }
+      if (!this.user) {
+        const alert = await this.alertCtrl.create({
+          header: 'Đăng nhập?',
+          message: 'Bạn cần đăng nhập để đặt hàng.',
+          buttons: [
+            {
+              text: 'Huỷ',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: () => {
+                console.log('Confirm Cancel');
+              }
+            }, {
+              text: 'Xác nhận',
+              handler: async () => this.router.navigate(['/login'], { state: { checkout: true } })
+            }
+          ]
+        });
+
+        return await alert.present();
       }
       this.helperService.showLoading();
       const bill = new Cart(this.cart.products, '', this.form.value.notes, this.form.value.floor, this.form.value.transType, this.user);

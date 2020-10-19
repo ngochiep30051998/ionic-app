@@ -177,9 +177,11 @@ export class CartService {
 
   clearCart() {
     localStorage.removeItem('cart');
-    this.cart = null;
+    this.cart = {
+      products: []
+    };
     this.errors = [];
     this.error$.next(this.errors);
-    this.cart$.next(null);
+    this.cart$.next(this.cart);
   }
 }

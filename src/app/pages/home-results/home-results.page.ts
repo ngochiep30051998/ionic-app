@@ -73,8 +73,6 @@ export class HomeResultsPage implements OnChanges {
       if (res) {
         this.cart = new Cart(res.products);
         console.log(this.cart);
-      } else {
-        this.cart = null;
       }
     });
     console.log(this.firebaseService.getTime())
