@@ -29,7 +29,7 @@ export class EditProfilePage implements OnInit {
         showCloseButton: true,
         cssClass: 'bg-profile',
         message: 'Your Data was Edited!',
-        duration: 3000,
+        duration: 2000,
         position: 'bottom'
       });
 

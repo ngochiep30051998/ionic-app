@@ -34,8 +34,9 @@ export class CartService {
           showCloseButton: true,
           closeButtonText: 'Đóng',
           message: 'Sản phẩm đã hết, vui lòng chọn sản phẩm khác.',
-          duration: 3000,
-          position: 'bottom'
+          duration: 2000,
+          position: 'bottom',
+          color: 'danger'
         });
         return await toast.present();
       }
@@ -46,28 +47,32 @@ export class CartService {
         // product.amount = amount;
         this.cart.products.push({ ...product, amount });
       } else {
-        let toast;
         if (this.cart.products[index].amount + amount > product.amount) {
-          toast = await this.toastCtrl.create({
+          const toast = await this.toastCtrl.create({
             showCloseButton: true,
             closeButtonText: 'Đóng',
             message: 'Sản phẩm trong rỏ hàng đã lớn hơn sản phẩm còn lại, vui lòng chọn thêm sản phẩm khác.',
-            duration: 3000,
-            position: 'bottom'
+            duration: 2000,
+            position: 'bottom',
+            color: 'danger'
+
           });
           return await toast.present();
         }
         this.cart.products[index].updatedAt = moment().format('DD-MM-YYYY HH:mm:ss');
         this.cart.products[index].amount += amount;
-        toast = await this.toastCtrl.create({
-          showCloseButton: true,
-          closeButtonText: 'Đóng',
-          message: `Đã thêm ${product.name} vào rỏ hàng.`,
-          duration: 3000,
-          position: 'bottom'
-        });
-        await toast.present();
+
       }
+      const success = await this.toastCtrl.create({
+        showCloseButton: true,
+        closeButtonText: 'Đóng',
+        message: `Đã thêm ${product.name} vào rỏ hàng.`,
+        duration: 2000,
+        position: 'bottom',
+        color: 'success'
+      });
+      await success.present();
+
       const cart = new Cart(this.cart.products, '', '', '', '');
       localStorage.setItem('cart', JSON.stringify(cart));
       this.cart$.next(cart);
@@ -83,7 +88,7 @@ export class CartService {
           showCloseButton: true,
           closeButtonText: 'Đóng',
           message: 'Sản phẩm đã hết hoặc không được bán trong ngày hôm nay.',
-          duration: 3000,
+          duration: 2000,
           position: 'bottom'
         });
         return await toast.present();
@@ -93,7 +98,7 @@ export class CartService {
           showCloseButton: true,
           closeButtonText: 'Đóng',
           message: `Sản phẩm ${product.name} trong rỏ hàng đã lớn hơn sản phẩm còn lại, vui lòng chọn thêm sản phẩm khác.`,
-          duration: 3000,
+          duration: 2000,
           position: 'bottom'
         });
 
@@ -134,7 +139,7 @@ export class CartService {
           showCloseButton: true,
           closeButtonText: 'Đóng',
           message: `Sản phẩm đã được xoá khỏi rỏ hàng.`,
-          duration: 3000,
+          duration: 2000,
           position: 'bottom'
         });
         await toast.present();

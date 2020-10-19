@@ -69,8 +69,9 @@ export class RegisterPage implements OnInit {
         showCloseButton: true,
         closeButtonText: 'Đóng',
         message: 'Đăng ký thành công.',
-        duration: 3000,
-        position: 'bottom'
+        duration: 2000,
+        position: 'bottom',
+        color: 'success'
       });
       toast.present();
       await this.loginWithEmail(this.onRegisterForm.value.email, this.onRegisterForm.value.password);

@@ -74,7 +74,7 @@ export class LoginPage implements OnInit {
               const toast = await this.toastCtrl.create({
                 showCloseButton: true,
                 message: 'Email đã được gửi.',
-                duration: 3000,
+                duration: 2000,
                 position: 'bottom',
                 closeButtonText: 'Đóng',
               });
@@ -122,6 +122,15 @@ export class LoginPage implements OnInit {
       if (res.additionalUserInfo.isNewUser) {
         this.firebaseService.insertRefWithId('/userInfo', res.user.uid, user);
       }
+      const toast = await this.toastCtrl.create({
+        showCloseButton: true,
+        closeButtonText: 'Đóng',
+        message: 'Đăng nhập thành công.',
+        duration: 2000,
+        position: 'bottom',
+        color: 'success'
+      });
+      toast.present();
       this.router.navigateByUrl('/home-results');
     } catch (e) {
       console.log(e);
@@ -154,6 +163,15 @@ export class LoginPage implements OnInit {
       }
       console.log(res);
       // loader.dismiss();
+      const toast = await this.toastCtrl.create({
+        showCloseButton: true,
+        closeButtonText: 'Đóng',
+        message: 'Đăng nhập thành công.',
+        duration: 2000,
+        position: 'bottom',
+        color: 'success'
+      });
+      toast.present();
       this.router.navigateByUrl('/home-results');
     } catch (e) {
       this.helperService.hideLoading();
