@@ -5,7 +5,7 @@ import { NavController } from '@ionic/angular';
 // import * as firebase from 'firebase';
 import { IGoogleUser, IUser } from '../interfaces/user.interface';
 import { Storage } from '@ionic/storage';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { errorStatus } from '../constants/errors-status';
 import { HelperService } from './helper.service';
@@ -15,7 +15,7 @@ import { auth } from 'firebase/app';
   providedIn: 'root'
 })
 export class AuthService {
-  private user$: Subject<IUser> = new Subject();
+  private user$: BehaviorSubject<IUser> = new BehaviorSubject(null);
   constructor(
     public navCtrl: NavController,
     private googlePlus: GooglePlus,

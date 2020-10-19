@@ -174,4 +174,12 @@ export class CartService {
       }
     }
   }
+
+  clearCart() {
+    localStorage.removeItem('cart');
+    this.cart = null;
+    this.errors = [];
+    this.error$.next(this.errors);
+    this.cart$.next(null);
+  }
 }

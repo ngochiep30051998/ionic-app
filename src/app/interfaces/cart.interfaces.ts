@@ -10,6 +10,7 @@ export interface ICart {
     totalItem?: number;
     totalPrice?: number;
     user?: IUser;
+    date?: any;
 }
 
 export class Cart implements ICart {

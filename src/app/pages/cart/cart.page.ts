@@ -8,7 +8,7 @@ import { HelperService } from 'src/app/services/helper.service';
 import * as moment from 'moment';
 import { environment } from 'src/environments/environment';
 import { IProduct } from 'src/app/interfaces/products.interface';
-import { NavController } from '@ionic/angular';
+import { NavController, ToastController } from '@ionic/angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IUser } from 'src/app/interfaces/user.interface';
 import { AuthService } from 'src/app/services/auth.service';
@@ -49,6 +49,7 @@ export class CartPage implements OnInit, OnDestroy {
     public navCtrl: NavController,
     private fb: FormBuilder,
     private authService: AuthService,
+    public toastCtrl: ToastController,
   ) {
     this.form = this.fb.group({
       floor: ['Tầng 1'],
@@ -115,19 +116,44 @@ export class CartPage implements OnInit, OnDestroy {
     this.navCtrl.back();
   }
 
-  submit() {
-    if (this.errors.length > 0) {
-      return;
+  async submit() {
+    try {
+      if (this.errors.length > 0) {
+        return;
+      }
+      this.helperService.showLoading();
+      const bill = new Cart(this.cart.products, '', this.form.value.notes, this.form.value.floor, this.form.value.transType, this.user);
+      console.log(bill);
+      if (bill.payment === '2') {
+
+      } else {
+        const create = await this.firebaseService.createBill(bill);
+        console.log(create);
+      }
+      const toast = await this.toastCtrl.create({
+        showCloseButton: true,
+        closeButtonText: 'Đóng',
+        message: 'Đặt hàng thành công.',
+        duration: 2000,
+        position: 'bottom',
+        color: 'success'
+      });
+      toast.present();
+      this.cartService.clearCart();
+      this.navCtrl.back();
+
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.helperService.hideLoading();
     }
-    const bill = new Cart(this.cart.products, '', this.form.value.notes, this.form.value.floor, this.form.value.transType, this.user);
-    console.log(bill);
   }
 
   ngOnDestroy(): void {
     if (this.cart$) {
       this.cart$.unsubscribe();
     }
-    if(this.errorSub$){
+    if (this.errorSub$) {
       this.errorSub$.unsubscribe();
     }
   }

@@ -6,6 +6,7 @@ import { HelperService } from './helper.service';
 import * as firebase from 'firebase';
 
 import * as moment from 'moment';
+import { ICart } from '../interfaces/cart.interfaces';
 @Injectable({
   providedIn: 'root'
 })
@@ -66,5 +67,11 @@ export class FirebaseService {
         reject(err);
       });
     });
+  }
+
+  createBill(cart: ICart) {
+    const id = this.db.createPushId();
+    cart.date = firebase.database.ServerValue.TIMESTAMP;
+    return this.db.object(`/bills/${id}`).set(cart);
   }
 }
