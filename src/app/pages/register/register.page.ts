@@ -50,7 +50,7 @@ export class RegisterPage implements OnInit {
     try {
       this.helperService.showLoading();
       const res = await this.authService.register(this.onRegisterForm.value.email, this.onRegisterForm.value.password);
-      const currentUser = await this.authService.getCurrentUser();
+      const currentUser: any = await this.authService.getCurrentUser();
       await currentUser.updateProfile({
         displayName: this.onRegisterForm.value.fullName,
       });

@@ -75,6 +75,7 @@ export class HomeResultsPage implements OnChanges {
         console.log(this.cart);
       }
     });
+    console.log(this.firebaseService.getTime())
   }
 
   ionViewWillEnter() {

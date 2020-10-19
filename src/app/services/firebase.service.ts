@@ -4,6 +4,8 @@ import { map } from 'rxjs/operators';
 import { HelperService } from './helper.service';
 
 import * as firebase from 'firebase';
+
+import * as moment from 'moment';
 @Injectable({
   providedIn: 'root'
 })
@@ -50,6 +52,9 @@ export class FirebaseService {
   }
 
   getTime() {
-    return firebase.database.ServerValue.TIMESTAMP;
+    // const session = this.db.object('sessions');
+    // session.p
+    return moment(firebase.database.ServerValue.TIMESTAMP).format()
+    // return this.db.
   }
 }

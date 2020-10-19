@@ -53,7 +53,13 @@ export class AuthService {
   }
 
   getCurrentUser() {
-    return this.angularFireAuth.user.toPromise();
+    return new Promise((resolve, reject) => {
+      return this.angularFireAuth.user.subscribe(res => {
+        resolve(res);
+      }, err => {
+        reject(err);
+      })
+    })
   }
   // getCurrentFirebaseUser(): firebase.User {
   //   return firebase.auth().currentUser;
