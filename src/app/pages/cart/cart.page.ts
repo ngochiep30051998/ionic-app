@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Cart, ICart } from 'src/app/interfaces/cart.interfaces';
 import { IMenu } from 'src/app/interfaces/menu.interfaces';
@@ -14,13 +14,18 @@ import { IUser } from 'src/app/interfaces/user.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { IError } from 'src/app/interfaces/errors.interfaces';
 import { Router } from '@angular/router';
+import { ApiService } from 'src/app/services/api.service';
+
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+
+declare let vnpay: any;
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.page.html',
   styleUrls: ['./cart.page.scss'],
 })
-export class CartPage implements OnInit, OnDestroy {
+export class CartPage implements OnInit, OnDestroy, AfterViewInit {
   public show = true;
   public amountOptions: any = {
     header: 'Số lượng',
@@ -53,6 +58,8 @@ export class CartPage implements OnInit, OnDestroy {
     public toastCtrl: ToastController,
     private router: Router,
     public alertCtrl: AlertController,
+    private apiService: ApiService,
+    private iab: InAppBrowser
   ) {
     this.form = this.fb.group({
       floor: ['Tầng 1'],
@@ -73,7 +80,6 @@ export class CartPage implements OnInit, OnDestroy {
     this.errorSub$ = this.cartService.getError().subscribe((res: IError[]) => {
       if (res) {
         this.errors = [...res];
-        console.log(this.errors);
       }
     });
 
@@ -81,8 +87,11 @@ export class CartPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.loadvnpay();
   }
 
+  ngAfterViewInit(): void {
+  }
   getMenu() {
     if (this.menuSub$) {
       this.menuSub$.unsubscribe();
@@ -95,7 +104,6 @@ export class CartPage implements OnInit, OnDestroy {
     }
     this.helperService.showLoading();
     this.menuSub$ = this.firebaseService.getMenuById(id).subscribe((res) => {
-      console.log(res);
       this.menu = res;
       this.helperService.hideLoading();
 
@@ -137,8 +145,8 @@ export class CartPage implements OnInit, OnDestroy {
                 console.log('Confirm Cancel');
               }
             }, {
-              text: 'Xác nhận',
-              handler: async () => this.router.navigate(['/login'], { state: { checkout: true } })
+              text: 'Đăng nhập',
+              handler: () => this.router.navigate(['/login'], { state: { checkout: true } })
             }
           ]
         });
@@ -149,7 +157,36 @@ export class CartPage implements OnInit, OnDestroy {
       const bill = new Cart(this.cart.products, '', this.form.value.notes, this.form.value.floor, this.form.value.transType, this.user);
       console.log(bill);
       if (bill.payment === '2') {
+        const params = {
+          amount: bill.totalPrice,
+          orderDescription: bill.notes
+        };
+        const create: any = await this.apiService.checkout(params);
+        if (create.code === '00') {
 
+          // vnpay.open({ width: 768, height: 600, url: create.data });
+          const browser = this.iab.create(create.data, '_self');
+          return browser.on('loadstart').subscribe((e) => {
+            console.log('browser closed', e);
+            if (e.url.includes('https://api-fast-food.herokuapp.com/checkout/vnpay_return')) {
+              browser.close();
+            }
+          }, err => {
+            console.error(err);
+          });
+
+        } else {
+          // this.toastCtrl(create.Message);
+          const err = await this.toastCtrl.create({
+            showCloseButton: true,
+            closeButtonText: 'Đóng',
+            message: create.Message,
+            duration: 2000,
+            position: 'bottom',
+            color: 'danger'
+          });
+          err.present();
+        }
       } else {
         const create = await this.firebaseService.createBill(bill);
         console.log(create);
@@ -173,6 +210,22 @@ export class CartPage implements OnInit, OnDestroy {
     }
   }
 
+  loadvnpay() {
+
+    if (!window.document.getElementById('vnpay-script')) {
+      const s = window.document.createElement('script');
+      s.id = 'vnpay-script';
+      s.type = 'text/javascript';
+      s.src = 'https://pay.vnpay.vn/lib/vnpay/vnpay.js';
+      window.document.body.appendChild(s);
+    }
+  }
+
+  checkoutVNpay() {
+    // if ((<any>window).vnpay) {
+    //   vnpay.open({ width: 768, height: 600, url: x.data });
+    // }
+  }
   ngOnDestroy(): void {
     if (this.cart$) {
       this.cart$.unsubscribe();

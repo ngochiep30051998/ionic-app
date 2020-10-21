@@ -29,6 +29,7 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { ComponentsModule } from './components/components.module';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 // firebase.initializeApp(environment.firebaseConfig);
 @NgModule({
@@ -55,6 +56,7 @@ import { ComponentsModule } from './components/components.module';
     StatusBar,
     SplashScreen,
     GooglePlus,
+    InAppBrowser,
     {
       provide: RouteReuseStrategy,
       useClass: IonicRouteStrategy

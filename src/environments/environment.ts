@@ -11,5 +11,6 @@ export const environment = {
     measurementId: 'G-XCZRM8W116'
   },
   googleWebClientId: '589211414820-qjdghiijvlne6c0e9qcngj254qg2gl0u.apps.googleusercontent.com',
-  curentDate: '10/14/2020'
+  curentDate: '10/14/2020',
+  api: 'https://api-fast-food.herokuapp.com/',
 };

@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { CartPage } from './cart.page';
 import { DirectivesModule } from 'src/app/directives/directives.module';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 const routes: Routes = [
   {

@@ -14,17 +14,16 @@ export class ErrorDirective implements OnChanges {
 
   ngOnChanges(): void {
     const err: IError = this.errors.find(x => x.id === this.productId);
+    const childElements = this.el.nativeElement.children;
+      for (const child of childElements) {
+        this.renderer.removeChild(this.el.nativeElement, child);
+      }
     if (err) {
       const p = this.renderer.createElement('p');
       const text = this.renderer.createText(err.message);
       this.renderer.appendChild(p, text);
-      this.renderer.addClass(p, 'error-text')
+      this.renderer.addClass(p, 'error-text');
       this.renderer.appendChild(this.el.nativeElement, p);
-    } else {
-      const childElements = this.el.nativeElement.children;
-      for (const child of childElements) {
-        this.renderer.removeChild(this.el.nativeElement, child);
-      }
     }
   }
 }
