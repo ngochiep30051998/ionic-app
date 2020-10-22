@@ -6,7 +6,6 @@ import { CartService } from 'src/app/services/cart.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { HelperService } from 'src/app/services/helper.service';
 import * as moment from 'moment';
-import * as firebase from 'firebase';
 import { environment } from 'src/environments/environment';
 import { IProduct } from 'src/app/interfaces/products.interface';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
@@ -199,7 +198,6 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
             if (event.url.includes('vnp_ResponseCode')) {
               if (event.url.includes('vnp_ResponseCode=00')) {
                 bill.paymentStatus = PAYMENT_STATUS.success;
-                bill.createdAt = firebase.database.ServerValue.TIMESTAMP;
                 const res = await this.firebaseService.createBill(bill);
                 browser.close();
                 toast.present();
@@ -219,7 +217,6 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
         }
       } else {
         bill.paymentStatus = PAYMENT_STATUS.success;
-        bill.createdAt = firebase.database.ServerValue.TIMESTAMP;
         const create = await this.firebaseService.createBill(bill);
         console.log(create);
         toast.present();

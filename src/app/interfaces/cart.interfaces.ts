@@ -27,7 +27,6 @@ export class Cart implements ICart {
     user?: IUser;
     status?: string;
     paymentStatus?: string;
-    createdAt?: any;
     constructor(
         products?: IProduct[],
         promotionCode?: string,
