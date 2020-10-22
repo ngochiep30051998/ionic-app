@@ -40,7 +40,6 @@
               }
             ],
             "scripts": [
-              "node_modules/jquery/dist/jquery.min.js"
             ]
           },
           "configurations": {
@@ -102,7 +101,6 @@
             "karmaConfig": "src/karma.conf.js",
             "styles": [],
             "scripts": [
-              "node_modules/jquery/dist/jquery.min.js"
             ],
             "assets": [
               {

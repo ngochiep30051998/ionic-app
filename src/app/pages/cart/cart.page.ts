@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { PAYMENT_STATUS } from 'src/app/constants/common';
 
 declare let vnpay: any;
 
@@ -155,6 +156,23 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
       }
       this.helperService.showLoading();
       const bill = new Cart(this.cart.products, '', this.form.value.notes, this.form.value.floor, this.form.value.transType, this.user);
+
+      const toast = await this.toastCtrl.create({
+        showCloseButton: true,
+        closeButtonText: 'Đóng',
+        message: 'Đặt hàng thành công.',
+        duration: 3000,
+        position: 'bottom',
+        color: 'success'
+      });
+      const err = await this.toastCtrl.create({
+        showCloseButton: true,
+        closeButtonText: 'Đóng',
+        message: 'Thanh toán không thành công, vui lòng kiểm tra và nhập lại thông tin',
+        duration: 3000,
+        position: 'bottom',
+        color: 'danger'
+      });
       console.log(bill);
       if (bill.payment === '2') {
         const params = {
@@ -162,46 +180,41 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
           orderDescription: bill.notes
         };
         const create: any = await this.apiService.checkout(params);
+
         if (create.code === '00') {
 
           // vnpay.open({ width: 768, height: 600, url: create.data });
-          const browser = this.iab.create(create.data, '_self');
-          return browser.on('loadstart').subscribe((e) => {
-            console.log('browser closed', e);
-            if (e.url.includes('https://api-fast-food.herokuapp.com/checkout/vnpay_return')) {
-              browser.close();
+          const browser = this.iab.create(create.data, '_blank', { usewkwebview: 'yes', zoom: 'no', location: 'no' });
+          browser.on('loadstart').subscribe(async (event) => {
+            console.log('browser closed', event);
+            if (event.url.includes('vnp_ResponseCode')) {
+              if (event.url.includes('vnp_ResponseCode=00')) {
+                bill.paymentStatus = PAYMENT_STATUS.success;
+                const res = await this.firebaseService.createBill(bill);
+                browser.close();
+                toast.present();
+                this.cartService.clearCart();
+                this.navCtrl.navigateRoot('/home-results');
+              } else {
+                err.present();
+                browser.close();
+              }
             }
-          }, err => {
-            console.error(err);
+          }, e => {
+            err.present();
+            browser.close();
           });
-
         } else {
-          // this.toastCtrl(create.Message);
-          const err = await this.toastCtrl.create({
-            showCloseButton: true,
-            closeButtonText: 'Đóng',
-            message: create.Message,
-            duration: 2000,
-            position: 'bottom',
-            color: 'danger'
-          });
           err.present();
         }
       } else {
         const create = await this.firebaseService.createBill(bill);
         console.log(create);
+        toast.present();
+        this.cartService.clearCart();
+        this.navCtrl.navigateRoot('/home-results');
       }
-      const toast = await this.toastCtrl.create({
-        showCloseButton: true,
-        closeButtonText: 'Đóng',
-        message: 'Đặt hàng thành công.',
-        duration: 2000,
-        position: 'bottom',
-        color: 'success'
-      });
-      toast.present();
-      this.cartService.clearCart();
-      this.navCtrl.navigateRoot('/home-results');
+
 
     } catch (e) {
       console.log(e);
@@ -212,13 +225,13 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
 
   loadvnpay() {
 
-    if (!window.document.getElementById('vnpay-script')) {
-      const s = window.document.createElement('script');
-      s.id = 'vnpay-script';
-      s.type = 'text/javascript';
-      s.src = 'https://pay.vnpay.vn/lib/vnpay/vnpay.js';
-      window.document.body.appendChild(s);
-    }
+    // if (!window.document.getElementById('vnpay-script')) {
+    //   const s = window.document.createElement('script');
+    //   s.id = 'vnpay-script';
+    //   s.type = 'text/javascript';
+    //   s.src = 'https://pay.vnpay.vn/lib/vnpay/vnpay.js';
+    //   window.document.body.appendChild(s);
+    // }
   }
 
   checkoutVNpay() {

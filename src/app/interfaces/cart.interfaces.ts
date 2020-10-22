@@ -1,3 +1,4 @@
+import { BILL_STATUS, PAYMENT_STATUS } from '../constants/common';
 import { IProduct } from './products.interface';
 import { IUser } from './user.interface';
 
@@ -11,6 +12,8 @@ export interface ICart {
     totalPrice?: number;
     user?: IUser;
     date?: any;
+    status?: string;
+    paymentStatus?: string;
 }
 
 export class Cart implements ICart {
@@ -22,6 +25,9 @@ export class Cart implements ICart {
     totalItem?: number;
     totalPrice?: number;
     user?: IUser;
+    status?: string;
+    paymentStatus?: string;
+
     constructor(
         products?: IProduct[],
         promotionCode?: string,
@@ -35,6 +41,10 @@ export class Cart implements ICart {
         this.notes = notes;
         this.address = address;
         this.payment = payment;
+
+        this.status = BILL_STATUS.pending;
+        this.paymentStatus = PAYMENT_STATUS.pending;
+
         this.totalItem = this.getTotalItem(products);
         this.totalPrice = this.getTotalPrice(products);
         this.user = user;
