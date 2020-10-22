@@ -5,12 +5,14 @@ import { ProductListComponent } from './product-list/product-list.component';
 import { PopmenuComponent } from './popmenu/popmenu.component';
 import { IonicModule } from '@ionic/angular';
 import { PipesModule } from '../pipes/pipes.module';
+import { OrderDetailComponent } from './order-detail/order-detail.component';
 
 @NgModule({
   declarations: [
     NotificationsComponent,
     ProductListComponent,
-    PopmenuComponent
+    PopmenuComponent,
+    OrderDetailComponent
   ],
   imports: [
     CommonModule,
@@ -20,10 +22,12 @@ import { PipesModule } from '../pipes/pipes.module';
   exports: [
     NotificationsComponent,
     ProductListComponent,
-    PopmenuComponent
+    PopmenuComponent,
+    OrderDetailComponent
   ],
   entryComponents: [
-    NotificationsComponent
+    NotificationsComponent,
+    OrderDetailComponent
   ]
 })
 export class ComponentsModule { }

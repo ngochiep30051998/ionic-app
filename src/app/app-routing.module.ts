@@ -38,11 +38,13 @@ const routes: Routes = [
     loadChildren: './pages/product-detail/product-detail.module#ProductDetailPageModule'
   },
   { path: 'cart', loadChildren: './pages/cart/cart.module#CartPageModule' },
+  { path: 'order-history', loadChildren: './pages/order-history/order-history.module#OrderHistoryPageModule' },
   {
     path: '**',
     pathMatch: 'full',
     redirectTo: 'home-results'
   },
+  { path: 'favorite', loadChildren: './pages/favorite/favorite.module#FavoritePageModule' },
 ];
 
 @NgModule({

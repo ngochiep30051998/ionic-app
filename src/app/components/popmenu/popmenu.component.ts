@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NavController, PopoverController } from '@ionic/angular';
 import { NotificationsComponent } from '../notifications/notifications.component';
 
@@ -13,7 +14,8 @@ export class PopmenuComponent implements OnInit {
   constructor(
     public navCtrl: NavController,
     public popoverCtrl: PopoverController,
-    ) { }
+    private router: Router
+  ) { }
 
   ngOnInit() {
   }
@@ -32,4 +34,7 @@ export class PopmenuComponent implements OnInit {
     return await popover.present();
   }
 
+  gotoPage(page) {
+    this.router.navigate([page]);
+  }
 }

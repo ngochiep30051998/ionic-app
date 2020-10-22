@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <ion-text color="light">
+        <ion-text color="light" class="fw700">Lịch sử mua hàng</ion-text>
+      </ion-text>
+    </ion-title>
+
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-item class="ion-margin-bottom ion-no-padding card" lines="none" (click)="open()">
+    <ion-row class="ion-align-items-center">
+      <ion-col size="2">
+        <img [src]="'https://images.foody.vn/res/g2/13139/prof/s640x400/foody-mobile-bun-ca-sam-cay-si-ha-noi.jpg'">
+      </ion-col>
+      <ion-col>
+        <ion-row>
+          <ion-text>
+            <h5 class="title ion-no-margin" ><strong>{{'order.product.name'}}</strong></h5>
+          </ion-text>
+        </ion-row>
+        <ion-row>
+          <ion-text>
+            <h6  class="sub ion-no-margin">{{'order.status'}}</h6>
+          </ion-text>
+        </ion-row>
+      </ion-col>
+      <ion-col class="ion-float-right" size="2">
+        <ion-icon class="item-icon mycolor ion-float-right" name="arrow-dropright"  mode="ios"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-item>
+</ion-content>

@@ -6,6 +6,7 @@ import { CartService } from 'src/app/services/cart.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { HelperService } from 'src/app/services/helper.service';
 import * as moment from 'moment';
+import * as firebase from 'firebase';
 import { environment } from 'src/environments/environment';
 import { IProduct } from 'src/app/interfaces/products.interface';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
@@ -184,12 +185,21 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
         if (create.code === '00') {
 
           // vnpay.open({ width: 768, height: 600, url: create.data });
-          const browser = this.iab.create(create.data, '_blank', { usewkwebview: 'yes', zoom: 'no', location: 'no' });
+          const browser = this.iab.create(create.data, '_blank', {
+            zoom: 'no',
+            location: 'no',
+            closebuttoncaption: 'Thoát',
+            enableViewportScale: 'no',
+            toolbarposition: 'top',
+            hidenavigationbuttons: 'yes',
+            lefttoright: 'no'
+          });
           browser.on('loadstart').subscribe(async (event) => {
             console.log('browser closed', event);
             if (event.url.includes('vnp_ResponseCode')) {
               if (event.url.includes('vnp_ResponseCode=00')) {
                 bill.paymentStatus = PAYMENT_STATUS.success;
+                bill.createdAt = firebase.database.ServerValue.TIMESTAMP;
                 const res = await this.firebaseService.createBill(bill);
                 browser.close();
                 toast.present();
@@ -208,6 +218,8 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
           err.present();
         }
       } else {
+        bill.paymentStatus = PAYMENT_STATUS.success;
+        bill.createdAt = firebase.database.ServerValue.TIMESTAMP;
         const create = await this.firebaseService.createBill(bill);
         console.log(create);
         toast.present();
