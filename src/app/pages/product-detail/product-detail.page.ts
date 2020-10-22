@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { IonSlides } from '@ionic/angular';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IonSlides, ToastController } from '@ionic/angular';
 import { IProduct } from 'src/app/interfaces/products.interface';
+import { CartService } from 'src/app/services/cart.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
@@ -23,7 +24,11 @@ export class ProductDetailPage implements OnInit {
   public meal: string;
   constructor(
     private route: ActivatedRoute,
-    private firebaseService: FirebaseService
+    private firebaseService: FirebaseService,
+    private router: Router,
+    public cartService: CartService,
+    public toastCtrl: ToastController,
+
   ) {
     this.menuId = this.route.snapshot.paramMap.get('menuId');
     this.id = this.route.snapshot.paramMap.get('id');
@@ -52,5 +57,22 @@ export class ProductDetailPage implements OnInit {
     this.slides.getActiveIndex().then((index: number) => {
       this.photoIndex = index;
     });
+  }
+
+  async addToCart() {
+    if (this.product.amount > 0) {
+      this.cartService.addToCart(this.product, 1);
+      this.router.navigate(['/cart']);
+    } else {
+      const toast = await this.toastCtrl.create({
+        showCloseButton: true,
+        closeButtonText: 'Đóng',
+        message: 'Sản phẩm đã hết, vui lòng chọn sản phẩm khác.',
+        duration: 2000,
+        position: 'bottom',
+        color: 'danger'
+      });
+      return await toast.present();
+    }
   }
 }

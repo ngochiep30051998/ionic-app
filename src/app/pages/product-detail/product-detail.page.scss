@@ -25,11 +25,14 @@
     color: red;
 }
 .price {
-    font-size: 15px;
+    font-size: 1.3em;
     float: left;
     width: 100% !important;
     text-align: center !important;
     margin: 3px;
+}
+.promotion-price{
+    font-size: 1.1em;
 }
 .inline {
     font-size: 12px;
@@ -171,6 +174,7 @@
     display: inline-block;
     margin-right: 5px;
     margin: auto;
+    font-size: 1em;
 }
 .foot-highlight {
     color: orange;

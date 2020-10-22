@@ -329,6 +329,11 @@ ion-item {
     align-items: center;
   }
 
+  .flex-start{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+  }
 
   .popover-content{
     max-width: 138px !important;
@@ -341,4 +346,8 @@ ion-item {
 .error-text{
   color: red;
   font-size: 12px;
+}
+
+.bold{
+  font-weight: bold;
 }
