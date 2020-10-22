@@ -2,7 +2,7 @@ export const BILL_STATUS = {
     success: '1',
     pending: '2',
     transport: '3',
-    delivery: '4'
+    canceled: '4'
 };
 
 export const PAYMENT_STATUS = {

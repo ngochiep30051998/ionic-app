@@ -7,6 +7,7 @@ import * as firebase from 'firebase';
 
 import * as moment from 'moment';
 import { ICart } from '../interfaces/cart.interfaces';
+import { IUser } from '../interfaces/user.interface';
 @Injectable({
   providedIn: 'root'
 })
@@ -73,5 +74,10 @@ export class FirebaseService {
     const id = this.db.createPushId();
     cart.date = firebase.database.ServerValue.TIMESTAMP;
     return this.db.object(`/bills/${id}`).set(cart);
+  }
+
+  getOrderHistory(user: IUser) {
+    console.log(user.uid)
+    return this.db.list('/bills', query => query.orderByChild('user/uid').equalTo(user.uid)).valueChanges();
   }
 }

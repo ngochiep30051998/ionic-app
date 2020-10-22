@@ -254,6 +254,9 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
     }
     if (this.errorSub$) {
       this.errorSub$.unsubscribe();
+    };
+    if (this.userSub$) {
+      this.userSub$.unsubscribe();
     }
   }
 }
