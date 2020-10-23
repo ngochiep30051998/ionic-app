@@ -48,6 +48,7 @@ export class PopmenuComponent implements OnInit, OnDestroy {
   }
 
   gotoPage(page) {
+    this.openMenu = false;
     this.router.navigate([page]);
   }
 
