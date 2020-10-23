@@ -30,7 +30,7 @@
                     <strong>{{product?.promotionPrice |number}} vnđ</strong>
                   </span>
                 </ion-text>
-              <ion-text tclass="ion-text-left" *ngIf="!product?.promotionPrice"><span class="price"><strong>{{product?.price}} vnđ</strong></span></ion-text>
+              <ion-text tclass="ion-text-left" *ngIf="!product?.promotionPrice"><span class="price"><strong>{{product?.price |number}} vnđ</strong></span></ion-text>
               </ion-col>
             </ion-row>
 

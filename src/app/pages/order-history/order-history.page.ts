@@ -27,7 +27,6 @@ export class OrderHistoryPage implements OnInit, OnDestroy {
   ) {
     this.userSub$ = this.authService.getUserInfo().subscribe((res: IUser) => {
       this.user = res;
-      console.log(this.user)
       if (this.user) {
         this.getHistory();
       }
@@ -40,7 +39,7 @@ export class OrderHistoryPage implements OnInit, OnDestroy {
   async open(order?) {
     const modal = await this.modalController.create({
       component: OrderDetailComponent,
-      componentProps: { value: order }
+      componentProps: { order }
     });
     return await modal.present();
   }
@@ -49,8 +48,8 @@ export class OrderHistoryPage implements OnInit, OnDestroy {
       this.historySub$.unsubscribe();
     }
     this.historySub$ = this.firebaseService.getOrderHistory(this.user).subscribe(res => {
-      console.log(res);
       this.bills = res;
+      console.log(this.bills);
     });
   }
   ngOnDestroy(): void {

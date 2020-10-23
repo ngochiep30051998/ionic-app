@@ -1,74 +1,134 @@
-<ion-header >
+<ion-header>
   <ion-toolbar color="primary">
     <ion-title color="light">
       Chi tiết đơn hàng
     </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="dismiss()">
-        <ion-icon name="close" slot="icon-only" class="white ion-margin" ></ion-icon>
+        <ion-icon name="close" slot="icon-only" class="white ion-margin"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding" color="light">
-  <ion-item  lines="none" class="ion-no-padding card ">
-    <ion-row class="ion-align-items-center">
-      <ion-col size="2">
-        <img [src]="'https://images.foody.vn/res/g2/13139/prof/s640x400/foody-mobile-bun-ca-sam-cay-si-ha-noi.jpg'">
-      </ion-col>
-      <ion-col>
-        <ion-row>
-          <ion-text>
-            <h5 class="title ion-no-margin" ><strong>{{'order.product.name'}}</strong></h5>
-          </ion-text>
-        </ion-row>
-        <ion-row>
-          <ion-text>
-            <h6  class="sub ion-no-margin">{{'order.status'}}</h6>
-          </ion-text>
-        </ion-row>
-      </ion-col>
-    </ion-row>
-  </ion-item>
-  <ion-item  lines="none" class="ion-margin-bottom ion-no-padding card">
+  <ion-item lines="none" class="ion-margin-bottom ion-no-padding card">
     <ion-col>
       <ion-row>
-        <ion-col size="4">
+        <ion-col size="6">
           <ion-text>
-            <h6 class="title gray ion-no-margin" >Order date</h6>
+            <h6 class="title gray ion-no-margin">Trạng thái đơn hàng:</h6>
           </ion-text>
         </ion-col>
-        <ion-col>
-          <ion-text>
-            <h6  class="ion-no-margin title">{{'fun.date(order.order_date)'}}</h6>
-          </ion-text>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size="4">
-          <ion-text>
-            <h6 class="title gray ion-no-margin" >Order #</h6>
-          </ion-text>
-        </ion-col>
-        <ion-col>
-          <ion-text>
-            <h6  class="ion-no-margin title">{{'order.id'}}</h6>
+        <ion-col size="6">
+          <ion-text [ngSwitch]="order?.status">
+            <h6 class="sub ion-no-margin success" *ngSwitchCase="BILL_STATUS.success">Đã hoàn thành</h6>
+            <h6 class="sub ion-no-margin tertiary " *ngSwitchCase="BILL_STATUS.pending">Đang chờ xác nhận</h6>
+            <h6 class="sub ion-no-margin primary" *ngSwitchCase="BILL_STATUS.transport">Đang giao hàng</h6>
+            <h6 class="sub ion-no-margin danger" *ngSwitchCase="BILL_STATUS.canceled">Đã huỷ bỏ</h6>
           </ion-text>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size="4">
+        <ion-col size="6">
           <ion-text>
-            <h6 class="title gray ion-no-margin" >Order total</h6>
+            <h6 class="title gray ion-no-margin">Hình thức thanh toán:</h6>
           </ion-text>
         </ion-col>
-        <ion-col>
+        <ion-col size="6">
+          <ion-text [ngSwitch]="order?.payment">
+            <h6 class="sub ion-no-margin success" *ngSwitchCase="TRANS_TYPE.card">Thẻ tín dụng</h6>
+            <h6 class="sub ion-no-margin tertiary " *ngSwitchCase="TRANS_TYPE.payment_on_delivery">Thanh toán khi nhận hàng</h6>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
           <ion-text>
-            <h6  class="ion-no-margin title">{{'order.amount'}}</h6>
+            <h6 class="title gray ion-no-margin">Trạng thái thanh toán:</h6>
+          </ion-text>
+        </ion-col>
+        <ion-col size="6">
+          <ion-text [ngSwitch]="order?.paymentStatus">
+            <h6 class="sub ion-no-margin success" *ngSwitchCase="PAYMENT_STATUS.success">Đã Thanh toán</h6>
+            <h6 class="sub ion-no-margin tertiary " *ngSwitchCase="BILL_STATUS.pending">Chưa thanh toán</h6>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="6">
+          <ion-text>
+            <h6 class="title gray ion-no-margin">Ngày đặt hàng:</h6>
+          </ion-text>
+        </ion-col>
+        <ion-col size="6">
+          <ion-text>
+            <h6 class="sub ion-no-margin tertiary">{{order?.date | date:'dd/MM/yyyy HH:mm'}}</h6>
           </ion-text>
         </ion-col>
       </ion-row>
     </ion-col>
   </ion-item>
+  <ng-container *ngFor="let product of order?.products">
+    <ion-item lines="none" class="ion-no-padding card ">
+      <ion-row class="ion-align-items-center">
+        <ion-col size="4">
+          <img [src]="product?.displayImage || 'assets/img/defaults/default-product.jpg'">
+        </ion-col>
+        <ion-col size="8">
+          <ion-row>
+            <ion-text>
+              <h5 class="title ion-no-margin"><strong>{{product?.name}}</strong></h5>
+            </ion-text>
+          </ion-row>
+          <ion-row>
+            <ion-text>
+              <h6 class="sub ion-no-margin">{{product?.catName}}</h6>
+            </ion-text>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+    <ion-item lines="none" class="ion-margin-bottom ion-no-padding card">
+      <ion-col>
+        <ion-row>
+          <ion-col size="6">
+            <ion-text>
+              <h6 class="title gray ion-no-margin">Đơn giá</h6>
+            </ion-text>
+          </ion-col>
+          <ion-col size="6">
+            <ion-text>
+              <h6 class="ion-no-margin title">{{product?.promotionPrice ? product?.promotionPrice : product?.price |number}} vnđ</h6>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">
+            <ion-text>
+              <h6 class="title gray ion-no-margin">Số lượng: </h6>
+            </ion-text>
+          </ion-col>
+          <ion-col size="6">
+            <ion-text>
+              <h6 class="ion-no-margin title">{{product?.amount |number}} {{product?.unit || 'suất'}}</h6>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">
+            <ion-text>
+              <h6 class="title gray ion-no-margin">Tổng tiền: </h6>
+            </ion-text>
+          </ion-col>
+          <ion-col size="6">
+            <ion-text>
+              <h6 class="ion-no-margin title">{{(product?.promotionPrice ? product?.promotionPrice*product?.amount : product?.price*product?.amount) |number}} vnđ</h6>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-item>
+  </ng-container>
 </ion-content>

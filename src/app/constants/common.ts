@@ -10,3 +10,9 @@ export const PAYMENT_STATUS = {
     pending: '0'
 };
 
+export const TRANS_TYPE = {
+    card: '2',
+    payment_on_delivery: '1'
+};
+
+

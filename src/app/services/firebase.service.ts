@@ -78,6 +78,8 @@ export class FirebaseService {
 
   getOrderHistory(user: IUser) {
     console.log(user.uid)
-    return this.db.list('/bills', query => query.orderByChild('user/uid').equalTo(user.uid)).valueChanges();
+    return this.db.list('/bills', query => query.orderByChild('user/uid').equalTo(user.uid)).valueChanges().pipe(
+      map(value => value.reverse())
+    );
   }
 }

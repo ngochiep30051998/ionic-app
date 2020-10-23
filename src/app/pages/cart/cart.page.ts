@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-import { PAYMENT_STATUS } from 'src/app/constants/common';
+import { PAYMENT_STATUS, TRANS_TYPE } from 'src/app/constants/common';
 
 declare let vnpay: any;
 
@@ -49,6 +49,9 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
   public errorSub$: Subscription;
 
   public form: FormGroup;
+
+  public TRANS_TYPE = TRANS_TYPE;
+
   constructor(
     private firebaseService: FirebaseService,
     private cartService: CartService,
@@ -174,7 +177,7 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
         color: 'danger'
       });
       console.log(bill);
-      if (bill.payment === '2') {
+      if (bill.payment === TRANS_TYPE.card) {
         const params = {
           amount: bill.totalPrice,
           orderDescription: bill.notes
@@ -216,7 +219,7 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
           err.present();
         }
       } else {
-        bill.paymentStatus = PAYMENT_STATUS.success;
+        bill.paymentStatus = PAYMENT_STATUS.pending;
         const create = await this.firebaseService.createBill(bill);
         console.log(create);
         toast.present();
