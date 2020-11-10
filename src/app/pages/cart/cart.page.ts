@@ -223,6 +223,7 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
         }
       } else {
         bill.paymentStatus = PAYMENT_STATUS.pending;
+        delete bill.vnpayTransId;
         const create = await this.firebaseService.createBill(bill);
         console.log(create);
         toast.present();

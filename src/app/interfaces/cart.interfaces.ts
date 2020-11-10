@@ -16,6 +16,7 @@ export interface ICart {
     paymentStatus?: string;
     id?: string;
     vnpayTransId?: string;
+    updatedAt?: any;
 }
 
 export class Cart implements ICart {
