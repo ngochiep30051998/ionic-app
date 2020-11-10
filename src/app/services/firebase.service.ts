@@ -73,6 +73,7 @@ export class FirebaseService {
   createBill(cart: ICart) {
     const id = this.db.createPushId();
     cart.date = firebase.database.ServerValue.TIMESTAMP;
+    cart.id = id;
     return this.db.object(`/bills/${id}`).set(cart);
   }
 

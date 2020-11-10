@@ -14,6 +14,8 @@ export interface ICart {
     date?: any;
     status?: string;
     paymentStatus?: string;
+    id?: string;
+    vnpayTransId?: string;
 }
 
 export class Cart implements ICart {
@@ -27,26 +29,31 @@ export class Cart implements ICart {
     user?: IUser;
     status?: string;
     paymentStatus?: string;
+    id?: string;
+    vnpayTransId?: string;
     constructor(
         products?: IProduct[],
         promotionCode?: string,
         notes?: string,
         address?: string,
         payment?: string,
-        user?: IUser
+        user?: IUser,
+        id?: string,
+        vnpayTransId?: string,
     ) {
         this.products = products;
         this.promotionCode = promotionCode;
         this.notes = notes;
         this.address = address;
         this.payment = payment;
-
+        this.id = id;
         this.status = BILL_STATUS.pending;
         this.paymentStatus = PAYMENT_STATUS.pending;
 
         this.totalItem = this.getTotalItem(products);
         this.totalPrice = this.getTotalPrice(products);
         this.user = user;
+        this.vnpayTransId = vnpayTransId;
     }
 
 

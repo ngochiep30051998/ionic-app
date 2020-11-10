@@ -200,7 +200,10 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
             console.log('browser closed', event);
             if (event.url.includes('vnp_ResponseCode')) {
               if (event.url.includes('vnp_ResponseCode=00')) {
+                const url = new URL(event.url);
+                const vnp_TransactionNo = url.searchParams.get('vnp_TransactionNo');
                 bill.paymentStatus = PAYMENT_STATUS.success;
+                bill.vnpayTransId = vnp_TransactionNo;
                 const res = await this.firebaseService.createBill(bill);
                 browser.close();
                 toast.present();
@@ -257,7 +260,7 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
     }
     if (this.errorSub$) {
       this.errorSub$.unsubscribe();
-    };
+    }
     if (this.userSub$) {
       this.userSub$.unsubscribe();
     }
