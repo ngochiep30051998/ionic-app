@@ -48,7 +48,7 @@ export class Cart implements ICart {
         this.address = address;
         this.payment = payment;
         this.id = id;
-        this.status = BILL_STATUS.pending;
+        this.status = BILL_STATUS.pending.key;
         this.paymentStatus = PAYMENT_STATUS.pending;
 
         this.totalItem = this.getTotalItem(products);

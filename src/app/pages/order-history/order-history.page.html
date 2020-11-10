@@ -30,11 +30,11 @@
         </ion-row>
         <ion-row>
           <ion-text [ngSwitch]="order?.status">
-            <h6 class="sub ion-no-margin success" *ngSwitchCase="BILL_STATUS.success">Đã hoàn thành</h6>
-            <h6 class="sub ion-no-margin tertiary " *ngSwitchCase="BILL_STATUS.pending">Đang chờ xác nhận</h6>
-            <h6 class="sub ion-no-margin primary" *ngSwitchCase="BILL_STATUS.transport">Đang giao hàng</h6>
-            <h6 class="sub ion-no-margin danger" *ngSwitchCase="BILL_STATUS.canceled">Đã huỷ bỏ</h6>
-
+            <h6 class="sub ion-no-margin success" *ngSwitchCase="BILL_STATUS.done.key">Đã hoàn thành</h6>
+            <h6 class="sub ion-no-margin tertiary " *ngSwitchCase="BILL_STATUS.pending.key">Đang chờ xác nhận</h6>
+            <h6 class="sub ion-no-margin tertiary " *ngSwitchCase="BILL_STATUS.accept.key">Đã xác nhận</h6>
+            <h6 class="sub ion-no-margin primary" *ngSwitchCase="BILL_STATUS.transport.key">Đang giao hàng</h6>
+            <h6 class="sub ion-no-margin danger" *ngSwitchCase="BILL_STATUS.canceled.key">Đã huỷ bỏ</h6>
           </ion-text>
         </ion-row>
 
