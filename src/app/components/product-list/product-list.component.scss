@@ -1,56 +1,120 @@
-.card {
-    box-shadow: unset;
-    border-radius: 9px;
-    background-color: white !important;
-}
-.price {
-    font-size: 0.45em;
-    float: left;
-    margin: 3px;
-    padding: 1px;
-}
-.inline {
-    font-size: 9px;
-    margin-inline-end: 5px;
-    text-decoration: line-through;
-}
-.subtitle {
-    font-size: 0.45em;
-}
-.badge {
-    position: absolute;
-    top: 10%;
-    left: 0;
-    background-color: rgba(12, 12, 12, .75);
-    border-radius: 0;
-    font-size: 11px;
-}
 
-.parent {
-    max-height: 30px;
-}
-
-.ellipsis {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-.block-ellipsis {
-    display: inline-block;
-    width: 127px;
-    white-space: nowrap;
-    overflow: hidden !important;
-    text-overflow: ellipsis;
-}
-
-.card {
-    img{
-        height: 105px;
+  .ios {
+    .card {
+        box-shadow: unset;
+        border-radius: 9px;
+        background-color: white !important;
     }
+    .price {
+        font-size: 0.45em;
+        float: left;
+        margin: 3px;
+        padding: 1px;
+    }
+    .inline {
+        font-size: 9px;
+        margin-inline-end: 5px;
+        text-decoration: line-through;
+    }
+    .subtitle {
+        font-size: 0.45em;
+    }
+    .badge {
+        position: absolute;
+        top: 10%;
+        left: 0;
+        background-color: rgba(12, 12, 12, .75);
+        border-radius: 0;
+        font-size: 11px;
+    }
+    
+    .parent {
+        max-height: 30px;
+    }
+    
+    .ellipsis {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    
+    .block-ellipsis {
+        display: inline-block;
+        width: 127px;
+        white-space: nowrap;
+        overflow: hidden !important;
+        text-overflow: ellipsis;
+    }
+    
+    .card {
+        img{
+            height: 105px;
+        }
+    }
+    
+    .amount{
+        font-size: 0.4em;
+        color: rgb(120, 120, 120);
+    }
+     
 }
 
-.amount{
-    font-size: 0.4em;
-    color: rgb(120, 120, 120);
-}
+
+.md {
+    .card {
+      box-shadow: unset;
+      border-radius: 9px;
+      background-color: white !important;
+  }
+  .price {
+      font-size: 13px;
+      float: left;
+      margin: 3px;
+      padding: 1px;
+  }
+  .inline {
+      font-size: 9px;
+      margin-inline-end: 5px;
+      text-decoration: line-through;
+  }
+  .subtitle {
+      font-size: 13px;
+  }
+  .badge {
+      position: absolute;
+      top: 10%;
+      left: 0;
+      background-color: rgba(12, 12, 12, .75);
+      border-radius: 0;
+      font-size: 11px;
+  }
+  
+  .parent {
+      max-height: 30px;
+  }
+  
+  .ellipsis {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  
+  .block-ellipsis {
+      display: inline-block;
+      width: 127px;
+      white-space: nowrap;
+      overflow: hidden !important;
+      text-overflow: ellipsis;
+  }
+  
+  .card {
+      img{
+          height: 105px;
+      }
+  }
+  
+  .amount{
+      font-size: 0.4em;
+      color: rgb(120, 120, 120);
+  }
+  }
