@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { NavController } from '@ionic/angular';
-
-// import * as firebase from 'firebase';
-import { IGoogleUser, IUser } from '../interfaces/user.interface';
 import { Storage } from '@ionic/storage';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { auth } from 'firebase/app';
+import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { errorStatus } from '../constants/errors-status';
+// import * as firebase from 'firebase';
+import { IGoogleUser, IUser } from '../interfaces/user.interface';
 import { HelperService } from './helper.service';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { auth } from 'firebase/app';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -89,5 +89,9 @@ export class AuthService {
           break;
       }
     }
+  }
+
+  getIdToken() {
+    return this.angularFireAuth.auth.currentUser.getIdToken();
   }
 }

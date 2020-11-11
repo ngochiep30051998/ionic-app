@@ -1,23 +1,23 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { AlertController, NavController, ToastController } from '@ionic/angular';
+import * as moment from 'moment';
 import { Subscription } from 'rxjs';
+import { PAYMENT_STATUS, TRANS_TYPE } from 'src/app/constants/common';
 import { Cart, ICart } from 'src/app/interfaces/cart.interfaces';
+import { IError } from 'src/app/interfaces/errors.interfaces';
 import { IMenu } from 'src/app/interfaces/menu.interfaces';
+import { IProduct } from 'src/app/interfaces/products.interface';
+import { IUser } from 'src/app/interfaces/user.interface';
+import { ApiService } from 'src/app/services/api.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { CartService } from 'src/app/services/cart.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { HelperService } from 'src/app/services/helper.service';
-import * as moment from 'moment';
 import { environment } from 'src/environments/environment';
-import { IProduct } from 'src/app/interfaces/products.interface';
-import { AlertController, NavController, ToastController } from '@ionic/angular';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { IUser } from 'src/app/interfaces/user.interface';
-import { AuthService } from 'src/app/services/auth.service';
-import { IError } from 'src/app/interfaces/errors.interfaces';
-import { Router } from '@angular/router';
-import { ApiService } from 'src/app/services/api.service';
 
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-import { PAYMENT_STATUS, TRANS_TYPE } from 'src/app/constants/common';
 
 declare let vnpay: any;
 
@@ -182,7 +182,8 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
           amount: bill.totalPrice,
           orderDescription: bill.notes
         };
-        const create: any = await this.apiService.checkout(params);
+        const idToken = await this.authService.getIdToken();
+        const create: any = await this.apiService.checkout(params, idToken);
 
         if (create.code === '00') {
 
@@ -233,6 +234,15 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
 
 
     } catch (e) {
+      const toast = await this.toastCtrl.create({
+        showCloseButton: true,
+        closeButtonText: 'Đóng',
+        message: 'Đặt hàng thất bại',
+        duration: 3000,
+        position: 'bottom',
+        color: 'danger'
+      });
+      toast.present();
       console.log(e);
     } finally {
       this.helperService.hideLoading();

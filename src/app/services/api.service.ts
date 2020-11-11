@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
@@ -18,7 +18,10 @@ export class ApiService {
   //   return this.httpClient.post(this.api, params).toPromise();
   // }
 
-  checkout(params) {
-    return this.httpClient.post(`${this.api}checkout/create_payment_url`, params).toPromise();
+  checkout(params, idToken) {
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', 'Bearer ' + idToken);
+    headers = headers.set('Content-Type', 'application/json');
+    return this.httpClient.post(`${this.api}checkout/create_payment_url`, params, { headers }).toPromise();
   }
 }
