@@ -103,9 +103,9 @@ export class EditProfilePage implements OnInit, OnDestroy {
         const update = this.firebaseService.updateUserInfo(params);
         if (this.form.value.changePassword) {
           const updatePassword = this.angularFireAuth.auth.currentUser.updatePassword(this.form.value.password);
-          await Promise.all([updateDisplayName, update, updatePassword])
+          await Promise.all([updateDisplayName, update, updatePassword]);
         } else {
-          await Promise.all([updateDisplayName, update])
+          await Promise.all([updateDisplayName, update]);
         }
         const toast = await this.toastCtrl.create({
           showCloseButton: true,

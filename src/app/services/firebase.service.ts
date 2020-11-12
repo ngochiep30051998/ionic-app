@@ -92,4 +92,17 @@ export class FirebaseService {
   getCurrentUserFirebase(uid) {
     return this.db.object(`userInfo/${uid}`).valueChanges();
   }
+
+  getCategories() {
+    return this.db.list('/categories').snapshotChanges().pipe(map((snap: any) => {
+
+      return snap = snap.map((x: any) => {
+        const data = {
+          key: x.payload.key,
+          categoryName: x.payload.val().categoryName
+        };
+        return data;
+      });
+    }));
+  }
 }

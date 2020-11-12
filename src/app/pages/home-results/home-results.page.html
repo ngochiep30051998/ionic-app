@@ -17,16 +17,16 @@
   </ion-toolbar>
 
   <ion-toolbar color="dark">
-    <ion-searchbar [(ngModel)]="searchKey" placeholder="Tìm kiếm"></ion-searchbar>
-    <ion-buttons slot="end">
+    <ion-searchbar [(ngModel)]="searchKey" placeholder="Tìm kiếm" (ngModelChange)="search()"></ion-searchbar>
+    <!-- <ion-buttons slot="end">
       <ion-button size="small" shape="round" color="medium" (click)="searchFilter()">
         <ion-icon name="options"></ion-icon>
       </ion-button>
-    </ion-buttons>
+    </ion-buttons> -->
   </ion-toolbar>
 
   <ion-toolbar color="primary" class="segmenttoolbarSection">
-    <ion-segment mode="md" scrollable="true" id="dag" class="segSection" (ionChange)="seg($event)">
+    <ion-segment mode="md" scrollable="true" id="dag" class="segSection" >
       <ion-segment-button *ngFor="let item of calender;let i = index" (ionSelect)="update(i)" class="ion-no-padding"
         class="my-btn" [value]="item.id" [ngClass]="{'btn-active':segment == item.id}" [attr.id]="'seg_' + i">
         <ion-text class="text ion-padding-horizontal">{{item.title}}</ion-text>
@@ -53,13 +53,6 @@
     </ion-col>
 
   </ion-row>
-  <!-- <ion-slides pager="false" [options]="slideOpts" (ionSlideDidChange)="change($event)" (click)="preventDefault($event)"
-    #Slides>
-    <ion-slide *ngFor="let item of calender;let i = index" >
-    
-    </ion-slide>
-
-  </ion-slides> -->
 
 </ion-content>
 

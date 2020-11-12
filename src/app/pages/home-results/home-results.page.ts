@@ -13,7 +13,7 @@ import { SearchFilterPage } from '../../pages/modal/search-filter/search-filter.
 import { ImagePage } from './../modal/image/image.page';
 // Call notifications test by Popover and Custom Component.
 import { NotificationsComponent } from './../../components/notifications/notifications.component';
-import { ICalendar } from 'src/app/interfaces/common.interfaces';
+import { ICalendar, IFilter } from 'src/app/interfaces/common.interfaces';
 import { HelperService } from 'src/app/services/helper.service';
 import { ApiService } from 'src/app/services/api.service';
 import { Router } from '@angular/router';
@@ -23,7 +23,8 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 import * as moment from 'moment';
 import { CartService } from 'src/app/services/cart.service';
 import { Cart, ICart } from 'src/app/interfaces/cart.interfaces';
-
+import { IProduct } from 'src/app/interfaces/products.interface';
+import { STATUS_FILTER } from 'src/app/constants/common';
 @Component({
   selector: 'app-home-results',
   templateUrl: './home-results.page.html',
@@ -40,12 +41,19 @@ export class HomeResultsPage implements OnChanges {
     effect: 'flip',
     zoom: false
   };
+  public allData: IMenu;
   public segmentIndex = 0;
   public menu: IMenu;
   public menus: IMenu[] = [];
   public menuSub$: Subscription;
   public cartSub$: Subscription;
   public cart: ICart;
+  public filter: IFilter = {
+    catId: '',
+    maxPrice: 1000000,
+    promotion: STATUS_FILTER.all
+  };
+
   constructor(
     public navCtrl: NavController,
     public menuCtrl: MenuController,
@@ -89,44 +97,35 @@ export class HomeResultsPage implements OnChanges {
 
 
   async searchFilter() {
+    // const filterParams: IFilter = {
+    //   catId: '',
+    //   maxPrice: 1000000,
+    //   promotion: STATUS_FILTER.all
+    // };
     const modal = await this.modalCtrl.create({
-      component: SearchFilterPage
+      component: SearchFilterPage,
+      componentProps: { filterParams: this.filter }
+    });
+    modal.onDidDismiss().then((res) => {
+      console.log(res)
+      this.filter = res.data;
     });
     return await modal.present();
   }
-
-  async presentImage(image: any) {
-    const modal = await this.modalCtrl.create({
-      component: ImagePage,
-      componentProps: { value: image }
-    });
-    return await modal.present();
-  }
-
 
 
   update(i) {
     this.segment = this.calender[i].id;
-    // this.menu = this.menus.find(x => x.key === moment(this.segment).format('DD-MM-YYYY'));
-    this.getMenu(this.segment)
+    this.getMenu(this.segment);
     this.drag(i);
   }
 
-  seg(event) {
-    // this.segment = event.detail.value;
-  }
   preventDefault(e) {
     e.preventDefault();
   }
   async change(e) {
     try {
-      // await this.helperService.showLoading();
       const index = await this.slides.getActiveIndex();
-
-      // console.log(this.menus)
-      // this.getMenu(this.segment);
-      // await this.helperService.hideLoading();
-
       this.drag(index);
     } catch (e) {
       console.log(e);
@@ -137,8 +136,7 @@ export class HomeResultsPage implements OnChanges {
   drag(i) {
     let distanceToScroll = 0;
     for (const index in this.calender) {
-      // tslint:disable-next-line: radix
-      if (parseInt(index) < i) {
+      if (parseInt(index, 10) < i) {
         distanceToScroll = distanceToScroll + document.getElementById('seg_' + index).offsetWidth + 24;
       }
     }
@@ -154,6 +152,8 @@ export class HomeResultsPage implements OnChanges {
     this.menuSub$ = this.firebaseService.getMenuById(id).subscribe((res) => {
       console.log(res);
       this.menu = res;
+      this.allData = Object.assign({}, res);
+      this.search();
       this.helperService.hideLoading();
 
     }, err => {
@@ -168,7 +168,6 @@ export class HomeResultsPage implements OnChanges {
     const end = moment(this.calender[this.calender.length - 1].id).format('DD-MM-YYYY');
     this.menuSub$ = this.firebaseService.getListMenu(start, end).subscribe((res: any) => {
       this.menus = res;
-      console.log(this.menus)
     });
 
   }
@@ -176,6 +175,18 @@ export class HomeResultsPage implements OnChanges {
     this.router.navigate([page]);
   }
 
+  searchByKey(key) {
+    const txt = this.searchKey.toUpperCase();
+    if (this.menu[key] && this.allData[key]) {
+      this.menu[key] = this.allData[key].filter((p: IProduct) => p.name.toUpperCase().includes(txt))
+    }
+  }
+
+  search() {
+    this.searchByKey('breakfast');
+    this.searchByKey('lunch');
+    this.searchByKey('drinks');
+  }
   ngOnChanges(): void {
     if (this.menuSub$) {
       this.menuSub$.unsubscribe();

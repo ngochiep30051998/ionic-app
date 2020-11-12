@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { ModalController, NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { OrderDetailComponent } from 'src/app/components/order-detail/order-detail.component';
 import { BILL_STATUS } from 'src/app/constants/common';
@@ -24,6 +25,8 @@ export class OrderHistoryPage implements OnInit, OnDestroy {
     private modalController: ModalController,
     private firebaseService: FirebaseService,
     private authService: AuthService,
+    public navCtrl: NavController,
+    public angularFireAuth: AngularFireAuth,
   ) {
     this.userSub$ = this.authService.getUserInfo().subscribe((res: IUser) => {
       this.user = res;
@@ -31,10 +34,21 @@ export class OrderHistoryPage implements OnInit, OnDestroy {
         this.getHistory();
       }
     });
-
+    this.userSub$ = this.angularFireAuth.user.pipe(user =>
+      this.firebaseService.getCurrentUserFirebase(this.angularFireAuth.auth.currentUser.uid)
+    ).subscribe((res: IUser) => {
+      this.user = res;
+      if (this.user) {
+        this.getHistory();
+      }
+    });
   }
 
   ngOnInit() {
+  }
+
+  goBack() {
+    this.navCtrl.back();
   }
   async open(order?) {
     const modal = await this.modalController.create({

@@ -12,7 +12,22 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
-  <ion-item class="ion-margin-bottom ion-no-padding card" lines="none" (click)="open(order)" *ngFor="let order of bills">
+  <div class="mid" *ngIf="!bills || bills?.length === 0">
+    <ion-row size="12" class="ion-justify-content-center" disabled="true">
+      <!-- <button class="circle">
+        <ion-icon name="cart" size="large"></ion-icon>
+      </button> -->
+    </ion-row>
+    <ion-row size="12" class="ion-justify-content-center" disabled="true">
+      <ion-text><strong>Không có đơn hàng</strong></ion-text>
+    </ion-row>
+    <ion-row size="12" class="ion-justify-content-center" disabled="true">
+      <ion-button fill="clear" color="primary" (click)="goBack()">Quay lại trang chủ</ion-button>
+    </ion-row>
+  </div>
+
+<ng-container *ngIf="bills && bills?.length > 0">
+  <ion-item class="ion-margin-bottom ion-no-padding card"  lines="none" (click)="open(order)" *ngFor="let order of bills">
     <ion-row class="ion-align-items-center">
       <ion-col size="2">
         <img [src]="order?.products[0]?.displayImage">
@@ -50,4 +65,5 @@
       </ion-col>
     </ion-row>
   </ion-item>
+</ng-container>
 </ion-content>

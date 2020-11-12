@@ -32,4 +32,18 @@ export const TRANS_TYPE = {
     payment_on_delivery: '1'
 };
 
+export const STATUS_FILTER = {
+    all: 1,
+    yes: 2,
+    no: 3
+};
+
+export const MEAL = {
+    breakfast: 'breakfast',
+    drinks: 'drinks',
+    lunch: 'lunch'
+};
+
+
+
 

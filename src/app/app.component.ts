@@ -38,17 +38,18 @@ export class AppComponent implements OnInit, OnDestroy {
         url: '/home-results',
         icon: 'home'
       },
+
+      {
+        title: 'Lịch sử đơn hàng',
+        url: '/order-history',
+        icon: 'timer'
+      },
       {
         title: 'Giới thiệu',
         url: '/about',
         icon: 'information-circle-outline'
       },
 
-      {
-        title: 'Cài đặt',
-        url: '/settings',
-        icon: 'cog'
-      }
     ];
 
     this.initializeApp();

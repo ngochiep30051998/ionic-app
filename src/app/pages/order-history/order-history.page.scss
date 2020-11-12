@@ -16,3 +16,11 @@
 .item-icon{
     font-size: 32px;
 }
+
+.mid {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translate(0, -50%);
+}

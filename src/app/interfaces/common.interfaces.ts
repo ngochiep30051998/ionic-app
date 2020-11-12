@@ -15,3 +15,16 @@ export interface IPhoto {
     key?: string;
     value?: string;
 }
+
+export interface IFilter {
+    maxPrice?: number;
+    catId?: string;
+    promotion?: any ;
+    status?: any;
+    meal?: any;
+}
+
+export interface ICategory {
+    key: string;
+    categoryName: string;
+}
