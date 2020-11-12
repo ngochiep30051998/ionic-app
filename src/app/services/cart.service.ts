@@ -117,6 +117,11 @@ export class CartService {
     }
   }
 
+  updateCart(cart: ICart) {
+    localStorage.setItem('cart', JSON.stringify(cart));
+    this.cart$.next(cart);
+  }
+
   getCart() {
     return this.cart$.asObservable();
   }
@@ -131,7 +136,9 @@ export class CartService {
       if (amount) {
         this.cart.products[index].amount -= amount;
       } else {
-        this.cart.products[index].amount--;
+        if (this.cart.products[index].amount > 0) {
+          this.cart.products[index].amount--;
+        }
       }
       if (this.cart.products[index].amount === 0) {
         this.cart.products.splice(index, 1);

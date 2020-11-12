@@ -281,4 +281,17 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
       this.userSub$.unsubscribe();
     }
   }
+
+  ionViewWillLeave() {
+    console.log(this.cart.products);
+    if (this.cart && this.cart.products) {
+      this.cart.products.forEach((cart, index) => {
+        if (cart.amount < 1) {
+          this.cart.products.splice(index, 1);
+        }
+      });
+
+      this.cartService.updateCart(this.cart);
+    }
+  }
 }

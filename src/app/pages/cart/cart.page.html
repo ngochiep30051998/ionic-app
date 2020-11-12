@@ -53,7 +53,7 @@
               </ion-row>
               <ion-row class="ion-justify-content-end">
                 <ion-input appNumberOnly inputmode="numeric" 
-                type="number" class="input ion-text-center" 
+                type="number" class="input ion-text-center" [min]="1"
                 [value]="product.amount" (input)="changeAmount($event,product)"></ion-input>
               </ion-row>
             </ion-col>
