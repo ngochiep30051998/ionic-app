@@ -60,7 +60,7 @@ export class LoginPage implements OnInit {
         {
           name: 'email',
           type: 'email',
-          placeholder: 'Email'
+          placeholder: 'Email',
         }
       ],
       buttons: [
@@ -73,19 +73,28 @@ export class LoginPage implements OnInit {
           }
         }, {
           text: 'Xác nhận',
-          handler: async () => {
+          handler: async (data) => {
             try {
-              await this.helperService.showLoading();
-              const toast = await this.toastCtrl.create({
-                showCloseButton: true,
-                message: 'Email đã được gửi.',
-                duration: 2000,
-                position: 'bottom',
-                closeButtonText: 'Đóng',
-              });
-              toast.present();
+              if (data && data.email && this.helperService.validateEmail(data.email)) {
+                await this.helperService.showLoading();
+                const res = await this.authService.resetPassword(data.email);
+                const toast = await this.toastCtrl.create({
+                  showCloseButton: true,
+                  message: 'Email đã được gửi.',
+                  duration: 2000,
+                  position: 'bottom',
+                  closeButtonText: 'Đóng',
+                });
+                toast.present();
+                return res;
+              } else {
+                this.showErrorToast('Email không đúng định dạng');
+                return false;
+              }
+
             } catch (e) {
-              console.log(e);
+              this.authService.handleErrors(e);
+              return false;
             } finally {
               this.helperService.hideLoading();
             }
@@ -202,5 +211,15 @@ export class LoginPage implements OnInit {
       showBackdrop: true
     });
     return await popover.present();
+  }
+
+  async showErrorToast(data: any) {
+    const toast = await this.toastCtrl.create({
+      message: data,
+      duration: 3000,
+      position: 'bottom'
+    });
+
+    toast.present();
   }
 }

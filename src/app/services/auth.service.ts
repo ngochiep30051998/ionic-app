@@ -81,7 +81,7 @@ export class AuthService {
            thử lại với phương thức đăng nhập khác.`);
           break;
         case errorStatus.userNotFound:
-          this.helperService.showAlert(title, 'Không tìm thấy tài khoản, có thể tài khoản của bạn đã bị xoá.');
+          this.helperService.showAlert(title, 'Không tìm thấy tài khoản, vui lòng kiểm tra lại.');
           break;
         case errorStatus.existedEmail:
           title = 'Đăng ký thất bại'
@@ -93,5 +93,9 @@ export class AuthService {
 
   getIdToken() {
     return this.angularFireAuth.auth.currentUser.getIdToken();
+  }
+
+  resetPassword(email) {
+    return this.angularFireAuth.auth.sendPasswordResetEmail(email);
   }
 }

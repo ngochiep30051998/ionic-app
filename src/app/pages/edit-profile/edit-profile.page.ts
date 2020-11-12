@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController, NavController, ToastController } from '@ionic/angular';
 import { identity, pickBy } from 'lodash';
@@ -10,6 +10,7 @@ import { IUser } from 'src/app/interfaces/user.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { HelperService } from 'src/app/services/helper.service';
+import { auth } from 'firebase/app';
 
 @Component({
   selector: 'app-edit-profile',
@@ -52,6 +53,8 @@ export class EditProfilePage implements OnInit, OnDestroy {
       displayName: ['', Validators.required],
       email: [{ value: '', disabled: true }, Validators.required],
       phoneNumber: ['', Validators.required],
+      currentPassword: ['', Validators.required],
+      changePassword: [false]
     });
   }
 
@@ -78,39 +81,56 @@ export class EditProfilePage implements OnInit, OnDestroy {
   async updateProfile() {
     try {
       this.helperService.markFormGroupTouched(this.form);
+      console.log(this.form.value.changePassword)
       if (this.form.invalid) {
         return;
       }
       this.helperService.showLoading();
-      // const updatePhone = await this.angularFireAuth.auth.currentUser.updatePhoneNumber(this.form.value.phoneNumber);
-      const update = await this.angularFireAuth.auth.currentUser.updateProfile({
-        displayName: this.form.value.displayName
-      });
-      const user: IUser = {
-        displayName: this.form.value.displayName,
-        email: this.angularFireAuth.auth.currentUser.email,
-        uid: this.angularFireAuth.auth.currentUser.uid,
-        phoneNumber: this.form.value.phoneNumber,
-        photoURL: this.angularFireAuth.auth.currentUser.photoURL,
-        providerId: this.user.providerId
-      };
-      const params = pickBy(user, identity);
-      await this.firebaseService.updateUserInfo(params);
-      const toast = await this.toastCtrl.create({
-        showCloseButton: true,
-        closeButtonText: 'Đóng',
-        message: 'Cập nhật thành công.',
-        duration: 2000,
-        position: 'bottom',
-        color: 'success'
-      });
+      const check = await this.checkPassword(this.form.value.currentPassword);
+      if (check) {
+        const updateDisplayName = this.angularFireAuth.auth.currentUser.updateProfile({
+          displayName: this.form.value.displayName
+        });
+        const user: IUser = {
+          displayName: this.form.value.displayName,
+          email: this.angularFireAuth.auth.currentUser.email,
+          uid: this.angularFireAuth.auth.currentUser.uid,
+          phoneNumber: this.form.value.phoneNumber,
+          photoURL: this.angularFireAuth.auth.currentUser.photoURL,
+          providerId: this.user.providerId
+        };
+        const params = pickBy(user, identity);
+        const update = this.firebaseService.updateUserInfo(params);
+        if (this.form.value.changePassword) {
+          const updatePassword = this.angularFireAuth.auth.currentUser.updatePassword(this.form.value.password);
+          await Promise.all([updateDisplayName, update, updatePassword])
+        } else {
+          await Promise.all([updateDisplayName, update])
+        }
+        const toast = await this.toastCtrl.create({
+          showCloseButton: true,
+          closeButtonText: 'Đóng',
+          message: 'Cập nhật thành công.',
+          duration: 2000,
+          position: 'bottom',
+          color: 'success'
+        });
 
-      toast.present();
+        toast.present();
+        this.resetForm('changePassword');
+        this.resetForm('currentPassword');
+      } else {
+        throw {
+          message: 'Mật khẩu không chính xác'
+        };
+      }
+      // const updatePhone = await this.angularFireAuth.auth.currentUser.updatePhoneNumber(this.form.value.phoneNumber);
+
     } catch (e) {
       const toast = await this.toastCtrl.create({
         showCloseButton: true,
         closeButtonText: 'Đóng',
-        message: 'Cập nhật thất bại, vui lòng kiểm tra lại thông tin.',
+        message: e.message || 'Cập nhật thất bại, vui lòng kiểm tra lại thông tin.',
         duration: 2000,
         position: 'bottom',
         color: 'danger'
@@ -183,6 +203,36 @@ export class EditProfilePage implements OnInit, OnDestroy {
         });
       };
     }
+  }
+
+  async checkPassword(password) {
+    try {
+      const verify = await this.angularFireAuth.auth.currentUser.reauthenticateWithCredential(
+        auth.EmailAuthProvider.credential(
+          this.angularFireAuth.auth.currentUser.email, password
+        )
+      );
+      console.log(verify);
+      return true;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  }
+
+  onChangeCheckbox(event) {
+    if (event) {
+      this.form.addControl('password', new FormControl('', Validators.required));
+      this.form.addControl('confirmPassword', new FormControl('', [Validators.required, this.helperService.matchValues('password')]));
+    } else {
+      this.form.removeControl('password');
+      this.form.removeControl('confirmPassword');
+    }
+    this.form.updateValueAndValidity();
+  }
+
+  resetForm(name) {
+    this.form.get(name).reset();
   }
   ngOnDestroy(): void {
     if (this.userSub$) {

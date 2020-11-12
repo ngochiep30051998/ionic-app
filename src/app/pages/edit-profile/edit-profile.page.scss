@@ -6,7 +6,6 @@
 
 .profile {
   ion-card {
-    width: 100%;
     border-radius: 0;
     background-color: #fff;
     ion-card-content {
@@ -41,4 +40,8 @@
       margin: 0;
     }
   }
+
+  ion-footer{
+    max-height: 50px;
+}
 }

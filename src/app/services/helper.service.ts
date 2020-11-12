@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { SnapshotAction } from '@angular/fire/database';
-import { FormGroup } from '@angular/forms';
+import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import * as _ from 'lodash';
 import { environment } from 'src/environments/environment';
@@ -20,7 +20,7 @@ export class HelperService {
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController
   ) { }
-  
+
   markFormGroupTouched(formGroup) {
     (Object as any).values(formGroup.controls).forEach(control => {
       control.markAsTouched();
@@ -70,7 +70,7 @@ export class HelperService {
 
     if (environment.curentDate) {
       currentDate = new Date(environment.curentDate);
-      crr = formatDate(new Date(environment.curentDate), 'MM/dd/yyyy', 'en')
+      crr = formatDate(new Date(environment.curentDate), 'MM/dd/yyyy', 'en');
     } else {
       currentDate = new Date();
       crr = formatDate(new Date(), 'MM/dd/yyyy', 'en');
@@ -140,7 +140,7 @@ export class HelperService {
       } else {
         matchingControl.setErrors(null);
       }
-    }
+    };
   }
 
   counter(product: IProduct, menu: IMenu) {
@@ -163,5 +163,22 @@ export class HelperService {
     }
     return text;
   }
-
+  validateEmail(email) {
+    if (/(.+)@(.+){2,}\.(.+){2,}/.test(email)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  matchValues(
+    matchTo: string // name of the control to match to
+  ): (AbstractControl) => ValidationErrors | null {
+    return (control: AbstractControl): ValidationErrors | null => {
+      return !!control.parent &&
+        !!control.parent.value && control.parent.controls[matchTo] &&
+        control.value === control.parent.controls[matchTo].value
+        ? null
+        : { isMatching: true };
+    };
+  }
 }

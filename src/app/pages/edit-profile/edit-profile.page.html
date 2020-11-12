@@ -19,7 +19,7 @@
       <input type="file" [hidden]="true" #inputFile (change)="updateAvt($event)" id="file-input" accept="image/png, image/jpeg">
     </ion-card-content>
 
-    <ion-grid class="ion-no-padding ion-fixed">
+    <ion-grid class="ion-fixed">
       <form [formGroup]="form">
         <ion-row>
           <ion-col size="12" class="ion-padding">
@@ -29,8 +29,10 @@
                 <ion-label class="fw700">Thông tin người dùng</ion-label>
               </ion-list-header>
 
-              <ion-item>
-                <ion-label color="dark" position="floating">Họ tên:</ion-label>
+              <ion-item class="animated fadeInUp ion-no-padding">
+                <ion-label color="dark" position="floating">
+                <ion-icon name="contact" item-start></ion-icon>
+                Họ tên:</ion-label>
                 <ion-input inputmode="text" formControlName="displayName"></ion-input>
               </ion-item>
               <p ion-text color="warning" class="text08"
@@ -39,13 +41,15 @@
                   Trường bắt buộc
                 </ion-text>
               </p>
-              <ion-item>
-                <ion-label color="dark" position="floating">Email:</ion-label>
+              <ion-item class="animated fadeInUp ion-no-padding">
+                <ion-label color="dark" position="floating">
+                  <ion-icon name="mail" item-start></ion-icon>Email:</ion-label>
                 <ion-input inputmode="email" formControlName="email"></ion-input>
               </ion-item>
 
-              <ion-item>
-                <ion-label color="dark" position="floating">Số điện thoại:</ion-label>
+              <ion-item class="animated fadeInUp ion-no-padding">
+                <ion-label color="dark" position="floating">
+                  <ion-icon name="call" item-start></ion-icon>Số điện thoại:</ion-label>
                 <ion-input appNumberOnly inputmode="numeric" formControlName="phoneNumber" type="text"></ion-input>
               </ion-item>
               <p ion-text color="warning" class="text08"
@@ -54,32 +58,56 @@
                   Trường bắt buộc
                 </ion-text>
               </p>
-
-            </ion-list>
-
-            <!-- <ion-list>
-              <ion-radio-group>
-                <ion-list-header color="light">
-                  <ion-label class="fw700">User Type</ion-label>
-                </ion-list-header>
-            
-                <ion-item>
-                  <ion-label color="primary">Customer</ion-label>
-                  <ion-radio slot="start" value="customer" checked></ion-radio>
-                </ion-item>
-            
-                <ion-item>
-                  <ion-label color="primary">Owner</ion-label>
-                  <ion-radio slot="start" value="agent"></ion-radio>
-                </ion-item>
-              </ion-radio-group>
-  
-              <ion-item>
-                <ion-label class="text-1x">Checkbox test</ion-label>
-                <ion-checkbox></ion-checkbox>
+              <ion-item class="animated fadeInUp ion-no-padding">
+                <ion-label position="floating">
+                  <ion-icon name="lock" item-start></ion-icon>
+                  Mật khẩu
+                </ion-label>
+                <ion-input color="secondary" type="password" formControlName="currentPassword"></ion-input>
               </ion-item>
-            </ion-list> -->
-
+              <p ion-text color="danger" class="text08" *ngIf="form.get('currentPassword').touched && form.get('currentPassword').hasError('required')">
+                <ion-text color="danger">
+                  Trường bắt buộc
+                </ion-text>
+              </p>
+              <ion-item class="animated fadeInUp ion-no-padding">
+                <ion-label class="text-1x">Đổi mật khẩu</ion-label>
+                <ion-checkbox formControlName="changePassword" (ionChange)="onChangeCheckbox($event.target.checked)"></ion-checkbox>
+              </ion-item>
+              <ng-container *ngIf="form?.value?.changePassword">
+                <ion-item class="animated fadeInUp ion-no-padding">
+                  <ion-label position="floating">
+                    <ion-icon name="lock" item-start></ion-icon>
+                    Mật khẩu mới
+                  </ion-label>
+                  <ion-input color="secondary" type="password" formControlName="password"></ion-input>
+                </ion-item>
+                <p ion-text color="danger" class="text08" *ngIf="form.get('password').touched && form.get('password').hasError('required')">
+                  <ion-text color="danger">
+                    Trường bắt buộc
+                  </ion-text>
+                </p>
+          
+                <ion-item class="animated fadeInUp ion-no-padding">
+                  <ion-label position="floating">
+                    <ion-icon name="lock" item-start></ion-icon>
+                    Nhập lại mật khẩu mới
+                  </ion-label>
+                  <ion-input color="secondary" type="password" formControlName="confirmPassword"></ion-input>
+                </ion-item>
+                <p ion-text color="danger" class="text08" *ngIf="form.get('confirmPassword').touched && form.get('confirmPassword').hasError('required')">
+                  <ion-text color="danger">
+                    Trường bắt buộc
+                  </ion-text>
+                </p>
+          
+                <p ion-text color="danger" class="text08" *ngIf="form.get('confirmPassword').touched && form.get('confirmPassword').hasError('isMatching')">
+                  <ion-text color="danger">
+                    Mật khẩu không trùng nhau
+                  </ion-text>
+                </p>
+              </ng-container>
+            </ion-list>
           </ion-col>
         </ion-row>
       </form>
@@ -89,5 +117,7 @@
 
 </ion-content>
 <ion-footer>
-  <ion-button size="large" expand="full" color="dark" (click)="updateProfile()">Cập nhật</ion-button>
+  <ion-toolbar color="primary" (click)="updateProfile()">
+    <ion-title>Cập nhật</ion-title>
+  </ion-toolbar>
 </ion-footer>
