@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NavController, MenuController, LoadingController, ToastController } from '@ionic/angular';
-import * as firebase from 'firebase';
+import { LoadingController, MenuController, NavController, ToastController } from '@ionic/angular';
 import { IUser } from 'src/app/interfaces/user.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
@@ -34,15 +33,21 @@ export class RegisterPage implements OnInit {
 
   ngOnInit() {
     this.onRegisterForm = this.formBuilder.group({
-      'fullName': [null, Validators.compose([
+      fullName: [null, Validators.compose([
         Validators.required
       ])],
-      'email': [null, Validators.compose([
+      email: [null, Validators.compose([
         Validators.required
       ])],
-      'password': [null, Validators.compose([
+      password: [null, Validators.compose([
         Validators.required
+      ])],
+      confirmPassword: [null, Validators.compose([
+        Validators.required,
       ])]
+    },
+    {
+      validator: this.helperService.MustMatch('password', 'confirmPassword')
     });
   }
 

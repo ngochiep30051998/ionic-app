@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { User } from 'firebase';
 import { Observable } from 'rxjs';
-import { AuthService } from '../services/auth.service';
 import { map, take } from 'rxjs/operators';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate {
         if (user) {
           return true;
         }
-        this.router.navigate(['/dang-nhap'], { queryParams: { returnUrl: state.url } });
+        this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
         return false;
       })
     );

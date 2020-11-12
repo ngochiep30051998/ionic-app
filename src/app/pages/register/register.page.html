@@ -30,7 +30,7 @@
         </ion-label>
         <ion-input color="secondary" type="text" formControlName="fullName"></ion-input>
       </ion-item>
-      <p ion-text class="text08" *ngIf="onRegisterForm.get('fullName').touched && onRegisterForm.get('fullName').hasError('required')">
+      <p  class="text08" *ngIf="onRegisterForm.get('fullName').touched && onRegisterForm.get('fullName').hasError('required')">
         <ion-text color="warning">
           Trường bắt buộc
         </ion-text>
@@ -61,16 +61,35 @@
           Trường bắt buộc
         </ion-text>
       </p>
+
+      <ion-item class="animated fadeInUp ion-no-padding">
+        <ion-label position="floating">
+          <ion-icon name="lock" item-start></ion-icon>
+          Nhập lại mật khẩu
+        </ion-label>
+        <ion-input color="secondary" type="password" formControlName="confirmPassword"></ion-input>
+      </ion-item>
+      <p ion-text color="warning" class="text08" *ngIf="onRegisterForm.get('confirmPassword').touched && onRegisterForm.get('confirmPassword').hasError('required')">
+        <ion-text color="warning">
+          Trường bắt buộc
+        </ion-text>
+      </p>
+
+      <p ion-text color="warning" class="text08" *ngIf="onRegisterForm.get('confirmPassword').touched && onRegisterForm.get('confirmPassword').hasError('mustMatch')">
+        <ion-text color="warning">
+          Mật khẩu không trùng nhau
+        </ion-text>
+      </p>
     </form>
 
-    <div margin-top>
+    <div class="margin-top">
       <ion-button icon-left size="medium" expand="full" shape="round" color="dark" (click)="signUp()" [disabled]="!onRegisterForm.valid"
         tappable>
         <ion-icon name="log-in"></ion-icon>
         Đăng ký
       </ion-button>
 
-      <p text-center>
+      <p class="ion-text-center">
         <ion-text color="light">
           Hoặc đăng ký với:
         </ion-text>
@@ -99,7 +118,7 @@
     </div>
 
     <!-- Other links -->
-    <div text-center margin-top>
+    <div class="ion-text-center ion-margin-top" >
       <span (click)="goToLogin()" tappable>
         <ion-text color="light">
           <strong>Tôi đã có tài khoản!</strong>

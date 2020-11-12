@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { map } from 'rxjs/operators';
-import { HelperService } from './helper.service';
-
 import * as firebase from 'firebase';
-
 import * as moment from 'moment';
+import { map } from 'rxjs/operators';
 import { ICart } from '../interfaces/cart.interfaces';
 import { IUser } from '../interfaces/user.interface';
+import { HelperService } from './helper.service';
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -83,5 +83,13 @@ export class FirebaseService {
     return this.db.list('/bills', query => query.orderByChild('user/uid').equalTo(user.uid)).valueChanges().pipe(
       map(value => value.reverse())
     );
+  }
+
+  updateUserInfo(user) {
+    return this.db.object(`userInfo/${user.uid}`).update(user);
+  }
+
+  getCurrentUserFirebase(uid) {
+    return this.db.object(`userInfo/${uid}`).valueChanges();
   }
 }

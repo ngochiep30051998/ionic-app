@@ -1,13 +1,13 @@
 import { formatDate } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { SnapshotAction } from '@angular/fire/database';
-import { AlertController, LoadingController, ToastController } from '@ionic/angular';
-import { ICalendar } from '../interfaces/common.interfaces';
-import * as _ from 'lodash';
 import { FormGroup } from '@angular/forms';
+import { AlertController, LoadingController, ToastController } from '@ionic/angular';
+import * as _ from 'lodash';
 import { environment } from 'src/environments/environment';
-import { IProduct } from '../interfaces/products.interface';
+import { ICalendar } from '../interfaces/common.interfaces';
 import { IMenu } from '../interfaces/menu.interfaces';
+import { IProduct } from '../interfaces/products.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,16 @@ export class HelperService {
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController
   ) { }
+  
+  markFormGroupTouched(formGroup) {
+    (Object as any).values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
 
+      if (control.controls) {
+        this.markFormGroupTouched(control);
+      }
+    });
+  }
   async showLoading(message?, time?) {
     if (!this.loader) {
       this.loader = await this.loadingCtrl.create({ duration: time || 10000, message });

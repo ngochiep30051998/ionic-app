@@ -3,107 +3,91 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Edit Profile</ion-title>
+    <ion-title>Cập nhật thông tin</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="profile">
-  <ion-card >
+  <ion-card>
     <ion-card-content class="bg-profile">
-      <img src="assets/img/avatar.jpeg">
-      <h1 class="fw500">João Firmino</h1>
-      <h2 color="light" margin-bottom>Customer</h2>
-      <ion-button icon-left color="secondary">
-        <ion-icon name="photos"></ion-icon> 
-        Edit / Add Avatar
+      <img [src]="user?.photoURL || './assets/img/defaults/default-avt.png'">
+      <h1 class="fw500" *ngIf="user?.displayName">{{user?.displayName}}</h1>
+      <!-- <h2 color="light" margin-bottom>Customer</h2> -->
+      <ion-button class="ion-icon-left" color="secondary" (click)="inputFile.click()">
+        <ion-icon name="photos"></ion-icon>
       </ion-button>
+      <input type="file" [hidden]="true" #inputFile (change)="updateAvt($event)" id="file-input" accept="image/png, image/jpeg">
     </ion-card-content>
-  
-    <ion-grid class="ion-no-padding ion-fixed" >
-      <ion-row>
-        <ion-col size="12" padding>
 
-          <ion-list margin-bottom>
-            <ion-list-header color="light">
-              <ion-label class="fw700">Form</ion-label>
-            </ion-list-header>
+    <ion-grid class="ion-no-padding ion-fixed">
+      <form [formGroup]="form">
+        <ion-row>
+          <ion-col size="12" class="ion-padding">
 
-            <ion-item>
-              <ion-label color="dark" position="stacked">Full Name:</ion-label>
-              <ion-input inputmode="text" placeholder="Ex..: Joe Doe" value="João Firmino"></ion-input>
-            </ion-item>
-    
-            <ion-item>
-              <ion-label color="dark" position="stacked">Email:</ion-label>
-              <ion-input inputmode="email" placeholder="Ex.: joe@doe.com" value="firminoata@gmail.com"></ion-input>
-            </ion-item>
-    
-            <ion-item>
-              <ion-label color="dark" position="stacked">Address:</ion-label>
-              <ion-input inputmode="text" placeholder="Ex.: Abey Road 5"></ion-input>
-            </ion-item>
-    
-            <ion-item>
-              <ion-label color="dark">City</ion-label>
-              <ion-select>
-                <ion-select-option value="nes">New York</ion-select-option>
-                <ion-select-option value="n64">Los Angeles</ion-select-option>
-                <ion-select-option value="ps">London</ion-select-option>
-                <ion-select-option value="genesis">Paris</ion-select-option>
-                <ion-select-option value="saturn">São Paulo</ion-select-option>
-                <ion-select-option value="snes">Tokyo</ion-select-option>
-                <ion-select-option value="snes">New Delhi</ion-select-option>
-              </ion-select>
-            </ion-item>
-    
-            <ion-item>
-              <ion-label color="dark">State</ion-label>
-              <ion-select>
-                <ion-select-option value="nes">NY</ion-select-option>
-                <ion-select-option value="n64">CA</ion-select-option>
-                <ion-select-option value="ps">Greater London</ion-select-option>
-                <ion-select-option value="genesis">Paris</ion-select-option>
-                <ion-select-option value="saturn">SP</ion-select-option>
-                <ion-select-option value="snes">Kantō</ion-select-option>
-                <ion-select-option value="snes">Delhi</ion-select-option>
-              </ion-select>
-            </ion-item>
-          </ion-list>
-
-          <ion-list>
-            <ion-radio-group>
+            <ion-list class="ion-margin-bottom">
               <ion-list-header color="light">
-                <ion-label class="fw700">User Type</ion-label>
+                <ion-label class="fw700">Thông tin người dùng</ion-label>
               </ion-list-header>
-          
-              <ion-item>
-                <ion-label color="primary">Customer</ion-label>
-                <ion-radio slot="start" value="customer" checked></ion-radio>
-              </ion-item>
-          
-              <ion-item>
-                <ion-label color="primary">Owner</ion-label>
-                <ion-radio slot="start" value="agent"></ion-radio>
-              </ion-item>
-            </ion-radio-group>
 
-            <ion-item>
-              <ion-label class="text-1x">Checkbox test</ion-label>
-              <ion-checkbox></ion-checkbox>
-            </ion-item>
-          </ion-list>
+              <ion-item>
+                <ion-label color="dark" position="floating">Họ tên:</ion-label>
+                <ion-input inputmode="text" formControlName="displayName"></ion-input>
+              </ion-item>
+              <p ion-text color="warning" class="text08"
+                *ngIf="form.get('displayName').touched && form.get('displayName').hasError('required')">
+                <ion-text color="warning">
+                  Trường bắt buộc
+                </ion-text>
+              </p>
+              <ion-item>
+                <ion-label color="dark" position="floating">Email:</ion-label>
+                <ion-input inputmode="email" formControlName="email"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label color="dark" position="floating">Số điện thoại:</ion-label>
+                <ion-input appNumberOnly inputmode="numeric" formControlName="phoneNumber" type="text"></ion-input>
+              </ion-item>
+              <p ion-text color="warning" class="text08"
+                *ngIf="form.get('phoneNumber').touched && form.get('phoneNumber').hasError('required')">
+                <ion-text color="warning">
+                  Trường bắt buộc
+                </ion-text>
+              </p>
+
+            </ion-list>
+
+            <!-- <ion-list>
+              <ion-radio-group>
+                <ion-list-header color="light">
+                  <ion-label class="fw700">User Type</ion-label>
+                </ion-list-header>
+            
+                <ion-item>
+                  <ion-label color="primary">Customer</ion-label>
+                  <ion-radio slot="start" value="customer" checked></ion-radio>
+                </ion-item>
+            
+                <ion-item>
+                  <ion-label color="primary">Owner</ion-label>
+                  <ion-radio slot="start" value="agent"></ion-radio>
+                </ion-item>
+              </ion-radio-group>
   
-        </ion-col>
-      </ion-row>
+              <ion-item>
+                <ion-label class="text-1x">Checkbox test</ion-label>
+                <ion-checkbox></ion-checkbox>
+              </ion-item>
+            </ion-list> -->
+
+          </ion-col>
+        </ion-row>
+      </form>
     </ion-grid>
-  
-    <ion-button size="large" expand="full" color="dark" (click)="sendData()" >Edit</ion-button>
+
   </ion-card>
-  
-  <div padding>
-    <ion-text color="dark" >
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum odio placeat incidunt nesciunt atque ratione quisquam, fugit
-      omnis maxime adipisci excepturi dignissimos aliquam asperiores itaque unde sequi? Minus, quia, dolore?
-    </ion-text>
-  </div>
+
 </ion-content>
+<ion-footer>
+  <ion-button size="large" expand="full" color="dark" (click)="updateProfile()">Cập nhật</ion-button>
+</ion-footer>

@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
 
 const routes: Routes = [
   {
     path: 'login',
-
+    canActivate:[LoginGuard],
     loadChildren: './pages/login/login.module#LoginPageModule'
   },
   {
@@ -25,7 +25,7 @@ const routes: Routes = [
   },
   {
     path: 'edit-profile',
-
+    canActivate: [AuthGuard],
     loadChildren: './pages/edit-profile/edit-profile.module#EditProfilePageModule'
   },
   {

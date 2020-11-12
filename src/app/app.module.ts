@@ -1,35 +1,30 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { RouteReuseStrategy } from '@angular/router';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-
-import { AppComponent } from './app.component';
+import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { IonicStorageModule } from '@ionic/storage';
+import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
-
+import { AppComponent } from './app.component';
+import { ComponentsModule } from './components/components.module';
 // Modal Pages
 import { ImagePageModule } from './pages/modal/image/image.module';
 import { SearchFilterPageModule } from './pages/modal/search-filter/search-filter.module';
 
-// Components
 
-// firebase
-import * as firebase from 'firebase';
-import { environment } from 'src/environments/environment';
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireAuthModule } from '@angular/fire/auth';
-import { AngularFireAuthGuard } from '@angular/fire/auth-guard';
-import { AngularFireDatabaseModule } from '@angular/fire/database';
 
-import { GooglePlus } from '@ionic-native/google-plus/ngx';
-import { IonicStorageModule } from '@ionic/storage';
-import { ProductListComponent } from './components/product-list/product-list.component';
-import { ComponentsModule } from './components/components.module';
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+
+
 
 // firebase.initializeApp(environment.firebaseConfig);
 @NgModule({
@@ -50,6 +45,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
+    AngularFireStorageModule
+
   ],
   entryComponents: [],
   providers: [

@@ -1,15 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-
-import { Platform, NavController } from '@ionic/angular';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-
-import { Pages } from './interfaces/pages';
-import { AuthService } from './services/auth.service';
-import { IGoogleUser, IUser } from './interfaces/user.interface';
+import { NavController, Platform } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { Pages } from './interfaces/pages';
+import { IUser } from './interfaces/user.interface';
+import { AuthService } from './services/auth.service';
 import { HelperService } from './services/helper.service';
+
+
 
 @Component({
   selector: 'app-root',
@@ -28,7 +29,8 @@ export class AppComponent implements OnInit, OnDestroy {
     public navCtrl: NavController,
     private authService: AuthService,
     public router: Router,
-    public helperService: HelperService
+    public helperService: HelperService,
+    public angularFireAuth: AngularFireAuth
   ) {
     this.appPages = [
       {
@@ -51,9 +53,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.initializeApp();
     // this.user = this.authService.getCurrentUser();
-    this.userSub$ = this.authService.getUserInfo().subscribe((res: IUser) => {
+    // this.userSub$ = this.authService.getUserInfo().subscribe((res: IUser) => {
+    //   this.user = res;
+    // });
+
+    this.userSub$ = this.angularFireAuth.user.subscribe((res: IUser) => {
       this.user = res;
-      console.log(this.user)
+      console.log(this.user);
     });
   }
 

@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
@@ -63,7 +64,9 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
     private router: Router,
     public alertCtrl: AlertController,
     private apiService: ApiService,
-    private iab: InAppBrowser
+    private iab: InAppBrowser,
+    public angularFireAuth: AngularFireAuth,
+
   ) {
     this.form = this.fb.group({
       floor: ['Tầng 1'],
@@ -77,7 +80,9 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
       }
     });
 
-    this.userSub$ = this.authService.getUserInfo().subscribe((res: IUser) => {
+    this.userSub$ = this.angularFireAuth.user.pipe(user =>
+      this.firebaseService.getCurrentUserFirebase(this.angularFireAuth.auth.currentUser.uid)
+    ).subscribe((res: IUser) => {
       this.user = res;
     });
 
