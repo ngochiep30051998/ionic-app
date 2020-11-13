@@ -16,6 +16,7 @@ export interface IProduct {
     createdAt?: string;
     updatedAt?: string;
     meal?: string;
+    menuId?: string;
 }
 
 export interface IDiglogData {
