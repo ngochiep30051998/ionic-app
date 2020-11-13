@@ -28,14 +28,14 @@ export class FirebaseService {
 
   getMenuById(id) {
     return this.db.object(`/menus/${id}`).snapshotChanges().pipe(
-      map(snap => this.helperService.convertMenu(snap))
+      map(snap => this.helperService.convertMenu(snap, id))
     );
   }
 
   getListMenu(start, end) {
     return this.db.list('/menus', ref => ref.orderByKey().startAt(start).endAt(end)).snapshotChanges().pipe(
       map(
-        x => x.map(snap => this.helperService.convertMenu(snap))
+        x => x.map(snap => this.helperService.convertMenu(snap, snap.key))
       )
     );
   }
