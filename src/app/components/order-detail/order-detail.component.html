@@ -39,7 +39,8 @@
         <ion-col size="6">
           <ion-text [ngSwitch]="order?.payment">
             <h6 class="sub ion-no-margin success" *ngSwitchCase="TRANS_TYPE.card">Thẻ tín dụng</h6>
-            <h6 class="sub ion-no-margin tertiary " *ngSwitchCase="TRANS_TYPE.payment_on_delivery">Thanh toán khi nhận hàng</h6>
+            <h6 class="sub ion-no-margin tertiary " *ngSwitchCase="TRANS_TYPE.payment_on_delivery">Thanh toán khi nhận
+              hàng</h6>
           </ion-text>
         </ion-col>
       </ion-row>
@@ -64,7 +65,7 @@
           </ion-text>
         </ion-col>
         <ion-col size="6">
-          <ion-text >
+          <ion-text>
             <h6 class="sub ion-no-margin success">{{order?.totalPrice |number}} vnđ</h6>
           </ion-text>
         </ion-col>
@@ -114,7 +115,8 @@
           </ion-col>
           <ion-col size="6">
             <ion-text>
-              <h6 class="ion-no-margin title">{{product?.promotionPrice ? product?.promotionPrice : product?.price |number}} vnđ</h6>
+              <h6 class="ion-no-margin title">
+                {{product?.promotionPrice ? product?.promotionPrice : product?.price |number}} vnđ</h6>
             </ion-text>
           </ion-col>
         </ion-row>
@@ -138,7 +140,9 @@
           </ion-col>
           <ion-col size="6">
             <ion-text>
-              <h6 class="ion-no-margin title">{{(product?.promotionPrice ? product?.promotionPrice*product?.amount : product?.price*product?.amount) |number}} vnđ</h6>
+              <h6 class="ion-no-margin title">
+                {{(product?.promotionPrice ? product?.promotionPrice*product?.amount : product?.price*product?.amount) |number}}
+                vnđ</h6>
             </ion-text>
           </ion-col>
         </ion-row>
@@ -146,3 +150,8 @@
     </ion-item>
   </ng-container>
 </ion-content>
+<ion-footer *ngIf="order?.status === BILL_STATUS.pending.key" (click)="cancelOrder()">
+  <ion-toolbar color="primary">
+    <ion-title>Huỷ đơn hàng</ion-title>
+  </ion-toolbar>
+</ion-footer>

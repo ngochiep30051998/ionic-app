@@ -3,6 +3,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import * as firebase from 'firebase';
 import * as moment from 'moment';
 import { map } from 'rxjs/operators';
+import { BILL_STATUS } from '../constants/common';
 import { ICart } from '../interfaces/cart.interfaces';
 import { IUser } from '../interfaces/user.interface';
 import { HelperService } from './helper.service';
@@ -106,5 +107,12 @@ export class FirebaseService {
         return data;
       });
     }));
+  }
+
+  cancelOrder(cart: ICart) {
+    return this.db.object(`bills/${cart.id}`).update({
+      updatedAt: firebase.database.ServerValue.TIMESTAMP,
+      status: BILL_STATUS.canceled.key
+    });
   }
 }

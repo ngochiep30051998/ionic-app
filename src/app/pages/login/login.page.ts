@@ -217,7 +217,8 @@ export class LoginPage implements OnInit {
     const toast = await this.toastCtrl.create({
       message: data,
       duration: 3000,
-      position: 'bottom'
+      position: 'bottom',
+      color: 'danger'
     });
 
     toast.present();
