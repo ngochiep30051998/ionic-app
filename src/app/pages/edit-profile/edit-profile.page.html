@@ -52,9 +52,9 @@
                   <ion-icon name="call" item-start></ion-icon>Số điện thoại:</ion-label>
                 <ion-input appNumberOnly inputmode="numeric" formControlName="phoneNumber" type="text"></ion-input>
               </ion-item>
-              <p ion-text color="warning" class="text08"
+              <p ion-text color="danger" class="text08"
                 *ngIf="form.get('phoneNumber').touched && form.get('phoneNumber').hasError('required')">
-                <ion-text color="warning">
+                <ion-text color="danger">
                   Trường bắt buộc
                 </ion-text>
               </p>
