@@ -27,7 +27,7 @@
   </div>
 
 <ng-container *ngIf="bills && bills?.length > 0">
-  <ion-item class="ion-margin-bottom ion-no-padding card"  lines="none" (click)="open(order)" *ngFor="let order of bills">
+  <ion-item class="ion-margin-bottom ion-no-padding card"  lines="none" (click)="open(order)" *ngFor="let order of bills;trackBy: trackByFn">
     <ion-row class="ion-align-items-center">
       <ion-col size="2">
         <img [src]="order?.products[0]?.displayImage">

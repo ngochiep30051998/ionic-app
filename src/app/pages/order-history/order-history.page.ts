@@ -8,6 +8,7 @@ import { ICart } from 'src/app/interfaces/cart.interfaces';
 import { IUser } from 'src/app/interfaces/user.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { HelperService } from 'src/app/services/helper.service';
 
 @Component({
   selector: 'app-order-history',
@@ -27,13 +28,14 @@ export class OrderHistoryPage implements OnInit, OnDestroy {
     private authService: AuthService,
     public navCtrl: NavController,
     public angularFireAuth: AngularFireAuth,
+    public helperService: HelperService
   ) {
-    this.userSub$ = this.authService.getUserInfo().subscribe((res: IUser) => {
-      this.user = res;
-      if (this.user) {
-        this.getHistory();
-      }
-    });
+    // this.userSub$ = this.authService.getUserInfo().subscribe((res: IUser) => {
+    //   this.user = res;
+    //   if (this.user) {
+    //     this.getHistory();
+    //   }
+    // });
     this.userSub$ = this.angularFireAuth.user.pipe(user =>
       this.firebaseService.getCurrentUserFirebase(this.angularFireAuth.auth.currentUser.uid)
     ).subscribe((res: IUser) => {
@@ -61,10 +63,17 @@ export class OrderHistoryPage implements OnInit, OnDestroy {
     if (this.historySub$) {
       this.historySub$.unsubscribe();
     }
+    this.helperService.showLoading();
     this.historySub$ = this.firebaseService.getOrderHistory(this.user).subscribe(res => {
       this.bills = res;
-      console.log(this.bills);
+      this.helperService.hideLoading();
+    }, err => {
+      this.helperService.hideLoading();
     });
+  }
+
+  trackByFn(index, item) {
+    return item.id;
   }
   ngOnDestroy(): void {
     if (this.userSub$) {
