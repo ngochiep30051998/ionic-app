@@ -33,7 +33,8 @@ export class ProductDetailPage implements OnInit {
     public toastCtrl: ToastController,
 
   ) {
-    this.currentDate = environment.curentDate || formatDate(new Date(), 'dd-MM-yyyy', 'en');
+    // tslint:disable-next-line: max-line-length
+    this.currentDate = environment.curentDate ? formatDate(environment.curentDate, 'dd-MM-yyyy', 'en') : formatDate(new Date(), 'dd-MM-yyyy', 'en');
     this.menuId = this.route.snapshot.paramMap.get('menuId');
     this.id = this.route.snapshot.paramMap.get('id');
     this.meal = this.route.snapshot.paramMap.get('meal');
