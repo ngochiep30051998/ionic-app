@@ -45,22 +45,34 @@
       <div class="sep"></div>
       <div>
         <ion-row>
-          <ion-col size="12">
+          <ion-col size="12" *ngIf="product?.detail">
             <ion-text>
               <span class="ion-float-left ion-no-margin">{{product?.detail}}</span>
             </ion-text>
 
           </ion-col>
-          <ion-col size="12">
-            <ion-text>
-              <span class="ion-float-left ion-no-margin">Số lượng còn lại: {{product?.amount || 0}}
-                {{product?.unit || 'suất'}}</span>
-            </ion-text>
+
+          <ion-col class="ion-text-left parent" size="12">
+            <p class="ion-text-left amount">Còn lại: {{product?.amount || 0}} {{product?.unit || 'suất'}}</p>
           </ion-col>
+          <ion-col class="ion-no-padding">
+            <ion-text class="ion-text-left" *ngIf="product?.promotionPrice">
+              <span class="price ">
+                <span class="inline ">
+                  {{product?.price |number}}
+                </span>
+                <strong>{{product?.promotionPrice |number}} vnđ</strong>
+              </span>
+            </ion-text>
+          <ion-text tclass="ion-text-left" *ngIf="!product?.promotionPrice"><span class="price"><strong>{{product?.price |number}} vnđ</strong></span></ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+      
         </ion-row>
       </div>
 
-      <div class="sep"></div>
+      <!-- <div class="sep"></div>
       <div class="ion-padding">
         <ion-row class="ion-justify-content-center hover-buttons">
           <ion-icon size="small" name="logo-instagram" class="ion-float-right fab"></ion-icon>
@@ -69,32 +81,14 @@
           </ion-icon>
           <ion-icon *ngIf="liked" size="small" name="heart" class="ion-float-right red fab" (click)="like()"></ion-icon>
         </ion-row>
-      </div>
+      </div> -->
     </div>
   </div>
 </ion-content>
 
-<ion-footer class="footer ion-align-items-center" >
-  <ion-toolbar color="primary">
-    <ion-row class="ion-align-items-center">
-      <ion-col class="ion-padding" *ngIf="product?.promotionPrice">
-        <ion-text>
-          <span class="ion-no-margin cut bold">{{product?.price |number}} {{'VNĐ'}}</span>
-        </ion-text>
-  
-        <ion-text>
-          <span class="ion-no-margin foot-highlight promotion-price bold">{{product?.promotionPrice |number}} {{'VNĐ'}}</span>
-        </ion-text>
-      </ion-col>
-      <ion-col class="ion-padding flex-start" *ngIf="!product?.promotionPrice">
-        <ion-text>
-          <span class="ion-no-margin foot-highlight price bold">{{product?.price |number}} {{'VNĐ'}}</span>
-        </ion-text>
-      </ion-col>
-      <ion-col size="4">
-        <ion-button class="ion-float-right white foot-btn ion-no-margin" color="orange" expand="block" (click)="addToCart()">
-          <strong>Mua ngay</strong></ion-button>
-      </ion-col>
-    </ion-row>
+
+<ion-footer *ngIf="product?.amount >0 && product.menuId === currentDate">
+  <ion-toolbar color="primary" (click)="addToCart()">
+    <ion-title>Mua ngay</ion-title>
   </ion-toolbar>
 </ion-footer>

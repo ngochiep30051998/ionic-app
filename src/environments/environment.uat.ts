@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
+  production: false,
   firebaseConfig: {
     apiKey: 'AIzaSyD1-aktMFLxPHClyjLuUQF5tMVIYW2IGj4',
     authDomain: 'food-4dd37.firebaseapp.com',
@@ -13,4 +13,4 @@ export const environment = {
   googleWebClientId: '589211414820-qjdghiijvlne6c0e9qcngj254qg2gl0u.apps.googleusercontent.com',
   curentDate: '',
   api: 'https://api-fast-food.herokuapp.com/',
-}
+};

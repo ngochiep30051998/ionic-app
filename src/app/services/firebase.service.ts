@@ -47,6 +47,8 @@ export class FirebaseService {
           console.log(snap.payload.val())
           const product = this.helperService.snap2Object(snap);
           product.photos = this.helperService.object2Arr(product.photos);
+          product.menuId = menuId;
+          product.meal = meal;
           return product;
         }
       )

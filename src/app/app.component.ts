@@ -40,7 +40,7 @@ export class AppComponent implements OnInit, OnDestroy {
       },
 
       {
-        title: 'Lịch sử đơn hàng',
+        title: 'Lịch sử mua hàng',
         url: '/order-history',
         icon: 'timer'
       },

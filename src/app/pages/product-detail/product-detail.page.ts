@@ -1,9 +1,11 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonSlides, ToastController } from '@ionic/angular';
 import { IProduct } from 'src/app/interfaces/products.interface';
 import { CartService } from 'src/app/services/cart.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-product-detail',
@@ -22,6 +24,7 @@ export class ProductDetailPage implements OnInit {
   public product: IProduct;
   public photoIndex = 0;
   public meal: string;
+  public currentDate;
   constructor(
     private route: ActivatedRoute,
     private firebaseService: FirebaseService,
@@ -30,6 +33,7 @@ export class ProductDetailPage implements OnInit {
     public toastCtrl: ToastController,
 
   ) {
+    this.currentDate = environment.curentDate || formatDate(new Date(), 'dd-MM-yyyy', 'en');
     this.menuId = this.route.snapshot.paramMap.get('menuId');
     this.id = this.route.snapshot.paramMap.get('id');
     this.meal = this.route.snapshot.paramMap.get('meal');
