@@ -181,7 +181,6 @@ export class EditProfilePage implements OnInit, OnDestroy {
 
   async pickImage(sourceType) {
     try {
-      this.helperService.showLoading();
       const options: CameraOptions = {
         quality: 100,
         sourceType: sourceType,
@@ -193,6 +192,7 @@ export class EditProfilePage implements OnInit, OnDestroy {
       const currentName = imageData.substr(imageData.lastIndexOf('/') + 1);
       const correctPath = imageData.substr(0, imageData.lastIndexOf('/') + 1);
       const displayImageName = Date.now().toString();
+      this.helperService.showLoading();
       const image = await this.file.readAsDataURL(correctPath, currentName);
       const res = await this.storage.ref(`/avatar/${displayImageName}`).putString(image.split(',')[1], 'base64');
       const url = await res.ref.getDownloadURL();
