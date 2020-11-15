@@ -20,7 +20,8 @@ import { ComponentsModule } from './components/components.module';
 // Modal Pages
 import { ImagePageModule } from './pages/modal/image/image.module';
 import { SearchFilterPageModule } from './pages/modal/search-filter/search-filter.module';
-
+import { Camera } from '@ionic-native/Camera/ngx';
+import { File } from '@ionic-native/file/ngx';
 
 
 
@@ -54,6 +55,8 @@ import { SearchFilterPageModule } from './pages/modal/search-filter/search-filte
     SplashScreen,
     GooglePlus,
     InAppBrowser,
+    Camera,
+    File,
     {
       provide: RouteReuseStrategy,
       useClass: IonicRouteStrategy

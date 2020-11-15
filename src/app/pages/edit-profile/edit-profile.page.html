@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-back-button text=""></ion-back-button>
     </ion-buttons>
      <ion-title class="txt-center">Cập nhật thông tin</ion-title>
   </ion-toolbar>
@@ -13,10 +13,10 @@
       <img [src]="user?.photoURL || './assets/img/defaults/default-avt.png'">
       <h1 class="fw500" *ngIf="user?.displayName">{{user?.displayName}}</h1>
       <!-- <h2 color="light" margin-bottom>Customer</h2> -->
-      <ion-button class="ion-icon-left" color="secondary" (click)="inputFile.click()">
+      <ion-button class="ion-icon-left" color="secondary" (click)="selectImage()">
         <ion-icon name="photos"></ion-icon>
       </ion-button>
-      <input type="file" [hidden]="true" #inputFile (change)="updateAvt($event)" id="file-input" accept="image/png, image/jpeg">
+      <!-- <input type="file" [hidden]="true" #inputFile (change)="updateAvt($event)" id="file-input" accept="image/png, image/jpeg"> -->
     </ion-card-content>
 
     <ion-grid class="ion-fixed">
