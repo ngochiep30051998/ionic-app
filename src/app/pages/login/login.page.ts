@@ -41,15 +41,23 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
-
     this.onLoginForm = this.formBuilder.group({
-      'email': ['hiep2@yopmail.com', Validators.compose([
+      email: ['', Validators.compose([
         Validators.required
       ])],
-      'password': ['123123', Validators.compose([
+      password: ['', Validators.compose([
         Validators.required
-      ])]
+      ])],
+      savePassword: [false]
     });
+    const userSave = JSON.parse(localStorage.getItem('userSave'));
+    if (userSave && userSave.savePassword && userSave.email && userSave.password) {
+      this.onLoginForm.patchValue({
+        email: userSave.email,
+        password: userSave.password,
+        savePassword: userSave.savePassword
+      });
+    }
   }
 
   async forgotPass() {
@@ -145,6 +153,16 @@ export class LoginPage implements OnInit {
         color: 'success'
       });
       toast.present();
+      if (this.onLoginForm.value.savePassword) {
+        const save = {
+          email: this.onLoginForm.value.email,
+          password: this.onLoginForm.value.password,
+          savePassword: this.onLoginForm.value.savePassword
+        };
+        localStorage.setItem('userSave', JSON.stringify(save));
+      } else {
+        localStorage.removeItem('userSave');
+      }
       if (this.isCheckout) {
         this.navCtrl.back();
       } else {

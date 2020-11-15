@@ -3,10 +3,8 @@
     <ion-buttons slot="start">
       <ion-back-button text=""></ion-back-button>
     </ion-buttons>
-    <ion-title>
-      <ion-text color="light">
+    <ion-title class="txt-center">
         <ion-text color="light" class="fw700">Thông tin sản phẩm</ion-text>
-      </ion-text>
     </ion-title>
 
   </ion-toolbar>
@@ -88,7 +86,7 @@
 
 
 <ion-footer *ngIf="product?.amount >0 && product.menuId === currentDate">
-  <ion-toolbar color="primary" (click)="addToCart()">
-    <ion-title>Mua ngay</ion-title>
+  <ion-toolbar class="txt-center" color="primary" (click)="addToCart()">
+     <ion-title class="txt-center">Mua ngay</ion-title>
   </ion-toolbar>
 </ion-footer>

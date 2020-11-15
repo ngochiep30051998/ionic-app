@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button text=""></ion-back-button>
     </ion-buttons>
-    <ion-title>
+     <ion-title class="txt-center">
       <ion-text color="light">
         <ion-text color="light" class="fw700">Giỏ hàng</ion-text>
       </ion-text>
@@ -157,6 +157,6 @@
 </ion-content>
 <ion-footer *ngIf="cart?.products && cart?.products?.length >0">
   <ion-toolbar color="primary" (click)="submit()">
-    <ion-title>Thanh toán</ion-title>
+     <ion-title class="txt-center">Thanh toán</ion-title>
   </ion-toolbar>
 </ion-footer>

@@ -3,17 +3,17 @@
     <ion-buttons slot="start">
       <ion-menu-button color="secondary"></ion-menu-button>
     </ion-buttons>
-    <ion-title>
+     <ion-title class="txt-center">
       <ion-text color="light">
         <ion-text color="light" class="fw700">FastFood</ion-text>
       </ion-text>
     </ion-title>
-    <ion-buttons slot="end">
+    <!-- <ion-buttons slot="end">
       <ion-button size="small" shape="round" color="medium" (click)="notifications($event)">
         <ion-icon name="notifications"></ion-icon>
         <ion-badge color="dark" slot="end">2</ion-badge>
       </ion-button>
-    </ion-buttons>
+    </ion-buttons> -->
   </ion-toolbar>
 
 </ion-header>
@@ -59,6 +59,10 @@
           Trường bắt buộc
         </ion-text>
         </p>
+        <ion-item class="animated fadeInUp ion-no-padding">
+          <ion-label>Lưu mật khẩu</ion-label>
+          <ion-checkbox color="orange" formControlName="savePassword"></ion-checkbox>
+        </ion-item>
     </form>
 
     <p  tappable (click)="forgotPass()" class="paz ion-text-right">
@@ -80,17 +84,17 @@
       </p>
 
       <ion-grid class="btn-group">
-        <ion-row>
-          <ion-col size="4">
+        <ion-row class="flex-center">
+          <!-- <ion-col size="6">
             <ion-button shape="round" expand="full" color="secondary">
               <ion-icon slot="icon-only" name="logo-facebook"></ion-icon>
             </ion-button>
-          </ion-col>
-          <ion-col size="4">
+          </ion-col> -->
+          <!-- <ion-col size="4">
             <ion-button shape="round" expand="full" color="secondary">
               <ion-icon slot="icon-only" name="logo-twitter"></ion-icon>
             </ion-button>
-          </ion-col>
+          </ion-col> -->
           <ion-col size="4">
             <ion-button shape="round" expand="full" color="secondary" (click)="loginWithGoogle()">
               <ion-icon slot="icon-only" name="logo-googleplus"></ion-icon>

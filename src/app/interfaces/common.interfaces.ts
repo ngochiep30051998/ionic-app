@@ -1,4 +1,4 @@
-import { IMenu } from "./menu.interfaces";
+import { IMenu } from './menu.interfaces';
 
 export interface ICalendar {
     id: string;

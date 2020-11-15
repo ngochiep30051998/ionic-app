@@ -40,8 +40,8 @@ export class HelperService {
   async hideLoading() {
     if (this.loader) {
       await this.loader.dismiss();
-      this.loader = null;
     }
+    this.loader = null;
   }
 
   async showAlert(header?: string, message?: string, subHeader?: string, cssClass?: string, buttons?: any[], inputs?: any[]) {

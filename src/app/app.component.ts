@@ -39,11 +39,11 @@ export class AppComponent implements OnInit, OnDestroy {
         icon: 'home'
       },
 
-      {
-        title: 'Lịch sử mua hàng',
-        url: '/order-history',
-        icon: 'timer'
-      },
+      // {
+      //   title: 'Lịch sử mua hàng',
+      //   url: '/order-history',
+      //   icon: 'timer'
+      // },
       {
         title: 'Giới thiệu',
         url: '/about',
@@ -60,6 +60,41 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.userSub$ = this.angularFireAuth.user.subscribe((res: IUser) => {
       this.user = res;
+      if (res) {
+        this.appPages = [
+          {
+            title: 'Trang chủ',
+            url: '/home-results',
+            icon: 'home'
+          },
+
+          {
+            title: 'Lịch sử mua hàng',
+            url: '/order-history',
+            icon: 'timer'
+          },
+          {
+            title: 'Giới thiệu',
+            url: '/about',
+            icon: 'information-circle-outline'
+          },
+
+        ];
+      } else {
+        this.appPages = [
+          {
+            title: 'Trang chủ',
+            url: '/home-results',
+            icon: 'home'
+          },
+          {
+            title: 'Giới thiệu',
+            url: '/about',
+            icon: 'information-circle-outline'
+          },
+
+        ];
+      }
       console.log(this.user);
     });
   }
@@ -75,11 +110,11 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   goToEditProgile() {
-    this.router.navigateByUrl('/edit-profile');
+    this.router.navigate(['/edit-profile']);
   }
 
   gotoLogin() {
-    this.router.navigateByUrl('/login');
+    this.router.navigate(['/login']);
   }
 
   logout() {
@@ -87,7 +122,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   gotoPage(page) {
-    this.router.navigate([page])
+    this.router.navigate([page]);
   }
   ngOnDestroy(): void {
     if (this.userSub$) {
