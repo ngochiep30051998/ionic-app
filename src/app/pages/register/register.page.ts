@@ -40,10 +40,12 @@ export class RegisterPage implements OnInit {
         Validators.required
       ])],
       password: [null, Validators.compose([
-        Validators.required
+        Validators.required,
+        Validators.minLength(6)
       ])],
       confirmPassword: [null, Validators.compose([
         Validators.required,
+        Validators.minLength(6)
       ])]
     },
     {

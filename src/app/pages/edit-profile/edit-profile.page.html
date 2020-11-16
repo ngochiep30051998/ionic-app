@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button text=""></ion-back-button>
     </ion-buttons>
-     <ion-title class="txt-center">Cập nhật thông tin</ion-title>
+    <ion-title class="txt-center">Cập nhật thông tin</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -31,8 +31,9 @@
 
               <ion-item class="animated fadeInUp ion-no-padding">
                 <ion-label color="dark" position="floating">
-                <ion-icon name="contact" item-start></ion-icon>
-                Họ tên:</ion-label>
+                  <ion-icon name="contact" item-start></ion-icon>
+                  Họ tên
+                </ion-label>
                 <ion-input inputmode="text" formControlName="displayName"></ion-input>
               </ion-item>
               <p ion-text color="warning" class="text08"
@@ -43,13 +44,15 @@
               </p>
               <ion-item class="animated fadeInUp ion-no-padding">
                 <ion-label color="dark" position="floating">
-                  <ion-icon name="mail" item-start></ion-icon>Email:</ion-label>
+                  <ion-icon name="mail" item-start></ion-icon>Email
+                </ion-label>
                 <ion-input inputmode="email" formControlName="email"></ion-input>
               </ion-item>
 
               <ion-item class="animated fadeInUp ion-no-padding">
                 <ion-label color="dark" position="floating">
-                  <ion-icon name="call" item-start></ion-icon>Số điện thoại:</ion-label>
+                  <ion-icon name="call" item-start></ion-icon>Số điện thoại
+                </ion-label>
                 <ion-input appNumberOnly inputmode="numeric" formControlName="phoneNumber" type="text"></ion-input>
               </ion-item>
               <p ion-text color="danger" class="text08"
@@ -58,55 +61,63 @@
                   Trường bắt buộc
                 </ion-text>
               </p>
-              <ion-item class="animated fadeInUp ion-no-padding">
-                <ion-label position="floating">
-                  <ion-icon name="lock" item-start></ion-icon>
-                  Mật khẩu
-                </ion-label>
-                <ion-input color="secondary" type="password" formControlName="currentPassword"></ion-input>
-              </ion-item>
-              <p ion-text color="danger" class="text08" *ngIf="form.get('currentPassword').touched && form.get('currentPassword').hasError('required')">
-                <ion-text color="danger">
-                  Trường bắt buộc
-                </ion-text>
-              </p>
-              <ion-item class="animated fadeInUp ion-no-padding">
-                <ion-label class="text-1x">Đổi mật khẩu</ion-label>
-                <ion-checkbox formControlName="changePassword" (ionChange)="onChangeCheckbox($event.target.checked)"></ion-checkbox>
-              </ion-item>
-              <ng-container *ngIf="form?.value?.changePassword">
+              <ng-container *ngIf="user?.providerId !== 'google.com'">
                 <ion-item class="animated fadeInUp ion-no-padding">
                   <ion-label position="floating">
                     <ion-icon name="lock" item-start></ion-icon>
-                    Mật khẩu mới
+                    Mật khẩu
                   </ion-label>
-                  <ion-input color="secondary" type="password" formControlName="password"></ion-input>
+                  <ion-input color="secondary" type="password" formControlName="currentPassword"></ion-input>
                 </ion-item>
-                <p ion-text color="danger" class="text08" *ngIf="form.get('password').touched && form.get('password').hasError('required')">
+                <p ion-text color="danger" class="text08"
+                  *ngIf="form.get('currentPassword').touched && form.get('currentPassword').hasError('required')">
                   <ion-text color="danger">
                     Trường bắt buộc
                   </ion-text>
                 </p>
-          
                 <ion-item class="animated fadeInUp ion-no-padding">
-                  <ion-label position="floating">
-                    <ion-icon name="lock" item-start></ion-icon>
-                    Nhập lại mật khẩu mới
-                  </ion-label>
-                  <ion-input color="secondary" type="password" formControlName="confirmPassword"></ion-input>
+                  <ion-label class="text-1x">Đổi mật khẩu</ion-label>
+                  <ion-checkbox formControlName="changePassword" (ionChange)="onChangeCheckbox($event.target.checked)">
+                  </ion-checkbox>
                 </ion-item>
-                <p ion-text color="danger" class="text08" *ngIf="form.get('confirmPassword').touched && form.get('confirmPassword').hasError('required')">
-                  <ion-text color="danger">
-                    Trường bắt buộc
-                  </ion-text>
-                </p>
-          
-                <p ion-text color="danger" class="text08" *ngIf="form.get('confirmPassword').touched && form.get('confirmPassword').hasError('isMatching')">
-                  <ion-text color="danger">
-                    Mật khẩu không trùng nhau
-                  </ion-text>
-                </p>
+                <ng-container *ngIf="form?.value?.changePassword">
+                  <ion-item class="animated fadeInUp ion-no-padding">
+                    <ion-label position="floating">
+                      <ion-icon name="lock" item-start></ion-icon>
+                      Mật khẩu mới
+                    </ion-label>
+                    <ion-input color="secondary" type="password" formControlName="password"></ion-input>
+                  </ion-item>
+                  <p ion-text color="danger" class="text08"
+                    *ngIf="form.get('password').touched && form.get('password').hasError('required')">
+                    <ion-text color="danger">
+                      Trường bắt buộc
+                    </ion-text>
+                  </p>
+
+                  <ion-item class="animated fadeInUp ion-no-padding">
+                    <ion-label position="floating">
+                      <ion-icon name="lock" item-start></ion-icon>
+                      Nhập lại mật khẩu mới
+                    </ion-label>
+                    <ion-input color="secondary" type="password" formControlName="confirmPassword"></ion-input>
+                  </ion-item>
+                  <p ion-text color="danger" class="text08"
+                    *ngIf="form.get('confirmPassword').touched && form.get('confirmPassword').hasError('required')">
+                    <ion-text color="danger">
+                      Trường bắt buộc
+                    </ion-text>
+                  </p>
+
+                  <p ion-text color="danger" class="text08"
+                    *ngIf="form.get('confirmPassword').touched && form.get('confirmPassword').hasError('isMatching')">
+                    <ion-text color="danger">
+                      Mật khẩu không trùng nhau
+                    </ion-text>
+                  </p>
+                </ng-container>
               </ng-container>
+
             </ion-list>
           </ion-col>
         </ion-row>
@@ -118,6 +129,6 @@
 </ion-content>
 <ion-footer>
   <ion-toolbar color="primary" (click)="updateProfile()">
-     <ion-title class="txt-center">Cập nhật</ion-title>
+    <ion-title class="txt-center">Cập nhật</ion-title>
   </ion-toolbar>
 </ion-footer>

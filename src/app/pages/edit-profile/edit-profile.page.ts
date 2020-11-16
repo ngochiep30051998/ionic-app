@@ -47,6 +47,9 @@ export class EditProfilePage implements OnInit, OnDestroy {
     ).subscribe((res: IUser) => {
       this.user = res;
       this.form.patchValue(this.user);
+      if (this.user.providerId !== 'google.com') {
+        this.form.get('currentPassword').setValidators([Validators.required]);
+      }
       console.log(this.user);
     });
   }
@@ -59,7 +62,7 @@ export class EditProfilePage implements OnInit, OnDestroy {
       displayName: ['', Validators.required],
       email: [{ value: '', disabled: true }, Validators.required],
       phoneNumber: ['', Validators.required],
-      currentPassword: ['', Validators.required],
+      currentPassword: [''],
       changePassword: [false]
     });
   }
@@ -92,7 +95,7 @@ export class EditProfilePage implements OnInit, OnDestroy {
         return;
       }
       this.helperService.showLoading();
-      const check = await this.checkPassword(this.form.value.currentPassword);
+      const check = this.user.providerId === 'google.com' ? true : await this.checkPassword(this.form.value.currentPassword);
       if (check) {
         const updateDisplayName = this.angularFireAuth.auth.currentUser.updateProfile({
           displayName: this.form.value.displayName

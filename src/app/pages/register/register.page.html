@@ -62,6 +62,12 @@
         </ion-text>
       </p>
 
+      <p ion-text color="warning" class="text08" *ngIf="onRegisterForm.get('password').touched && onRegisterForm.get('password').hasError('minlength')">
+        <ion-text color="warning">
+          Mật khẩu phải chứa ít nhất 6 ký tự
+        </ion-text>
+      </p>
+
       <ion-item class="animated fadeInUp ion-no-padding">
         <ion-label position="floating">
           <ion-icon name="lock" item-start></ion-icon>
@@ -78,6 +84,12 @@
       <p ion-text color="warning" class="text08" *ngIf="onRegisterForm.get('confirmPassword').touched && onRegisterForm.get('confirmPassword').hasError('mustMatch')">
         <ion-text color="warning">
           Mật khẩu không trùng nhau
+        </ion-text>
+      </p>
+
+      <p ion-text color="warning" class="text08" *ngIf="onRegisterForm.get('confirmPassword').touched && onRegisterForm.get('confirmPassword').hasError('minlength')">
+        <ion-text color="warning">
+          Mật khẩu phải chứa ít nhất 6 ký tự
         </ion-text>
       </p>
     </form>

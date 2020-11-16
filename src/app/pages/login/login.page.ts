@@ -188,7 +188,7 @@ export class LoginPage implements OnInit {
         displayName: res.user.displayName,
         phoneNumber: res.user.phoneNumber,
         photoURL: res.user.photoURL,
-        providerId: res.user.providerId,
+        providerId: 'google.com',
         uid: res.user.uid,
         ...moreInfo
       };

@@ -84,8 +84,12 @@ export class AuthService {
           this.helperService.showAlert(title, 'Không tìm thấy tài khoản, vui lòng kiểm tra lại.');
           break;
         case errorStatus.existedEmail:
-          title = 'Đăng ký thất bại'
+          title = 'Đăng ký thất bại';
           this.helperService.showAlert(title, 'Email đã được sử dụng.');
+          break;
+        case errorStatus.passwordLength:
+          title = 'Đăng ký thất bại';
+          this.helperService.showAlert(title, 'Mật khẩu phải chứa ít nhất 6 ký tự.');
           break;
       }
     }
