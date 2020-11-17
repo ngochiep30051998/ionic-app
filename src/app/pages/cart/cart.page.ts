@@ -174,7 +174,6 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
         return await alert.present();
       }
       this.helperService.showLoading();
-      const bill = new Cart(this.cart.products, '', this.form.value.notes, this.form.value.floor, this.form.value.transType, this.user);
 
       const toast = await this.toastCtrl.create({
         showCloseButton: true,
@@ -192,6 +191,17 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
         position: 'bottom',
         color: 'danger'
       });
+
+      const list = this.cart.products.filter(x => x.amount > 0);
+      if (list.length < 1) {
+        err.present();
+        return;
+      } else {
+        this.cart.products = list;
+      }
+      const bill = new Cart(this.cart.products, '', this.form.value.notes, this.form.value.floor, this.form.value.transType, this.user);
+
+
       console.log(bill);
       if (bill.payment === TRANS_TYPE.card) {
         const params = {
