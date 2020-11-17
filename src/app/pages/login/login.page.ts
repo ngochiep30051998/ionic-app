@@ -120,7 +120,7 @@ export class LoginPage implements OnInit {
   }
 
   goToHome() {
-    this.navCtrl.navigateRoot('/home-results');
+    this.router.navigate(['/home-results']);
   }
 
   async loginWithEmail() {
@@ -164,9 +164,9 @@ export class LoginPage implements OnInit {
         localStorage.removeItem('userSave');
       }
       if (this.isCheckout) {
-        this.navCtrl.back();
+        this.router.navigate(['/cart']);
       } else {
-        this.router.navigateByUrl('/home-results');
+        this.router.navigate(['/home-results']);
       }
     } catch (e) {
       console.log(e);

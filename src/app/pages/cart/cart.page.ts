@@ -5,7 +5,8 @@ import { Router } from '@angular/router';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import * as moment from 'moment';
-import { Subscription } from 'rxjs';
+import { EMPTY, Subscription } from 'rxjs';
+import { map, mergeMap, take } from 'rxjs/operators';
 import { PAYMENT_STATUS, TRANS_TYPE } from 'src/app/constants/common';
 import { Cart, ICart } from 'src/app/interfaces/cart.interfaces';
 import { IError } from 'src/app/interfaces/errors.interfaces';
@@ -79,16 +80,21 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
         this.cart = new Cart(res.products);
       }
     });
-    this.userSub$ = this.authService.getUserInfo().subscribe((res: IUser) => {
+    // this.userSub$ = this.authService.getUserInfo().subscribe((res: IUser) => {
+    //   this.user = res;
+
+    // });
+    //   this.firebaseService.getCurrentUserFirebase(this.angularFireAuth.auth.currentUser.uid)
+    this.userSub$ = this.angularFireAuth.user.pipe(
+      mergeMap(user => {
+        return user && user.uid ? this.firebaseService.getCurrentUserFirebase(user.uid) : EMPTY;
+      })
+    ).subscribe((res: IUser) => {
       this.user = res;
+      console.log(res);
+    }, err => {
+      console.log(err);
     });
-    // if (this.angularFireAuth.auth && this.angularFireAuth.auth.currentUser && this.angularFireAuth.auth.currentUser.uid) {
-    //   this.userSub$ = this.angularFireAuth.user.pipe(user =>
-    //     this.firebaseService.getCurrentUserFirebase(this.angularFireAuth.auth.currentUser.uid)
-    //   ).subscribe((res: IUser) => {
-    //     this.user = res;
-    //   });
-    // }
 
 
     this.errorSub$ = this.cartService.getError().subscribe((res: IError[]) => {
@@ -219,7 +225,7 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
                 browser.close();
                 toast.present();
                 this.cartService.clearCart();
-                this.navCtrl.navigateRoot('/home-results');
+                this.router.navigate(['/home-results']);
               } else {
                 err.present();
                 browser.close();
@@ -239,7 +245,7 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
         console.log(create);
         toast.present();
         this.cartService.clearCart();
-        this.navCtrl.navigateRoot('/home-results');
+        this.router.navigate(['/home-results']);
       }
 
 

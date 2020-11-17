@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { ModalController, NavController } from '@ionic/angular';
-import { Subscription } from 'rxjs';
+import { EMPTY, Subscription } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 import { OrderDetailComponent } from 'src/app/components/order-detail/order-detail.component';
 import { BILL_STATUS } from 'src/app/constants/common';
 import { ICart } from 'src/app/interfaces/cart.interfaces';
@@ -36,16 +37,15 @@ export class OrderHistoryPage implements OnInit, OnDestroy {
         this.getHistory();
       }
     });
-    // if (this.angularFireAuth.auth.currentUser && this.angularFireAuth.auth.currentUser.uid) {
-    //   this.userSub$ = this.angularFireAuth.user.pipe(user =>
-    //     this.firebaseService.getCurrentUserFirebase(this.angularFireAuth.auth.currentUser.uid)
-    //   ).subscribe((res: IUser) => {
-    //     this.user = res;
-    //     if (this.user) {
-    //       this.getHistory();
-    //     }
-    //   });
-    // }
+    this.userSub$ = this.angularFireAuth.user.pipe(
+      mergeMap(user => {
+        return user && user.uid ? this.firebaseService.getCurrentUserFirebase(user.uid) : EMPTY;
+      })
+    ).subscribe((res: IUser) => {
+      this.user = res;
+    }, err => {
+      console.log(err);
+    });
   }
 
   ngOnInit() {

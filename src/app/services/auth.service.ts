@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { NavController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
@@ -21,7 +22,8 @@ export class AuthService {
     private googlePlus: GooglePlus,
     private storage: Storage,
     public helperService: HelperService,
-    private angularFireAuth: AngularFireAuth
+    private angularFireAuth: AngularFireAuth,
+    private router: Router
   ) { }
 
   register(email, password) {
@@ -49,7 +51,7 @@ export class AuthService {
   async logout() {
     await this.angularFireAuth.auth.signOut();
     this.updateUser(null);
-    this.navCtrl.navigateRoot('/');
+    this.router.navigate(['/home-results']);
   }
 
   getCurrentUser() {
