@@ -12,7 +12,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "build-ios": "ionic cordova build ios",
-    "build-android": "ionic cordova build android"
+    "build-android-dev": "ionic cordova build android",
+    "build-android":"rm -rf www && ionic cordova build android --prod --release --aot --minifycss --optimizejs --uglifyjs --minifyjs --alias=FastFood"
   },
   "private": true,
   "dependencies": {
@@ -35,9 +36,7 @@
     "@ionic/angular": "^4.0.0",
     "@ionic/pro": "2.0.4",
     "@ionic/storage": "2.2.0",
-    "cordova-android": "^8.1.0",
     "cordova-plugin-device": "2.0.2",
-    "cordova-plugin-file": "^6.0.2",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
     "cordova-plugin-ionic-webview": "^2.0.0",
     "cordova-plugin-splashscreen": "5.0.2",
@@ -68,6 +67,7 @@
     "@types/node": "~10.12.0",
     "android": "0.0.8",
     "codelyzer": "~4.5.0",
+    "cordova-android": "^8.1.0",
     "cordova-ios": "^5.1.1",
     "cordova-plugin-camera": "^4.1.0",
     "cordova-plugin-device": "^2.0.2",

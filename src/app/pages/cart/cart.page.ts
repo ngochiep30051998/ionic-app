@@ -79,12 +79,17 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
         this.cart = new Cart(res.products);
       }
     });
-
-    this.userSub$ = this.angularFireAuth.user.pipe(user =>
-      this.firebaseService.getCurrentUserFirebase(this.angularFireAuth.auth.currentUser.uid)
-    ).subscribe((res: IUser) => {
+    this.userSub$ = this.authService.getUserInfo().subscribe((res: IUser) => {
       this.user = res;
     });
+    // if (this.angularFireAuth.auth && this.angularFireAuth.auth.currentUser && this.angularFireAuth.auth.currentUser.uid) {
+    //   this.userSub$ = this.angularFireAuth.user.pipe(user =>
+    //     this.firebaseService.getCurrentUserFirebase(this.angularFireAuth.auth.currentUser.uid)
+    //   ).subscribe((res: IUser) => {
+    //     this.user = res;
+    //   });
+    // }
+
 
     this.errorSub$ = this.cartService.getError().subscribe((res: IError[]) => {
       if (res) {

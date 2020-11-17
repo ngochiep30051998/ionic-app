@@ -30,20 +30,22 @@ export class OrderHistoryPage implements OnInit, OnDestroy {
     public angularFireAuth: AngularFireAuth,
     public helperService: HelperService
   ) {
-    // this.userSub$ = this.authService.getUserInfo().subscribe((res: IUser) => {
-    //   this.user = res;
-    //   if (this.user) {
-    //     this.getHistory();
-    //   }
-    // });
-    this.userSub$ = this.angularFireAuth.user.pipe(user =>
-      this.firebaseService.getCurrentUserFirebase(this.angularFireAuth.auth.currentUser.uid)
-    ).subscribe((res: IUser) => {
+    this.userSub$ = this.authService.getUserInfo().subscribe((res: IUser) => {
       this.user = res;
       if (this.user) {
         this.getHistory();
       }
     });
+    // if (this.angularFireAuth.auth.currentUser && this.angularFireAuth.auth.currentUser.uid) {
+    //   this.userSub$ = this.angularFireAuth.user.pipe(user =>
+    //     this.firebaseService.getCurrentUserFirebase(this.angularFireAuth.auth.currentUser.uid)
+    //   ).subscribe((res: IUser) => {
+    //     this.user = res;
+    //     if (this.user) {
+    //       this.getHistory();
+    //     }
+    //   });
+    // }
   }
 
   ngOnInit() {
