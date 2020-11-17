@@ -3,17 +3,16 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoadingController, NavController, Platform, ToastController } from '@ionic/angular';
+import { Camera, CameraOptions } from '@ionic-native/Camera/ngx';
+import { File } from '@ionic-native/file/ngx';
+import { ActionSheetController, LoadingController, NavController, Platform, ToastController } from '@ionic/angular';
+import { auth } from 'firebase/app';
 import { identity, pickBy } from 'lodash';
 import { Subscription } from 'rxjs';
 import { IUser } from 'src/app/interfaces/user.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { HelperService } from 'src/app/services/helper.service';
-import { auth } from 'firebase/app';
-import { Camera, CameraOptions } from '@ionic-native/Camera/ngx';
-import { File } from '@ionic-native/file/ngx';
-import { ActionSheetController } from '@ionic/angular';
 @Component({
   selector: 'app-edit-profile',
   templateUrl: './edit-profile.page.html',
@@ -221,6 +220,9 @@ export class EditProfilePage implements OnInit, OnDestroy {
     } catch (e) {
       this.helperService.hideLoading();
       console.log(e);
+      if(e === 'No Image Selected'){
+        return;
+      }
       const toast = await this.toastCtrl.create({
         showCloseButton: true,
         closeButtonText: 'Đóng',
