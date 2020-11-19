@@ -30,7 +30,7 @@
   <ion-item class="ion-margin-bottom ion-no-padding card"  lines="none" (click)="open(order)" *ngFor="let order of bills;trackBy: trackByFn">
     <ion-row class="ion-align-items-center">
       <ion-col size="2">
-        <img [src]="order?.products[0]?.displayImage">
+        <img [src]="order?.products && order?.products[0] && order?.products[0]?.displayImage || '../../../assets/img/defaults/default-product.jpg'">
       </ion-col>
       <ion-col>
         <ion-row>

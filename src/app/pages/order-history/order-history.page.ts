@@ -31,18 +31,21 @@ export class OrderHistoryPage implements OnInit, OnDestroy {
     public angularFireAuth: AngularFireAuth,
     public helperService: HelperService
   ) {
-    this.userSub$ = this.authService.getUserInfo().subscribe((res: IUser) => {
-      this.user = res;
-      if (this.user) {
-        this.getHistory();
-      }
-    });
+    // this.userSub$ = this.authService.getUserInfo().subscribe((res: IUser) => {
+    //   this.user = res;
+    //   if (this.user) {
+    //     this.getHistory();
+    //   }
+    // });
     this.userSub$ = this.angularFireAuth.user.pipe(
       mergeMap(user => {
         return user && user.uid ? this.firebaseService.getCurrentUserFirebase(user.uid) : EMPTY;
       })
     ).subscribe((res: IUser) => {
       this.user = res;
+      if (this.user) {
+        this.getHistory();
+      }
     }, err => {
       console.log(err);
     });

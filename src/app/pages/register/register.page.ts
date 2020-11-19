@@ -121,6 +121,7 @@ export class RegisterPage implements OnInit {
   }
   // // //
   goToLogin() {
-    this.navCtrl.navigateRoot('/login');
+    this.navCtrl.back();
+    // this.router.navigate(['/login']);
   }
 }
