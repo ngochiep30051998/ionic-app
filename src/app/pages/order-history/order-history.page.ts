@@ -23,6 +23,8 @@ export class OrderHistoryPage implements OnInit, OnDestroy {
   private historySub$: Subscription;
   public bills: ICart[] = [];
   public BILL_STATUS = BILL_STATUS;
+  private page = 0;
+  private limit = 10;
   constructor(
     private modalController: ModalController,
     private firebaseService: FirebaseService,
@@ -64,13 +66,20 @@ export class OrderHistoryPage implements OnInit, OnDestroy {
     });
     return await modal.present();
   }
-  getHistory() {
+  getHistory(event?) {
     if (this.historySub$) {
       this.historySub$.unsubscribe();
     }
-    this.helperService.showLoading();
-    this.historySub$ = this.firebaseService.getOrderHistory(this.user).subscribe(res => {
+    if (!event) {
+      this.helperService.showLoading();
+    }
+    this.page = this.page === 0 ? 1 : this.page + 1;
+    const count = this.limit * this.page;
+    this.historySub$ = this.firebaseService.getOrderHistory(this.user, count).subscribe(res => {
       this.bills = res;
+      if (event) {
+        event.target.complete();
+      }
       this.helperService.hideLoading();
     }, err => {
       this.helperService.hideLoading();
@@ -83,7 +92,7 @@ export class OrderHistoryPage implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.userSub$) {
       this.userSub$.unsubscribe();
-    };
+    }
     if (this.historySub$) {
       this.historySub$.unsubscribe();
     }

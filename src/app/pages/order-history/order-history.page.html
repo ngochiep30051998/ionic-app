@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button text=""></ion-back-button>
     </ion-buttons>
-     <ion-title class="txt-center">
+    <ion-title class="txt-center">
       <ion-text color="light">
         <ion-text color="light" class="fw700">Lịch sử mua hàng</ion-text>
       </ion-text>
@@ -26,44 +26,52 @@
     </ion-row>
   </div>
 
-<ng-container *ngIf="bills && bills?.length > 0">
-  <ion-item class="ion-margin-bottom ion-no-padding card"  lines="none" (click)="open(order)" *ngFor="let order of bills;trackBy: trackByFn">
-    <ion-row class="ion-align-items-center">
-      <ion-col size="2">
-        <img [src]="order?.products && order?.products[0] && order?.products[0]?.displayImage || '../../../assets/img/defaults/default-product.jpg'">
-      </ion-col>
-      <ion-col>
-        <ion-row>
-          <ion-text>
-            <h5 class="title ion-no-margin" ><strong>{{order?.totalItem}} sản phẩm</strong></h5>
-          </ion-text>
-        </ion-row>
-        <ion-row>
-          <ion-text>
-            <h5 class="title ion-no-margin" ><strong>Tổng giá trị: {{order?.totalPrice | number}} vnđ</strong></h5>
-          </ion-text>
-        </ion-row>
-        <ion-row>
-          <ion-text [ngSwitch]="order?.status">
-            <h6 class="sub ion-no-margin success" *ngSwitchCase="BILL_STATUS.done.key">Đã hoàn thành</h6>
-            <h6 class="sub ion-no-margin tertiary " *ngSwitchCase="BILL_STATUS.pending.key">Đang chờ xác nhận</h6>
-            <h6 class="sub ion-no-margin tertiary " *ngSwitchCase="BILL_STATUS.accept.key">Đã xác nhận</h6>
-            <h6 class="sub ion-no-margin primary" *ngSwitchCase="BILL_STATUS.transport.key">Đang giao hàng</h6>
-            <h6 class="sub ion-no-margin danger" *ngSwitchCase="BILL_STATUS.canceled.key">Đã huỷ bỏ</h6>
-          </ion-text>
-        </ion-row>
+  <ng-container *ngIf="bills && bills?.length > 0">
+    <ion-item class="ion-margin-bottom ion-no-padding card" lines="none" (click)="open(order)"
+      *ngFor="let order of bills;trackBy: trackByFn">
+      <ion-row class="ion-align-items-center">
+        <ion-col size="2">
+          <img
+            [src]="order?.products && order?.products[0] && order?.products[0]?.displayImage || '../../../assets/img/defaults/default-product.jpg'">
+        </ion-col>
+        <ion-col>
+          <ion-row>
+            <ion-text>
+              <h5 class="title ion-no-margin"><strong>{{order?.totalItem}} sản phẩm</strong></h5>
+            </ion-text>
+          </ion-row>
+          <ion-row>
+            <ion-text>
+              <h5 class="title ion-no-margin"><strong>Tổng giá trị: {{order?.totalPrice | number}} vnđ</strong></h5>
+            </ion-text>
+          </ion-row>
+          <ion-row>
+            <ion-text [ngSwitch]="order?.status">
+              <h6 class="sub ion-no-margin success" *ngSwitchCase="BILL_STATUS.done.key">Đã hoàn thành</h6>
+              <h6 class="sub ion-no-margin tertiary " *ngSwitchCase="BILL_STATUS.pending.key">Đang chờ xác nhận</h6>
+              <h6 class="sub ion-no-margin tertiary " *ngSwitchCase="BILL_STATUS.accept.key">Đã xác nhận</h6>
+              <h6 class="sub ion-no-margin primary" *ngSwitchCase="BILL_STATUS.transport.key">Đang giao hàng</h6>
+              <h6 class="sub ion-no-margin danger" *ngSwitchCase="BILL_STATUS.canceled.key">Đã huỷ bỏ</h6>
+            </ion-text>
+          </ion-row>
 
-        <ion-row>
-          <ion-text>
-            <h6 class="sub ion-no-margin tertiary ">{{order?.date | date:'dd/MM/yyyy HH:mm'}}</h6>
-          </ion-text>
-        </ion-row>
+          <ion-row>
+            <ion-text>
+              <h6 class="sub ion-no-margin tertiary ">{{order?.date | date:'dd/MM/yyyy HH:mm'}}</h6>
+            </ion-text>
+          </ion-row>
 
-      </ion-col>
-      <ion-col class="ion-float-right" size="2">
-        <ion-icon class="item-icon mycolor ion-float-right" name="arrow-dropright"  mode="ios"></ion-icon>
-      </ion-col>
-    </ion-row>
-  </ion-item>
-</ng-container>
+        </ion-col>
+        <ion-col class="ion-float-right" size="2">
+          <ion-icon class="item-icon mycolor ion-float-right" name="arrow-dropright" mode="ios"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </ng-container>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="getHistory($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Lấy thêm đơn hàng...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
 </ion-content>

@@ -81,9 +81,9 @@ export class FirebaseService {
     return this.db.object(`/bills/${id}`).set(cart);
   }
 
-  getOrderHistory(user: IUser) {
+  getOrderHistory(user: IUser, limit = 10) {
     console.log(user.uid)
-    return this.db.list('/bills', query => query.orderByChild('user/uid').equalTo(user.uid)).valueChanges().pipe(
+    return this.db.list('/bills', query => query.orderByChild('user/uid').equalTo(user.uid).limitToLast(limit)).valueChanges().pipe(
       map(value => value.reverse())
     );
   }
