@@ -6,7 +6,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import * as moment from 'moment';
 import { EMPTY, Subscription } from 'rxjs';
-import { map, mergeMap, take } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 import { PAYMENT_STATUS, TRANS_TYPE } from 'src/app/constants/common';
 import { Cart, ICart } from 'src/app/interfaces/cart.interfaces';
 import { IError } from 'src/app/interfaces/errors.interfaces';
@@ -304,7 +304,6 @@ export class CartPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ionViewWillLeave() {
-    console.log(this.cart.products);
     if (this.cart && this.cart.products) {
       this.cart.products.forEach((cart, index) => {
         if (cart.amount < 1) {
