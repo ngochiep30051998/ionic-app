@@ -27,4 +27,5 @@ export interface IUser extends IGoogleUser, firebase.UserInfo {
     floor?: string;
     cardNumber?: string;
     transType?: string;
+    favorites?: any;
 }

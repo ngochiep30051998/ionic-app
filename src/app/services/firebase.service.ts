@@ -77,12 +77,10 @@ export class FirebaseService {
     const id = this.db.createPushId();
     cart.date = firebase.database.ServerValue.TIMESTAMP;
     cart.id = id;
-    // cart.createdAt = firebase.database.ServerValue.TIMESTAMP;
     return this.db.object(`/bills/${id}`).set(cart);
   }
 
   getOrderHistory(user: IUser, limit = 10) {
-    console.log(user.uid)
     return this.db.list('/bills', query => query.orderByChild('user/uid').equalTo(user.uid).limitToLast(limit)).valueChanges().pipe(
       map(value => value.reverse())
     );
@@ -92,6 +90,20 @@ export class FirebaseService {
     return this.db.object(`userInfo/${user.uid}`).update(user);
   }
 
+  addFavorite(user, productId) {
+    return this.db.list(`userInfo/${user.uid}/favorites`).push(productId);
+  }
+
+  removeFavorite(user, key) {
+    return this.db.object(`userInfo/${user.uid}/favorites/${key}`).remove();
+    // return new Promise((resolve, reject) => {
+    //   this.db.object(`userInfo/${user.uid}/favorites/${key}`).valueChanges().subscribe(res => {
+    //     resolve(res);
+    //   }, err => {
+    //     reject(err)
+    //   })
+    // });
+  }
   getCurrentUserFirebase(uid) {
     return this.db.object(`userInfo/${uid}`).valueChanges();
   }

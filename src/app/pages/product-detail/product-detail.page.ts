@@ -1,10 +1,15 @@
 import { formatDate } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonSlides, ToastController } from '@ionic/angular';
+import { Subscription, EMPTY } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 import { IProduct } from 'src/app/interfaces/products.interface';
+import { IUser } from 'src/app/interfaces/user.interface';
 import { CartService } from 'src/app/services/cart.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { HelperService } from 'src/app/services/helper.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -12,7 +17,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './product-detail.page.html',
   styleUrls: ['./product-detail.page.scss'],
 })
-export class ProductDetailPage implements OnInit {
+export class ProductDetailPage implements OnInit, OnDestroy {
 
   @ViewChild('Slides') slides: IonSlides;
   public slideOpts = {
@@ -25,12 +30,16 @@ export class ProductDetailPage implements OnInit {
   public photoIndex = 0;
   public meal: string;
   public currentDate;
+  public user: IUser;
+  public userSub$: Subscription;
   constructor(
     private route: ActivatedRoute,
     private firebaseService: FirebaseService,
     private router: Router,
     public cartService: CartService,
     public toastCtrl: ToastController,
+    public angularFireAuth: AngularFireAuth,
+    public helperService: HelperService
 
   ) {
     // tslint:disable-next-line: max-line-length
@@ -41,13 +50,28 @@ export class ProductDetailPage implements OnInit {
 
     this.getProduct(this.menuId, this.meal, this.id);
 
+    this.userSub$ = this.angularFireAuth.user.pipe(
+      mergeMap(user => {
+        return user && user.uid ? this.firebaseService.getCurrentUserFirebase(user.uid) : EMPTY;
+      })
+    ).subscribe((res: IUser) => {
+      this.user = res;
+      if (this.user && this.user.favorites) {
+        const key = this.helperService.getKeyByValue(this.user.favorites, this.id);
+        this.liked = key ? true : false;
+      } else {
+        this.liked = false;
+      }
+      console.log(res);
+    }, err => {
+      console.log(err);
+    });
   }
 
   ngOnInit() {
   }
 
   like() {
-    console.log('like')
     this.liked = !this.liked;
   }
 
@@ -80,4 +104,22 @@ export class ProductDetailPage implements OnInit {
       return await toast.present();
     }
   }
+
+  addFavarite() {
+    this.firebaseService.addFavorite(this.user, this.product.id);
+  }
+
+  async removeFavarite() {
+    if (this.user && this.user.favorites) {
+      const key = this.helperService.getKeyByValue(this.user.favorites, this.id);
+      const res = await this.firebaseService.removeFavorite(this.user, key);
+      // this.liked = false;
+    }
+  }
+  ngOnDestroy(): void {
+    if (this.userSub$) {
+      this.userSub$.unsubscribe();
+    }
+  }
+
 }

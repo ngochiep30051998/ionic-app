@@ -71,13 +71,14 @@
       </div>
 
       <!-- <div class="sep"></div>
-      <div class="ion-padding">
+      <div class="ion-padding" *ngIf="user">
         <ion-row class="ion-justify-content-center hover-buttons">
           <ion-icon size="small" name="logo-instagram" class="ion-float-right fab"></ion-icon>
           <ion-icon size="small" name="share" class="ion-float-right fab"></ion-icon>
           <ion-icon *ngIf="!liked" size="small" name="heart-empty" class="ion-float-right fab" (click)="like()">
           </ion-icon>
-          <ion-icon *ngIf="liked" size="small" name="heart" class="ion-float-right red fab" (click)="like()"></ion-icon>
+          <ion-icon *ngIf="liked" size="small" name="heart" class="ion-float-right red fab" (click)="removeFavarite()"></ion-icon>
+          <ion-icon *ngIf="!liked" size="small" name="heart" class="ion-float-right grey fab" (click)="addFavarite()"></ion-icon>
         </ion-row>
       </div> -->
     </div>
