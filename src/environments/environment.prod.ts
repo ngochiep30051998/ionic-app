@@ -12,5 +12,6 @@ export const environment = {
   },
   googleWebClientId: '589211414820-qjdghiijvlne6c0e9qcngj254qg2gl0u.apps.googleusercontent.com',
   curentDate: '',
-  api: 'https://api-fast-food.herokuapp.com/',
+  api: 'https://fastfood-api.azurewebsites.net/'
 }
+
