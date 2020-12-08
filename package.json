@@ -13,7 +13,8 @@
     "e2e": "ng e2e",
     "build-ios": "ionic cordova build ios",
     "build-android-dev": "ionic cordova build android",
-    "build-android":"rm -rf www && ionic cordova build android --prod --aot --minifycss --optimizejs --uglifyjs --minifyjs"
+    "build-android":"rm -rf www && ionic cordova build android --minifycss --optimizejs --minifyjs --prod",
+    "build:android-release":"rm -rf www && ionic cordova build android --minifycss --optimizejs --minifyjs --release --prod"
   },
   "private": true,
   "dependencies": {
