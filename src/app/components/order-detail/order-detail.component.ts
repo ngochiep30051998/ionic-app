@@ -35,9 +35,13 @@ export class OrderDetailComponent implements OnInit {
   }
 
   async cancelOrder() {
+    let mess = 'Bạn có chắc chắn muốn huỷ đơn hàng?'
+    if(this.order.paymentStatus === PAYMENT_STATUS.success){
+      mess = 'Đơn hàng của bạn đã được thanh toán, số tiền sẽ được hoàn trả lại sau. Bạn có chắc chắn muốn huỷ đơn hàng?';
+    }
     const alert = await this.alertCtrl.create({
       header: 'Huỷ đơn hàng',
-      message: 'Bạn có chắc chắn muốn huỷ đơn hàng?',
+      message: mess,
       buttons: [
         {
           text: 'Huỷ',
