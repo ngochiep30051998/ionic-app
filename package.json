@@ -11,9 +11,9 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build-ios": "ionic cordova build ios",
+    "build-ios": "rm -rf www && ionic cordova build ios --minifycss --optimizejs --minifyjs --prod",
     "build-android-dev": "ionic cordova build android",
-    "build-android":"rm -rf www && ionic cordova build android --prod --aot --minifycss --optimizejs --uglifyjs --minifyjs"
+    "build-android":"rm -rf www && ionic cordova build android --minifycss --optimizejs --minifyjs --prod"
   },
   "private": true,
   "dependencies": {
